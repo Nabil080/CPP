@@ -15,7 +15,8 @@ MAKEFLAGS += --no-print-directory
 ######################## SOURCES ########################
 
 SRCS_NAMES =	main.cpp \
-				Contact.cpp
+				Contact.cpp \
+				PhoneBook.cpp
 
 SRCS_DIR = 
 
@@ -25,7 +26,8 @@ OBJS_DIR = objs/
 
 OBJS = ${addprefix ${OBJS_DIR}, ${SRCS_NAMES:.cpp=.o}}
 
-HEADERS =	Contact.hpp
+HEADERS =	Contact.hpp \
+			PhoneBook.hpp
 
 ######################## BASIC RULES ########################
 

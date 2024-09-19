@@ -7,10 +7,13 @@
 class PhoneBook
 {
 	private:
+		int		count;	
 		Contact	contacts[8];
 	public:
-		std::string darkest_secret;
-		long	 	phone_number;
+		PhoneBook(void);
+		void	showInputs(void);
+		void	addContact(Contact contact);
+		void	showContacts(void);
 };
 
 #endif
