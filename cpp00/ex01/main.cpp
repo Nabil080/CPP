@@ -17,7 +17,7 @@ int main(void)
 		if (input == "ADD")
 			pb.addContact(Contact(true));
 		if (input == "SEARCH")
-			pb.showContacts();
+			pb.printContacts();
 	} while (input != "EXIT");
 	return (0);
 }

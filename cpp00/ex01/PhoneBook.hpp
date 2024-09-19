@@ -7,13 +7,15 @@
 class PhoneBook
 {
 	private:
-		int		count;	
+		size_t		count;
+		size_t		col_width;
 		Contact	contacts[8];
 	public:
 		PhoneBook(void);
 		void	showInputs(void);
 		void	addContact(Contact contact);
-		void	showContacts(void);
+		void    printColumn(std::string str, bool sep);
+		void	printContacts(void);
 };
 
 #endif

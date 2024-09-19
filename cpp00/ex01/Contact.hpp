@@ -6,12 +6,12 @@
 class Contact
 {
 	private:
+		std::string darkest_secret;
+	public:
 		std::string first_name;
 		std::string last_name;
 		std::string nickname;
-		std::string darkest_secret;
 		std::string	phone_number;
-	public:
 		Contact(void);
 		Contact(bool input);
 		std::string getInput(std::string prompt);
