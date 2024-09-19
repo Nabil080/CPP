@@ -1,6 +1,7 @@
 #include "Contact.hpp"
 #include <iostream>
 #include <string>
+#include <cstdio>
 
 Contact::Contact(void)
 {
@@ -21,9 +22,18 @@ Contact::Contact(bool input)
 std::string Contact::getInput(std::string prompt)
 {
     std::string input;
-
-    std::cout << "Please enter your " << prompt << ": ";
-    getline(std::cin, input);
+    do
+    {
+        std::cout << "Please enter your " << prompt << ": ";
+        getline(std::cin, input);
+        if (std::cin.eof())
+        {
+            std::cin.clear();
+            clearerr(stdin);
+            std::cout << std::endl;
+        }
+    }
+    while (input.empty());
     return (input);
 }
 

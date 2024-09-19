@@ -12,6 +12,8 @@ int main(void)
 	{
 		pb.showInputs();
 		getline(std::cin, input);
+		if (std::cin.eof())
+			return (1);
 		if (input == "ADD")
 			pb.addContact(Contact(true));
 		if (input == "SEARCH")
