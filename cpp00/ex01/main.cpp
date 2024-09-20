@@ -1,23 +1,35 @@
-#include "Contact.hpp"
-#include "PhoneBook.hpp"
-#include <iostream>
-#include <string>
+#include "main.hpp"
 
 int main(void)
 {
-	PhoneBook	pb;
+	PhoneBook	PhoneBook;
 	std::string	input;
 
 	do
 	{
-		pb.showInputs();
-		getline(std::cin, input);
-		if (std::cin.eof())
-			return (1);
+        input = getInput("Enter a command > ");
 		if (input == "ADD")
-			pb.addContact(Contact(true));
+			PhoneBook.addContact(Contact(true));
 		if (input == "SEARCH")
-			pb.printContacts();
+			PhoneBook.printContacts();
 	} while (input != "EXIT");
 	return (0);
+}
+
+std::string getInput(std::string prompt)
+{
+    std::string input;
+    do
+    {
+        std::cout << prompt;
+        getline(std::cin, input);
+        if (std::cin.eof())
+        {
+            std::cin.clear();
+            clearerr(stdin);
+            std::cout << std::endl;
+        }
+    }
+    while (input.empty());
+    return (input);
 }

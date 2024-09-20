@@ -9,12 +9,13 @@ class PhoneBook
 	private:
 		size_t		count;
 		size_t		col_width;
-		Contact	contacts[8];
+		Contact		contacts[8];
+		void    	printColumn(std::string str, bool sep);
+		void	    printLine(bool sep);
 	public:
 		PhoneBook(void);
-		void	showInputs(void);
+		~PhoneBook(void);
 		void	addContact(Contact contact);
-		void    printColumn(std::string str, bool sep);
 		void	printContacts(void);
 };
 

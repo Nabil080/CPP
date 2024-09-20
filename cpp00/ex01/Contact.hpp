@@ -14,7 +14,7 @@ class Contact
 		std::string	phone_number;
 		Contact(void);
 		Contact(bool input);
-		std::string getInput(std::string prompt);
+		~Contact(void);
 		void		showData(void);
 };
 
