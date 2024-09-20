@@ -1,47 +1,31 @@
-#include "Contact.hpp"
-#include <iostream>
-#include <string>
-#include <cstdio>
+#include "main.hpp"
 
 Contact::Contact(void)
 {
-    ;
+    std::cout << "Creating a Contact\n";
+}
+
+Contact::~Contact(void)
+{
+    std::cout << "Destroying a Contact\n";
 }
 
 Contact::Contact(bool input)
 {
     if (!input)
         return ;
-    this->first_name = this->getInput("first name");
-    this->last_name = this->getInput("last name");
-    this->nickname = this->getInput("nickname");
-    this->darkest_secret = this->getInput("darkest secret");
-    this->phone_number = this->getInput("phone number");
-}
-
-std::string Contact::getInput(std::string prompt)
-{
-    std::string input;
-    do
-    {
-        std::cout << "Please enter your " << prompt << ": ";
-        getline(std::cin, input);
-        if (std::cin.eof())
-        {
-            std::cin.clear();
-            clearerr(stdin);
-            std::cout << std::endl;
-        }
-    }
-    while (input.empty());
-    return (input);
+    this->first_name = getInput("Please enter your first name: ");
+    this->last_name = getInput("Please enter your last name: ");
+    this->nickname = getInput("Please enter your nickname: ");
+    this->darkest_secret = getInput("Please enter your darkest secret: ");
+    this->phone_number = getInput("Please enter your phone number: ");
 }
 
 void    Contact::showData(void)
 {
-    std::cout << "First name : " << this->first_name << std::endl;
-    std::cout << "Last name : " << this->last_name << std::endl;
-    std::cout << "Nickname : " << this->nickname << std::endl;
-    std::cout << "Phone number : " << this->phone_number << std::endl;
-    std::cout << "Darkest secret : " << this->darkest_secret << std::endl;
+    std::cout << "First name: " << this->first_name << std::endl;
+    std::cout << "Last name: " << this->last_name << std::endl;
+    std::cout << "Nickname: " << this->nickname << std::endl;
+    std::cout << "Phone number: " << this->phone_number << std::endl;
+    std::cout << "Darkest secret: " << this->darkest_secret << std::endl;
 }
