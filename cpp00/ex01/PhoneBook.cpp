@@ -1,11 +1,13 @@
 #include "main.hpp"
 
+const size_t    PhoneBook::max_count = 7;
+const size_t    PhoneBook::col_width = 10;
+
 PhoneBook::PhoneBook(void)
 {
-    std::cout << "Creating an empty PhoneBook (8 contacts maximum)\n";
-    std::cout << "Use the PhoneBook with those commands : [ADD] [SEARCH] [EXIT]\n\n";
+    std::cout << "Creating an empty PhoneBook (" << max_count + 1 << " contacts maximum)\n";
+    std::cout << "Use the PhoneBook with those commands : " BLUE "[ADD] [SEARCH] [EXIT]" RESET "\n\n";
     this->count = 0;
-    this->col_width = 10;
 }
 
 PhoneBook::~PhoneBook(void)
@@ -17,10 +19,10 @@ void    PhoneBook::addContact(Contact contact)
 {
     for (int i = this->count; i > 0; i--)
         this->contacts[i] = this->contacts[i - 1];
-    if (this->count < 7)
+    if (this->count < this->max_count)
         this->count++;
     this->contacts[0] = contact;
-    std::cout << contact.first_name << " was sucessfully added in the PhoneBook\n";
+    std::cout << "[" << contact.first_name << "] was sucessfully added in the PhoneBook\n";
 }
 
 void    PhoneBook::printColumn(std::string str, bool sep)
@@ -46,7 +48,7 @@ void    PhoneBook::printLine(bool inside)
         {
             if (inside)
                 std::cout << "|";
-            else if (!inside)
+            else
                 std::cout << "_";
         } 
         std::cout << "_";
@@ -65,7 +67,7 @@ void    PhoneBook::printContacts(void)
     this->printColumn("Nickname", true);
     std::cout << std::endl;
     this->printLine(true);
-    for (int i = 0; i < 8; i++)
+    for (size_t i = 0; i <= max_count; i++)
     {
         std::cout << "|";
         std::cout << std::setfill(' ') << std::setw(this->col_width) << i;
@@ -75,10 +77,20 @@ void    PhoneBook::printContacts(void)
         std::cout << std::endl;
     }
     this->printLine(false);
+    if (this->count > 0)
+        this->printOneContact();
+}
+
+void    PhoneBook::printOneContact(void)
+{
     int    index;
     char    *p;
+    std::string input;
     do
-        index = strtol(getInput("Select a valid index: ").c_str(), &p, 10);
-    while(*p || index < 0 || index > (int)this->count);
+    {
+        input = getInput("Enter an index to display a contact: ");
+        index = strtol(input.c_str(), &p, 10);
+    }
+    while(*p || index < 0 || index >= (int)this->count);
     this->contacts[index].showData();
 }
