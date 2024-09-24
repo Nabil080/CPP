@@ -1,17 +1,19 @@
 #include "main.hpp"
 
+
 Contact::Contact(void)
 {
-    std::cout << "Creating a Contact\n";
+    std::cout << GREEN "[Contact created]" RESET << std::endl;
 }
 
 Contact::~Contact(void)
 {
-    std::cout << "Destroying a Contact\n";
+    std::cout << RED "[Contact destroyed]" RESET << std::endl;
 }
 
 Contact::Contact(bool input)
 {
+    std::cout << GREEN "[Creating a Contact]" RESET << std::endl;
     if (!input)
         return ;
     this->first_name = getInput("Please enter your first name: ");
@@ -19,6 +21,8 @@ Contact::Contact(bool input)
     this->nickname = getInput("Please enter your nickname: ");
     this->darkest_secret = getInput("Please enter your darkest secret: ");
     this->phone_number = getInput("Please enter your phone number: ");
+    std::cout << GREEN << "[Contact created]" << RESET << std::endl;
+
 }
 
 void    Contact::showData(void)

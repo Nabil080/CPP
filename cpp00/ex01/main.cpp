@@ -7,7 +7,7 @@ int main(void)
 
 	do
 	{
-        input = getInput("Enter a command > ");
+        input = getInput("Enter a " BLUE "command" RESET " > ");
 		if (input == "ADD")
 			PhoneBook.addContact(Contact(true));
 		if (input == "SEARCH")

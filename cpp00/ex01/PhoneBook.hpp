@@ -7,11 +7,15 @@
 class PhoneBook
 {
 	private:
-		size_t		count;
-		size_t		col_width;
-		Contact		contacts[8];
-		void    	printColumn(std::string str, bool sep);
-		void	    printLine(bool sep);
+		/*variables*/
+		size_t				count;
+		static const size_t		max_count;
+		static const size_t		col_width;
+		Contact				contacts[8];
+		/*functions*/
+		void    			printColumn(std::string str, bool sep);
+		void	    		printLine(bool sep);
+		void				printOneContact(void);
 	public:
 		PhoneBook(void);
 		~PhoneBook(void);
