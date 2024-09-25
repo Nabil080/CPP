@@ -2,14 +2,12 @@
 #include <iostream>
 #include <fstream>
 
-static void read_and_replace(std::ifstream *infile, std::ofstream *outfile, std::string s1, std::string s2)
+static void read_and_replace(std::ifstream &infile, std::ofstream &outfile, std::string s1, std::string s2)
 {
     std::string line;
-    std::string new_line;
-
-    while (infile->good())
+    while (getline(infile, line))
     {
-        getline(*infile, line);
+        std::string new_line;
         size_t pos = 0;
         size_t found = line.find(s1, pos);
         while (found != std::string::npos)
@@ -20,27 +18,30 @@ static void read_and_replace(std::ifstream *infile, std::ofstream *outfile, std:
             found = line.find(s1, pos);
         }
         new_line.append(line, pos, line.length() - pos);
-        *outfile << new_line << "\n";
+        outfile << new_line << "\n";
         std::cout << new_line << "\n";
-        new_line.clear();
     }
 }
 
 int main(int argc, char **argv)
 {
     if (argc < 4)
+    {
+        std::cerr << "Usage: " << argv[0] << " <input_file> <string_to_replace> <replacement_string>" << std::endl;
         return (1);
-    std::ifstream infile;
-    std::ofstream outfile;
-
-    infile.open((argv[1]));
+    }
+    std::ifstream infile(argv[1]);
     if (!infile.is_open())
-        return (perror(argv[1]), 1);
-    outfile.open(std::string(argv[1]).append(".replace").c_str(), std::ios::trunc);
+    {
+        std::cerr << argv[1] << "couldn't be open" << std::endl;
+        return (1);
+    }
+    std::ofstream outfile(std::string(argv[1]).append(".replace").c_str(), std::ios::trunc);
     if (!outfile.is_open())
-        return (perror((argv[1])), infile.close(), 1);
-    read_and_replace(&infile, &outfile, argv[2], argv[3]);
-    infile.close();
-    outfile.close();
+    {
+        std::cerr << argv[1] << ".replace couldn't be open" << std::endl;
+        return (1);
+    }
+    read_and_replace(infile, outfile, argv[2], argv[3]);
     return (0);
 }
