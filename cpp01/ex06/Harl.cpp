@@ -23,11 +23,16 @@ void    Harl::complain(std::string level)
     switch (i)
     {
         case 0:
+            (this->*messages_fn[0])();
+            //fall through
         case 1:
+            (this->*messages_fn[1])();
+            //fall through
         case 2:
+            (this->*messages_fn[2])();
+            //fall through
         case 3:
-            for (i = i; i < this->fn_count; i++)
-                (this->*messages_fn[i])();
+            (this->*messages_fn[3])();
             break;
         default:
             std::cout << "[ Probably complaining about insignificant problems ]" << std::endl;
