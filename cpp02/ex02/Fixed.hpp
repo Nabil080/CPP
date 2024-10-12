@@ -3,47 +3,49 @@
 
 # include <iostream>
 
-# define DEBUG 0
+# define DEBUG 1
 
 class	Fixed
 {
-	private: /*attributes*/
+	private: // attributes
 		static const int	fractional_bits = 8;
 		int					fixed_point_value;
-	public: /*constructors*/
+
+	public: // constructors
 		Fixed();
 		Fixed(const Fixed&);
 		Fixed(const int);
 		Fixed(const float);
 		~Fixed();
-	public: /*operators*/
-		/*copy*/
+
+	public: // operators
 		Fixed	&operator=(const Fixed&);
-		/*arithmetic*/
+
 		Fixed	operator+(const Fixed&);
 		Fixed	operator-(const Fixed&);
 		Fixed	operator*(const Fixed&);
 		Fixed	operator/(const Fixed&);
-		/*comparison*/
+
 		bool	operator<(const Fixed&) const;
 		bool	operator>(const Fixed&) const;
 		bool	operator>=(const Fixed&) const;
 		bool	operator<=(const Fixed&) const;
 		bool	operator==(const Fixed&) const;
 		bool	operator!=(const Fixed&) const;
-		/*crement*/
+
 		Fixed	operator++();
 		Fixed	operator++(int);
 		Fixed	operator--();
 		Fixed	operator--(int);
-		/*iostream*/
+
 		friend std::ostream &operator<<(std::ostream& output, const Fixed&);
-	public : /*methods*/
+		
+	public : // methods
 		void	setRawBits(int const);
 		int		getRawBits(void) const;
 		int		toInt(void) const;
 		float	toFloat(void) const;
-		/*static function*/
+
 		static Fixed		&min(Fixed&, Fixed&);
 		static const Fixed	&min(const Fixed&, const Fixed&);
 		static Fixed		&max(Fixed&, Fixed&);

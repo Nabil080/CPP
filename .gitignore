@@ -1,5 +1,4 @@
 *.out
 objs
 .*
-megaphone
-phonebook
+clean.sh
