@@ -53,5 +53,7 @@ int main( void )
 	print("a--", a--);
 	print("a", a);
 	sep("Member functions");
+	print("min(a, b)", Fixed::min(a, b));
+	print("max(a, b)", Fixed::max(a, b));
 	return 0;
 }
