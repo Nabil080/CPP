@@ -83,32 +83,32 @@ Fixed	Fixed::operator/(const Fixed& other)
 
 // ------- comparison -------
 
-bool	Fixed::operator<(const Fixed &other)
+bool	Fixed::operator<(const Fixed &other) const
 {
 	return (this->fixed_point_value < other.fixed_point_value);
 }
 
-bool	Fixed::operator<=(const Fixed &other)
+bool	Fixed::operator<=(const Fixed &other) const
 {
 	return (this->fixed_point_value <= other.fixed_point_value);
 }
 
-bool	Fixed::operator>(const Fixed &other)
+bool	Fixed::operator>(const Fixed &other) const
 {
 	return (this->fixed_point_value > other.fixed_point_value);
 }
 
-bool	Fixed::operator>=(const Fixed &other)
+bool	Fixed::operator>=(const Fixed &other) const
 {
 	return (this->fixed_point_value >= other.fixed_point_value);
 }
 
-bool	Fixed::operator==(const Fixed &other)
+bool	Fixed::operator==(const Fixed &other) const
 {
 	return (this->fixed_point_value == other.fixed_point_value);
 }
 
-bool	Fixed::operator!=(const Fixed &other)
+bool	Fixed::operator!=(const Fixed &other) const
 {
 	return (this->fixed_point_value != other.fixed_point_value);
 }
@@ -169,4 +169,34 @@ int	Fixed::toInt(void) const
 float	Fixed::toFloat(void) const
 { 
 	return ((float)(this->fixed_point_value) / (1 << this->fractional_bits));
+}
+
+// ------- static functions -------
+
+Fixed&	Fixed::min(Fixed &a, Fixed &b)
+{
+	if (a < b)
+		return (a);
+	return (b);
+}
+
+Fixed&	Fixed::max(Fixed &a, Fixed &b)
+{
+	if (a > b)
+		return (a);
+	return (b);
+}
+
+const Fixed&	Fixed::min(const Fixed &a, const Fixed &b)
+{
+	if (a < b)
+		return (a);
+	return (b);
+}
+
+const Fixed&	Fixed::max(const Fixed &a, const Fixed &b)
+{
+	if (a > b)
+		return (a);
+	return (b);
 }
