@@ -47,8 +47,8 @@ norm :
 ${NAME} : ${OBJS_DIR} ${OBJS}
 	${CC} ${FLAGS} ${OBJS} ${foreach lib, ${LIBS},${lib}/${lib}.a} -o $@
 
-debug : ${OBJS_DIR} ${OBJS}
-	${CC} ${FLAGS} -g3 -fsanitize=address ${OBJS} ${foreach lib, ${LIBS},${lib}/${lib}.a} -o ${NAME}
+sane : ${OBJS_DIR} ${OBJS}
+	${CC} ${FLAGS} -Ddebug=1 -g3 -fsanitize=address ${OBJS} ${foreach lib, ${LIBS},${lib}/${lib}.a} -o ${NAME}
 
 ${OBJS_DIR} :
 	mkdir $@
@@ -61,6 +61,9 @@ ${OBJS_DIR}%.o : ${SRCS_DIR}%.cpp ${HEADERS}
 test : base
 
 base : all
+	./${NAME}
+
+debug : sane
 	./${NAME}
 
 leak : all
