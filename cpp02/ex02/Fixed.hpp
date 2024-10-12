@@ -33,6 +33,9 @@ class	Fixed
 		bool	operator!=(const Fixed&);
 		/*crement*/
 		Fixed	operator++();
+		Fixed	operator++(int);
+		Fixed	operator--();
+		Fixed	operator--(int);
 		/*iostream*/
 		friend std::ostream &operator<<(std::ostream& output, const Fixed&);
 	public : /*methods*/

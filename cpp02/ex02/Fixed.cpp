@@ -15,7 +15,7 @@ Fixed::Fixed(const Fixed &other)
 {
 	if (DEBUG)
 		std::cout << "Copy constructor called" << std::endl;
-	*this = other;
+	this->fixed_point_value = other.fixed_point_value;
 }
 
 Fixed::Fixed(const int nbr)
@@ -54,12 +54,18 @@ Fixed &Fixed::operator=(const Fixed &other)
 
 Fixed	Fixed::operator+(const Fixed& other)
 {
-	return (Fixed(this->fixed_point_value + other.fixed_point_value));
+	Fixed	result;
+
+	result.fixed_point_value = this->fixed_point_value + other.fixed_point_value;
+	return (result);
 }
 
 Fixed	Fixed::operator-(const Fixed& other)
 {
-	return (Fixed(this->fixed_point_value - other.fixed_point_value));
+	Fixed	result;
+
+	result.fixed_point_value = this->fixed_point_value - other.fixed_point_value;
+	return (result);
 }
 
 Fixed	Fixed::operator*(const Fixed& other)
@@ -113,6 +119,26 @@ Fixed	Fixed::operator++()
 {
 	this->fixed_point_value++;
 	return (*this);
+}
+
+Fixed	Fixed::operator++(int)
+{
+	Fixed	tmp = *this;
+	this->fixed_point_value++;
+	return (tmp);
+}
+
+Fixed	Fixed::operator--()
+{
+	this->fixed_point_value--;
+	return (*this);
+}
+
+Fixed	Fixed::operator--(int)
+{
+	Fixed	tmp = *this;
+	this->fixed_point_value--;
+	return (tmp);
 }
 
 // ------- input/output -------
