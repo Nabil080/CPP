@@ -1,6 +1,6 @@
 ######################## SETTINGS ########################
 
-NAME =  fixedPoint
+NAME =  bsp
 
 CC = c++
 
