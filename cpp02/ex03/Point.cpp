@@ -22,6 +22,12 @@ Point::Point(const Point &other): x(other.x), y(other.y)
 		std::cout << "Point Copy constructor called" << std::endl;
 }
 
+Point::Point(const Point &a, const Point &b): x(Fixed(b.getX() - a.getX())), y(Fixed(b.getY() - a.getY()))
+{
+	if (this->debug)
+		std::cout << "Point Vector Constructor called" << std::endl;
+}
+
 Point::~Point()
 {
 	if (this->debug)
@@ -39,19 +45,20 @@ Point&	Point::operator=(const Point &other)
 	return (*this);
 }
 
-// METHODS
-
-void	Point::print(void) const
+std::ostream &operator<<(std::ostream& output, const Point& member)
 {
-	std::cout << "("<< this->x << "," << this->y << ")" << std::endl;
+	output << "(" << member.x << "," << member.y << ")";
+	return (output);
 }
 
-Fixed const	Point::getX(void) const
+// METHODS
+
+Fixed	Point::getX(void) const
 {
 	return (this->x);
 }
 
-Fixed const	Point::getY(void) const
+Fixed	Point::getY(void) const
 {
 	return (this->y);
 }

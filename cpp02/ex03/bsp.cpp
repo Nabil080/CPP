@@ -1,20 +1,24 @@
 #include "Point.hpp"
 
-bool	is_on_edge(Point const a, Point const b, Point const c, Point const point)
+Fixed	calculate_cross_product(Point const a, Point const b, Point const point)
 {
-	Fixed	x = point.getX();
-	Fixed	y = point.getY();
-
-	if (x == a.getX() || x == b.getX() || x == c.getX())
-		return (true);
-	if (y == a.getY() || y == b.getY() || y == c.getY())
-		return (true);
-	return (false);
+	Point	ab = Point(a, b);
+	Point	ap = Point(a, point);
+	return (ab.getX() * ap.getY() - ab.getY() * ap.getX());
 }
 
 bool	bsp(Point const a, Point const b, Point const c, Point const point)
 {
-	if (is_on_edge(a, b, c, point))
+	Fixed cross_product = calculate_cross_product(a, b, point);
+	if (cross_product == 0)
+		return (false);
+	bool	is_negative = cross_product < 0;
+	cross_product = calculate_cross_product(b, c, point);
+	if (cross_product == 0 || (is_negative != cross_product < 0))
+		return (false);
+	cross_product = calculate_cross_product(c, a, point);
+	if (cross_product == 0 || (is_negative != cross_product < 0))
 		return (false);
 	return (true);
 }
+
