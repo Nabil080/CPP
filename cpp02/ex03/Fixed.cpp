@@ -52,91 +52,91 @@ Fixed &Fixed::operator=(const Fixed &other)
 
 // ------- arithmetic -------
 
-Fixed	Fixed::operator+(const Fixed& other)
+Fixed Fixed::operator+(const Fixed &other)
 {
-	Fixed	result;
+	Fixed result;
 
 	result.fixed_point_value = this->fixed_point_value + other.fixed_point_value;
 	return (result);
 }
 
-Fixed	Fixed::operator-(const Fixed& other)
+Fixed Fixed::operator-(const Fixed &other)
 {
-	Fixed	result;
+	Fixed result;
 
 	result.fixed_point_value = this->fixed_point_value - other.fixed_point_value;
 	return (result);
 }
 
-Fixed	Fixed::operator*(const Fixed& other)
+Fixed Fixed::operator*(const Fixed &other)
 {
-	Fixed	result;
+	Fixed result;
 
 	result.fixed_point_value = ((long)this->fixed_point_value * (long)other.fixed_point_value) / (1 << this->fractional_bits);
 	return (result);
 }
 
-Fixed	Fixed::operator/(const Fixed& other)
+Fixed Fixed::operator/(const Fixed &other)
 {
 	return (Fixed(this->fixed_point_value / other.fixed_point_value));
 }
 
 // ------- comparison -------
 
-bool	Fixed::operator<(const Fixed &other) const
+bool Fixed::operator<(const Fixed &other) const
 {
 	return (this->fixed_point_value < other.fixed_point_value);
 }
 
-bool	Fixed::operator<=(const Fixed &other) const
+bool Fixed::operator<=(const Fixed &other) const
 {
 	return (this->fixed_point_value <= other.fixed_point_value);
 }
 
-bool	Fixed::operator>(const Fixed &other) const
+bool Fixed::operator>(const Fixed &other) const
 {
 	return (this->fixed_point_value > other.fixed_point_value);
 }
 
-bool	Fixed::operator>=(const Fixed &other) const
+bool Fixed::operator>=(const Fixed &other) const
 {
 	return (this->fixed_point_value >= other.fixed_point_value);
 }
 
-bool	Fixed::operator==(const Fixed &other) const
+bool Fixed::operator==(const Fixed &other) const
 {
 	return (this->fixed_point_value == other.fixed_point_value);
 }
 
-bool	Fixed::operator!=(const Fixed &other) const
+bool Fixed::operator!=(const Fixed &other) const
 {
 	return (this->fixed_point_value != other.fixed_point_value);
 }
 
 // ------- increment/decrement -------
 
-Fixed	Fixed::operator++()
+Fixed Fixed::operator++()
 {
 	this->fixed_point_value++;
 	return (*this);
 }
 
-Fixed	Fixed::operator++(int)
+Fixed Fixed::operator++(int)
 {
-	Fixed	tmp = *this;
+	Fixed tmp = *this;
 	this->fixed_point_value++;
 	return (tmp);
 }
 
-Fixed	Fixed::operator--()
+Fixed Fixed::operator--()
 {
 	this->fixed_point_value--;
 	return (*this);
 }
 
-Fixed	Fixed::operator--(int)
+Fixed Fixed::operator--(int)
 {
-	Fixed	tmp = *this;
+	Fixed tmp = *this;
 	this->fixed_point_value--;
 	return (tmp);
 }
@@ -151,50 +151,50 @@ std::ostream &operator<<(std::ostream &out, const Fixed &other)
 
 // ---------- METHODS ----------
 
-int	Fixed::getRawBits(void) const
+int Fixed::getRawBits(void) const
 {
 	return (this->fixed_point_value);
 }
 
-void	Fixed::setRawBits(int const raw)
+void Fixed::setRawBits(int const raw)
 {
 	this->fixed_point_value = raw;
 }
 
-int	Fixed::toInt(void) const
+int Fixed::toInt(void) const
 {
 	return (this->fixed_point_value >> this->fractional_bits);
 }
 
-float	Fixed::toFloat(void) const
-{ 
+float Fixed::toFloat(void) const
+{
 	return ((float)(this->fixed_point_value) / (1 << this->fractional_bits));
 }
 
 // ------- static functions -------
 
-Fixed&	Fixed::min(Fixed &a, Fixed &b)
+Fixed &Fixed::min(Fixed &a, Fixed &b)
 {
 	if (a < b)
 		return (a);
 	return (b);
 }
 
-Fixed&	Fixed::max(Fixed &a, Fixed &b)
+Fixed &Fixed::max(Fixed &a, Fixed &b)
 {
 	if (a > b)
 		return (a);
 	return (b);
 }
 
-const Fixed&	Fixed::min(const Fixed &a, const Fixed &b)
+const Fixed &Fixed::min(const Fixed &a, const Fixed &b)
 {
 	if (a < b)
 		return (a);
 	return (b);
 }
 
-const Fixed&	Fixed::max(const Fixed &a, const Fixed &b)
+const Fixed &Fixed::max(const Fixed &a, const Fixed &b)
 {
 	if (a > b)
 		return (a);
