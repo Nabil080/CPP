@@ -14,10 +14,12 @@ class	Point
 		Point(const Point&);
 		Point(const float, const float);
 		~Point();
-
-	public:		//operators
 		Point&	operator=(const Point&);
-		void	print(void) const;
+
+	public:	
+		void		print(void) const;
+		Fixed const	getX(void) const;
+		Fixed const	getY(void) const;
 };
 
 #endif

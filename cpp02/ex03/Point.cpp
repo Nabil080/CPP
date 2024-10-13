@@ -45,3 +45,14 @@ void	Point::print(void) const
 {
 	std::cout << "("<< this->x << "," << this->y << ")" << std::endl;
 }
+
+Fixed const	Point::getX(void) const
+{
+	return (this->x);
+}
+
+Fixed const	Point::getY(void) const
+{
+	return (this->y);
+}
+

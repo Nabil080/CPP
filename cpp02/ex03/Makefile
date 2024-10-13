@@ -14,7 +14,8 @@ MAKEFLAGS += --no-print-directory
 
 SRCS_NAMES =	main.cpp \
 				Fixed.cpp \
-				Point.cpp
+				bsp.cpp \
+				Point.cpp 
 
 SRCS_DIR = 
 
