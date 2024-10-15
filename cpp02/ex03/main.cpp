@@ -20,8 +20,9 @@ int main( void )
 	Point	c(5, 3);
 
 	std::cout << "A" << a << std::endl;
-	std::cout << "B" << a << std::endl;
-	std::cout << "C" << a << std::endl;
+	std::cout << "B" << b << std::endl;
+	std::cout << "C" << c << std::endl;
+
 
 	test(a, b, c, Point(3, 3)); // Inside
 	test(a, b, c, Point(4, 4)); // Inside
