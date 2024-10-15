@@ -40,8 +40,8 @@ Point&	Point::operator=(const Point &other)
 {
 	if (this->debug)
 		std::cout << "Point = operator called" << std::endl;
-	((Fixed *)&this->x)->setRawBits(other.x.getRawBits());
-	((Fixed *)&this->y)->setRawBits(other.y.getRawBits());
+	(const_cast<Fixed*>(&this->x))->setRawBits(other.x.getRawBits());
+	(const_cast<Fixed*>(&this->y))->setRawBits(other.y.getRawBits());
 	return (*this);
 }
 
