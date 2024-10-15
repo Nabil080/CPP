@@ -13,8 +13,10 @@ MAKEFLAGS += --no-print-directory
 ######################## SOURCES ########################
 
 SRCS_NAMES =	main.cpp \
+				WrongAnimal.cpp \
 				Animal.cpp \
 				Cat.cpp \
+				WrongCat.cpp \
 				Dog.cpp \
 
 SRCS_DIR = 
@@ -26,6 +28,8 @@ OBJS_DIR = objs/
 OBJS = ${addprefix ${OBJS_DIR}, ${SRCS_NAMES:.cpp=.o}}
 
 HEADERS =	Animal.hpp \
+			WrongAnimal.hpp \
+			WrongCat.hpp \
 			Cat.hpp \
 			Dog.hpp \
 
