@@ -31,9 +31,6 @@ Character::Character(const Character &other)
 Character::~Character()
 {
 	std::cerr << "[Character Destructor called]" << std::endl;
-	for (size_t i = 0; i < this->max_size; i++)
-		if (this->materias[i])
-			delete this->materias[i];
 }
 
 Character	&Character::operator=(const Character &other)
@@ -49,6 +46,7 @@ Character	&Character::operator=(const Character &other)
 		else
 			this->materias[i] = NULL;
 	}
+	return (*this);
 }
 
 // methods
@@ -78,4 +76,11 @@ void	Character::use(int index, ICharacter &target)
 	if (this->materias[index] == NULL)
 		return ;
 	this->materias[index]->use(target);
+}
+
+void	Character::cleanInventory()
+{
+	for (size_t i = 0; i < this->max_size; i++)
+		if (this->materias[i])
+			delete this->materias[i];
 }

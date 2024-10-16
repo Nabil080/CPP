@@ -5,6 +5,8 @@
 #include <iostream>
 #include <string>
 
+// constructors
+
 AMateria::AMateria()
 {
 	std::cerr << "[AMateria Default Constructor called]" << std::endl;
@@ -15,6 +17,11 @@ AMateria::AMateria(std::string const & type)
 {
 	std::cerr << "[AMateria Type Constructor called]" << std::endl;
 	this->type = type;
+}
+
+AMateria::~AMateria()
+{
+	std::cerr << "[AMateria Destructor called]" << std::endl;
 }
 
 std::string const	&AMateria::getType() const

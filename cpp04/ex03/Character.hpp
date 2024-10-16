@@ -2,7 +2,8 @@
 # define CHARACTER_HPP
 
 # include "ICharacter.hpp"
-# include "AMateria.hpp"
+
+class	AMateria;
 
 # include <string>
 
@@ -26,6 +27,8 @@ class	Character: public ICharacter
 		void				equip(AMateria *materia);
 		void				unequip(int index);
 		void				use(int index, ICharacter &target);
+
+		void				cleanInventory();
 };
 
 #endif
