@@ -1,9 +1,9 @@
-#ifndef AMATERIA
-# define AMATERIA
+#ifndef AMATERIA_HPP
+# define AMATERIA_HPP
 
 # include <string>
 
-# include "ICharacter.hpp"
+class	ICharacter;
 
 class	AMateria
 {
@@ -13,13 +13,13 @@ class	AMateria
 	public: // constructors
 		AMateria();
 		AMateria(std::string const & type);
-		virtual	~AMateria() = 0;
+		virtual ~AMateria();
 
 
 	public: // methods
 		std::string const & getType() const; //Returns the materia type
 		virtual AMateria*	clone() const = 0;
-		virtual void		use(ICharacter& target);
+		virtual void		use(ICharacter& target) = 0;
 };
 
 #endif

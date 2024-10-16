@@ -21,6 +21,7 @@ Cure::~Cure()
 {
 	std::cerr << "[Cure Destructor called]" << std::endl;
 }
+
 Cure	&Cure::operator=(const Cure &other)
 {
 	if (other.type == "cure")

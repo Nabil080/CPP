@@ -2,7 +2,8 @@
 # define MATERIASOURCE_HPP
 
 # include "IMateriaSource.hpp"
-# include "AMateria.hpp"
+
+class	AMateria;
 
 class	MateriaSource: public IMateriaSource
 {
@@ -19,6 +20,7 @@ class	MateriaSource: public IMateriaSource
 	public:
 		void 		learnMateria(AMateria*);
 		AMateria* 	createMateria(std::string const & type);
+		void		cleanMaterias();
 };
 
 #endif

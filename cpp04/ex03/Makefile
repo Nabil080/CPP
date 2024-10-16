@@ -4,7 +4,7 @@ NAME =  Interface
 
 CC = c++
 
-FLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic -Wshadow
+FLAGS = -Wall -Wextra -Werror -std=c++98 -Wshadow #-pedantic
 
 INCLUDES =	
 
@@ -38,7 +38,7 @@ HEADERS =	ICharacter.hpp \
 ######################## BASIC RULES ########################
 
 all : 
-	${MAKE} -j ${NAME}
+	${MAKE} ${NAME}
 
 re : fclean
 	${MAKE} all
