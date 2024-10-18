@@ -9,7 +9,7 @@ class	MateriaSource: public IMateriaSource
 {
 	private:
 		static const size_t		max_size = 4;
-		AMateria				*materias[max_size];
+		AMateria				*materias[max_size + 1];
 	public:
 		MateriaSource();
 		MateriaSource(const MateriaSource&);

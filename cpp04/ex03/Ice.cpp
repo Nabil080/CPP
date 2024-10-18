@@ -23,6 +23,7 @@ Ice::~Ice()
 }
 Ice	&Ice::operator=(const Ice &other)
 {
+	std::cerr << "[Ice Assignement Operator called]" << std::endl;
 	if (other.type == "ice")
 		*this = other;
 	return (*this);

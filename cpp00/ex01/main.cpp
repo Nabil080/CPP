@@ -13,6 +13,7 @@ int main(void)
 		if (input == "SEARCH")
 			PhoneBook.printContacts();
 	} while (input != "EXIT");
+
 	return (0);
 }
 

@@ -24,6 +24,13 @@ AMateria::~AMateria()
 	std::cerr << "[AMateria Destructor called]" << std::endl;
 }
 
+AMateria	&AMateria::operator=(const AMateria &other)
+{
+	std::cerr << "[AMateria Assignement Operator called]" << std::endl;
+	this->type = other.type;
+	return (*this);
+}
+
 std::string const	&AMateria::getType() const
 {
 	return (this->type);

@@ -8,7 +8,7 @@
 MateriaSource::MateriaSource()
 {
 	std::cerr << "[MateriaSource Default Constructor called]" << std::endl;
-	for (size_t i = 0; i < this->max_size; i++)
+	for (size_t i = 0; i < this->max_size + 1; i++)
 		this->materias[i] = NULL;
 }
 
@@ -21,6 +21,7 @@ MateriaSource::MateriaSource(const MateriaSource &other)
 MateriaSource::~MateriaSource()
 {
 	std::cerr << "[MateriaSource Destructor called]" << std::endl;
+	this->cleanMaterias();
 }
 
 MateriaSource	&MateriaSource::operator=(const MateriaSource &other)
@@ -40,7 +41,9 @@ void MateriaSource::learnMateria(AMateria* Amateria)
 	while(this->materias[i] && i < this->max_size)
 		i++;
 	if (i < this->max_size)
-		this->materias[i] = Amateria;
+		this->materias[i] = Amateria->clone();
+	else
+		std::cout << "Materia source is full !" << std::endl;
 }
 
 AMateria* MateriaSource::createMateria(std::string const & type)
@@ -53,12 +56,15 @@ AMateria* MateriaSource::createMateria(std::string const & type)
 			return (this->materias[i]->clone());
 		i++;
 	}
-	return (0);
+	return (NULL);
 }
 
 void	MateriaSource::cleanMaterias()
 {
 	for (size_t i = 0; i < this->max_size; i++)
 		if (this->materias[i])
+		{
 			delete this->materias[i];
+			this->materias[i] = NULL;
+		}
 }
