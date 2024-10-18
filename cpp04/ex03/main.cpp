@@ -18,16 +18,21 @@ void	subject_test()
 {
 	sep("Subject Test", true);
 	IMateriaSource* src = new MateriaSource();
-	src->learnMateria(new Ice());
-	src->learnMateria(new Cure());
+
+	AMateria* tmp = new Ice();
+	src->learnMateria(tmp);
+	delete tmp;
+	tmp = new Cure();
+	src->learnMateria(tmp);
+	delete tmp;
 
 	ICharacter* me = new Character("me");
-
-	AMateria* tmp;
 	tmp = src->createMateria("ice");
 	me->equip(tmp);
+	delete	tmp;
 	tmp = src->createMateria("cure");
 	me->equip(tmp);
+	delete	tmp;
 
 	ICharacter* bob = new Character("bob");
 
@@ -35,9 +40,7 @@ void	subject_test()
 	me->use(1, *bob);
 
 	delete bob;
-	me->cleanInventory();
 	delete me;
-	src->cleanMaterias();
 	delete src;
 }
 
@@ -128,10 +131,14 @@ void	character_test()
 	bob->equip(cure);
 
 	sep("Testing for deep copy");
-	ICharacter* copy = new Character();
-	*copy = *bob;
-	bob->cleanInventory();
-	copy->use(0, *bob);
+	Character	original("original");
+	original.equip(cure);
+	Character	copy(original);
+	original.cleanInventory();
+	original.use(0, *bob);
+	copy.use(0, *bob);
+
+	copy.cleanInventory();
 
 	delete ice; delete cure;
 	delete bob;
