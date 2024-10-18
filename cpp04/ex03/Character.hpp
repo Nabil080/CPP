@@ -3,6 +3,7 @@
 
 # include "ICharacter.hpp"
 
+class	ICharacter;
 class	AMateria;
 
 # include <string>
@@ -10,9 +11,9 @@ class	AMateria;
 class	Character: public ICharacter
 {
 	private:
-		std::string	name;
+		std::string				name;
 		static const size_t		max_size = 4;
-		AMateria				*materias[max_size]; // inventory
+		AMateria				*materias[max_size + 1]; // inventory
 
 	public: // constructors
 		Character();
@@ -23,11 +24,11 @@ class	Character: public ICharacter
 		Character	&operator=(const Character&);
 
 	public: // methods
-		std::string const	&getName() const;
-		void				equip(AMateria *materia);
-		void				unequip(int index);
-		void				use(int index, ICharacter &target);
+		std::string const			&getName() const;
 
+		void				equip(AMateria *materia);
+		AMateria			*unequip(int index);
+		void				use(int index, ICharacter &target);
 		void				cleanInventory();
 };
 
