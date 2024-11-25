@@ -5,13 +5,13 @@
 
 class	Animal
 {
-	protected:
+	public:
 		std::string	type;
 
 	public:
 		Animal();
 		Animal(const Animal&);
-		~Animal();
+		virtual ~Animal();
 
 		Animal	&operator=(const Animal&);
 
