@@ -12,7 +12,7 @@ int main()
 	cat.makeSound();
 	dog.makeSound();
 	
-	// Animal animal;
+	// Animal animal; // not possible
 
 	// animal.makeSound();
 
