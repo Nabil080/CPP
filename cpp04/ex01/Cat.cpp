@@ -8,7 +8,7 @@ Cat::Cat()
 	std::cerr << "[Cat default constructor]" << std::endl;
 	this->type = "Cat";
 	this->brain = new Brain;
-	this->brain->ideas[0] = "Cat idea";
+	this->brain->setIdea(0, "Cat idea");
 }
 
 Cat::Cat(const Cat &other)

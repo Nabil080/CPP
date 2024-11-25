@@ -5,6 +5,9 @@
 
 class	Brain
 {
+	private:
+		std::string	ideas[100];
+
 	public:
 		Brain();
 		Brain(const Brain&);
@@ -12,7 +15,8 @@ class	Brain
 		Brain	&operator=(const Brain&);
 
 	public:
-		std::string	ideas[100];
+		std::string getIdea(size_t index) const;
+		void		setIdea(size_t index, std::string idea);
 };
 
 #endif

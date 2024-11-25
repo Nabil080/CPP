@@ -6,7 +6,7 @@
 
 int main()
 {
-	const size_t	count = 10;
+	const size_t	count = 100;
 
 	Animal	*animals[count];
 
@@ -16,9 +16,9 @@ int main()
 		animals[i] = new Cat;
 
 	for (size_t i = 0; i < count / 2; i++)
-		std::cout << static_cast<Dog*>(animals[i])->getBrain()->ideas[0] << std::endl;
+		std::cout << static_cast<Dog*>(animals[i])->getBrain()->getIdea(0) << std::endl;
 	for (size_t i = count / 2; i < count; i++)
-		std::cout << static_cast<Cat*>(animals[i])->getBrain()->ideas[0] << std::endl;
+		std::cout << static_cast<Cat*>(animals[i])->getBrain()->getIdea(0) << std::endl;
 
 	for (size_t i = 0; i < count; i++)
 		delete animals[i];
@@ -28,7 +28,7 @@ int main()
 	{
 		Dog	copy = basic;
 	}
-	std::cout << "Basic brain -> " << basic.getBrain()->ideas[0] << std::endl;
+	std::cout << "Basic brain -> " << basic.getBrain()->getIdea(0) << std::endl;
 
 	return 0;
 }

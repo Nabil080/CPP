@@ -8,7 +8,7 @@ Dog::Dog()
 	std::cerr << "[Dog default constructor]" << std::endl;
 	this->type = "Dog";
 	this->brain = new Brain();
-	this->brain->ideas[0] = "Dog idea";
+	this->brain->setIdea(0, "Dog idea");
 }
 
 Dog::Dog(const Dog &other)
