@@ -26,3 +26,15 @@ Brain &Brain::operator=(const Brain &other)
 		this->ideas[i] = other.ideas[i];
 	return (*this);
 }
+
+/*methods*/
+
+std::string	Brain::getIdea(size_t index) const
+{
+	return (this->ideas[index]);
+}
+
+void	Brain::setIdea(size_t index, std::string idea)
+{
+	this->ideas[index] = idea;
+}
