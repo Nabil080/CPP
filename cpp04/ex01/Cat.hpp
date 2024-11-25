@@ -6,7 +6,7 @@
 
 class	Cat: public Animal
 {
-	public:
+	private:
 		Brain	*brain;
 	public:
 		Cat();
@@ -16,6 +16,7 @@ class	Cat: public Animal
 
 	public :
 		void	makeSound() const;
+		Brain	*getBrain() const;
 };
 
 #endif

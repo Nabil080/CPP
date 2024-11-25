@@ -10,7 +10,7 @@ Brain::Brain()
 
 Brain::Brain(const Brain &other)
 {
-	std::cerr << "[Brain copy constructore]" << std::endl;
+	std::cerr << "[Brain copy constructor]" << std::endl;
 	*this = other;
 }
 
