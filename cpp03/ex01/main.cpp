@@ -3,16 +3,16 @@
 
 int main(void)
 {
-	ClapTrap	claptrap("ClaptTrap");
-	ScavTrap	scavtrap("ScavTrap");
+	ClapTrap	claptrap("-Clap-");
+	ScavTrap	scavtrap("-Scav-");
 
-	claptrap.attack("ScavTrap");
+	claptrap.attack("-Scav-");
 	scavtrap.takeDamage(5);
-	scavtrap.attack("ClapTrap");
+	scavtrap.attack("-Clap-");
 	claptrap.takeDamage(5);
 	scavtrap.guardGate();
-	claptrap.attack("ScavTrap");
+	claptrap.attack("-Scav-");
 	scavtrap.takeDamage(5);
-	scavtrap.attack("ClapTrap");
+	scavtrap.attack("-Clap-");
 	claptrap.beRepaired(5);
 }

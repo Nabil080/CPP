@@ -36,10 +36,14 @@ int main( void )
 	sep("Comparison operators");
 	print("a > b", a > b);
 	print("a >= b", a >= b);
+	print("a >= 10", a >= 10);
 	print("a < b", a < b);
-	print("a <= b", a >= b);
+	print("a <= b", a <= b);
+	print("a <= 10", a <= 10);
 	print("a == b", a == b);
+	print("a == 10", a == 10);
 	print("a != b", a != b);
+	print("a != 10", a != 10);
 	sep("With a float");
 	print("c", c);
 	print("a + c", a + c);

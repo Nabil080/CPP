@@ -6,7 +6,7 @@
 class	ClapTrap
 {
 	protected:
-		static const int	debug = 0;
+		static const int	debug = 1;
 		std::string	name;
 		int			hitPoints;
 		int			energyPoints;

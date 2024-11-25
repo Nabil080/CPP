@@ -5,12 +5,10 @@ bool	bsp(Point const a, Point const b, Point const c, Point const point);
 
 void	test(Point const a, Point const b, Point const c, Point const point)
 {
-	std::cout << "Point " << point << " is";
 	if (bsp(a, b, c, point))
-		std::cout << "\033[1;32m inside";
+		std::cout << "Point " << point << " is\033[1;32m inside\033[1;0m the triangle." << std::endl;
 	else
-		std::cout << "\033[1;31m outside";
-	std::cout << "\033[1;0m the triangle." << std::endl;
+		std::cout << "Point " << point << " is\033[1;31m outside\033[1;0m the triangle." << std::endl;
 }
 
 int main( void )
@@ -34,4 +32,5 @@ int main( void )
 	test(a, b, c, Point(2.5f, 2.5f)); // Float
 	test(a, b, c, Point(3.5f, 3.5f)); // Float inside
 	test(a, b, c, Point(4.5f, 4.5f)); // Float outside
+	test(a, b, c, Point(5.5, 2.5f)); // Float outside on the edge
 }

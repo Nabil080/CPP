@@ -16,7 +16,7 @@ ScavTrap::ScavTrap()
 ScavTrap::ScavTrap(const std::string &name)
 {
 	if (debug)
-		std::cout << "[ScavTrap Default Constructor called]" << std::endl;
+		std::cout << "[ScavTrap Name Constructor called]" << std::endl;
 	this->name = name;
 	this->hitPoints = 100;
 	this->energyPoints = 50;

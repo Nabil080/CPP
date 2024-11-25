@@ -4,10 +4,13 @@
 
 int main(void)
 {
-	DiamondTrap	diamondtrap("Edmond");
+	DiamondTrap	diamondtrap("-Diamond-");
 	DiamondTrap	diamondtrap2;
 
 	diamondtrap.whoAmI();
 	diamondtrap.attack("test");
 	diamondtrap2.whoAmI();
+
+	diamondtrap2.guardGate();
+	diamondtrap2.highFivesGuys();
 }

@@ -30,15 +30,6 @@ Character::Character(const Character &other)
 	*this = other;
 }
 
-Character::Character(const ICharacter &other)
-{
-	std::cerr << "[Character ICharacter Constructor called]" << std::endl;
-	this->name = other.getName();
-	for (size_t i = 0; i < this->max_size + 1; i++)
-		this->materias[i] = NULL;
-}
-
-
 Character::~Character()
 {
 	std::cerr << "[Character Destructor called]" << std::endl;

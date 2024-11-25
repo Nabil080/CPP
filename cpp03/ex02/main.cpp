@@ -3,17 +3,17 @@
 
 int main(void)
 {
-	FragTrap	fragtrap("FragTrap");
-	ScavTrap	scavtrap("ScavTrap");
+	FragTrap	fragtrap("-Frag-");
+	ScavTrap	scavtrap("-Scav-");
 
-	fragtrap.attack("ScavTrap");
+	fragtrap.attack("-Scav-");
 	scavtrap.takeDamage(5);
-	scavtrap.attack("FragTrap");
+	scavtrap.attack("-Frag-");
 	fragtrap.takeDamage(5);
 	scavtrap.guardGate();
-	fragtrap.attack("ScavTrap");
+	fragtrap.attack("-Scav-");
 	scavtrap.takeDamage(5);
-	scavtrap.attack("FragTrap");
+	scavtrap.attack("-Frag-");
 	fragtrap.beRepaired(5);
 	fragtrap.highFivesGuys();
 }
