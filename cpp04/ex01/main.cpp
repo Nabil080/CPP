@@ -6,18 +6,29 @@
 
 int main()
 {
-	Animal	*animals[100];
+	const size_t	count = 10;
 
-	for (size_t i = 0; i < 50; i++)
+	Animal	*animals[count];
+
+	for (size_t i = 0; i < count / 2; i++)
 		animals[i] = new Dog;
-	for (size_t i = 50; i < 100; i++)
+	for (size_t i = count / 2; i < count; i++)
 		animals[i] = new Cat;
 
-	std::cout << static_cast<Dog*>(animals[0])->brain->ideas[0] << std::endl;
-	std::cout << static_cast<Cat*>(animals[50])->brain->ideas[0] << std::endl;
+	for (size_t i = 0; i < count / 2; i++)
+		std::cout << static_cast<Dog*>(animals[i])->getBrain()->ideas[0] << std::endl;
+	for (size_t i = count / 2; i < count; i++)
+		std::cout << static_cast<Cat*>(animals[i])->getBrain()->ideas[0] << std::endl;
 
-	for (size_t i = 0; i < 100; i++)
+	for (size_t i = 0; i < count; i++)
 		delete animals[i];
+
+	// deep copy test
+	Dog basic;
+	{
+		Dog	copy = basic;
+	}
+	std::cout << "Basic brain -> " << basic.getBrain()->ideas[0] << std::endl;
 
 	return 0;
 }
