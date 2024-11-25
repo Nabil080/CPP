@@ -6,5 +6,5 @@ Zombie *zombieHorde(size_t N, std::string name)
 
     for (size_t i = 0; i < N; i++)
         zombies[i].setName(name);
-    return (zombies);    
+    return (zombies); 
 }

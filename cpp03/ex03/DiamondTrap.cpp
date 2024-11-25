@@ -8,8 +8,8 @@ DiamondTrap::DiamondTrap()
 {
 	if (debug)
 		std::cout << "[ClapTrap Default constructor called]" << std::endl;
-	this->name = "DiamondTrap";
-	this->ClapTrap::name = "DiamondTrap_clap_name";
+	this->name = "unnamed";
+	this->ClapTrap::name = "unnamed_clap_name";
 	this->ClapTrap::hitPoints = this->FragTrap::baseHitPoints;
 	this->ClapTrap::energyPoints = this->ScavTrap::baseEnergyPoints;
 	this->ClapTrap::attackDamage = this->FragTrap::baseAttackDamage;

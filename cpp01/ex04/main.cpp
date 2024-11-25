@@ -19,7 +19,7 @@ static void read_and_replace(std::ifstream &infile, std::ofstream &outfile, std:
         }
         new_line.append(line, pos, line.length() - pos);
         outfile << new_line << "\n";
-        std::cout << new_line << "\n";
+        // std::cout << new_line << "\n";
     }
 }
 
@@ -33,7 +33,7 @@ int main(int argc, char **argv)
     std::ifstream infile(argv[1]);
     if (!infile.is_open())
     {
-        std::cerr << argv[1] << "couldn't be open" << std::endl;
+        std::cerr << argv[1] << " couldn't be open" << std::endl;
         return (1);
     }
     std::ofstream outfile(std::string(argv[1]).append(".replace").c_str(), std::ios::trunc);
