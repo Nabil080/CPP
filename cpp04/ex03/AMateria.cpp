@@ -27,7 +27,8 @@ AMateria::~AMateria()
 AMateria	&AMateria::operator=(const AMateria &other)
 {
 	std::cerr << "[AMateria Assignement Operator called]" << std::endl;
-	this->type = other.type;
+	if (other.type == this->type)
+		this->type = other.type;
 	return (*this);
 }
 
