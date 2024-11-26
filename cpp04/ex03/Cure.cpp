@@ -24,6 +24,7 @@ Cure::~Cure()
 
 Cure	&Cure::operator=(const Cure &other)
 {
+	std::cerr << "[Cure Assignement Operator called]" << std::endl;
 	if (other.type == "cure")
 		*this = other;
 	return (*this);

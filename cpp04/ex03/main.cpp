@@ -131,14 +131,25 @@ void	character_test()
 	bob->equip(cure);
 
 	sep("Testing for deep copy");
-	Character	original("original");
-	original.equip(cure);
-	Character	copy(original);
-	original.cleanInventory();
-	original.use(0, *bob);
-	copy.use(0, *bob);
-
-	copy.cleanInventory();
+	// copy constructor
+	{
+		Character	original("original");
+		original.equip(cure);
+		Character	copy(original);
+		original.cleanInventory();
+		original.use(0, *bob);
+		copy.use(0, *bob);
+		copy.cleanInventory();
+	}
+	// copy assignement
+	{
+		Character	original("original");
+		original.equip(cure);
+		Character	copy = original;
+		original.cleanInventory();
+		original.use(0, *bob);
+		copy.use(0, *bob);
+	}
 
 	delete ice; delete cure;
 	delete bob;
