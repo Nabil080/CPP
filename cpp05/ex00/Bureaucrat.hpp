@@ -1,3 +1,4 @@
+#include <exception>
 #include <ostream>
 #include <string>
 
@@ -25,6 +26,22 @@ public:
 public:
   std::string getName() const;
   int getGrade() const;
+
+  class GradeTooHighException : public std::exception {
+  private:
+    static const std::string message;
+
+  public:
+    virtual const char *what() const throw();
+  };
+
+  class GradeTooLowException : public std::exception {
+  private:
+    static const std::string message;
+
+  public:
+    virtual const char *what() const throw();
+  };
 };
 
 std::ostream &operator<<(std::ostream &out, const Bureaucrat &other);

@@ -1,5 +1,6 @@
 #include "Bureaucrat.hpp"
-// #include <exception>
+#include <ostream>
+#include <string>
 
 Bureaucrat::Bureaucrat() : name("undefined") {
   this->grade = this->lowest_grade;
@@ -10,11 +11,10 @@ Bureaucrat::Bureaucrat(std::string name) : name(name) {
 }
 
 Bureaucrat::Bureaucrat(std::string name, int grade) : name(name) {
-  // TODO throw exception on error
-  // if (grade > lowest_grade)
-  //     throw std::exception;
-  // if (grade < highest_grade)
-  //     throw std::exception;
+  if (grade > lowest_grade)
+    throw GradeTooLowException();
+  if (grade < highest_grade)
+    throw GradeTooHighException();
   this->grade = grade;
 }
 
@@ -30,15 +30,29 @@ std::string Bureaucrat::getName() const { return (this->name); }
 int Bureaucrat::getGrade() const { return (this->grade); }
 
 void Bureaucrat::upgrade() {
-  // TODO throw exception
   if (grade == highest_grade)
-    throw grade;
+    throw GradeTooHighException();
   this->grade--;
 }
 
 void Bureaucrat::downgrade() {
-  // TODO throw exception
   if (grade == lowest_grade)
-    throw grade;
+    throw GradeTooLowException();
   this->grade++;
+}
+
+// Exceptions
+
+const std::string Bureaucrat::GradeTooHighException::message =
+    "A grade can't be higher than " + std::to_string(Bureaucrat::highest_grade);
+
+const char *Bureaucrat::GradeTooHighException::what() const throw() {
+  return this->message.c_str();
+}
+
+const std::string Bureaucrat::GradeTooLowException::message =
+    "A grade can't be lower than " + std::to_string(Bureaucrat::lowest_grade);
+
+const char *Bureaucrat::GradeTooLowException::what() const throw() {
+  return this->message.c_str();
 }
