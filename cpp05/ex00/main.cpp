@@ -17,13 +17,20 @@ void exception_test() {
   Bureaucrat boss("Boss", 1);
   try {
     noob.downgrade();
-  } catch (int grade) {
-    std::cerr << "Couldn't downgrade" << std::endl;
+  } catch (std::exception &e) {
+    std::cerr << e.what() << std::endl;
   }
   try {
     boss.upgrade();
-  } catch (int grade) {
-    std::cerr << "Couldn't upgrade" << std::endl;
+  } catch (std::exception &e) {
+    std::cerr << e.what() << std::endl;
+  }
+  try {
+    std::cout << "Initializing a bureaucrat with a wrong grade" << std::endl;
+    Bureaucrat toolow("blabla", 400);
+  } catch (std::exception &e) {
+  std:
+    std::cerr << e.what() << std::endl;
   }
 }
 
