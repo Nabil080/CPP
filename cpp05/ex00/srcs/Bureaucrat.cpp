@@ -44,14 +44,14 @@ void Bureaucrat::downgrade() {
 // Exceptions
 
 const std::string Bureaucrat::GradeTooHighException::message =
-    "A grade can't be higher than " + std::to_string(Bureaucrat::highest_grade);
+    "A grade can't be higher than 1";
 
 const char *Bureaucrat::GradeTooHighException::what() const throw() {
   return this->message.c_str();
 }
 
 const std::string Bureaucrat::GradeTooLowException::message =
-    "A grade can't be lower than " + std::to_string(Bureaucrat::lowest_grade);
+    "A grade can't be lower than 150";
 
 const char *Bureaucrat::GradeTooLowException::what() const throw() {
   return this->message.c_str();

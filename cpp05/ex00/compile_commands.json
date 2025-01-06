@@ -1,0 +1,42 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++98",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wshadow",
+      "-pedantic",
+      "-I",
+      "includes",
+      "-c",
+      "-o",
+      "objs/main.o",
+      "srcs/main.cpp"
+    ],
+    "directory": "/home/nbellila/projects/CPP/cpp05/ex00",
+    "file": "/home/nbellila/projects/CPP/cpp05/ex00/srcs/main.cpp",
+    "output": "/home/nbellila/projects/CPP/cpp05/ex00/objs/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++98",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wshadow",
+      "-pedantic",
+      "-I",
+      "includes",
+      "-c",
+      "-o",
+      "objs/Bureaucrat.o",
+      "srcs/Bureaucrat.cpp"
+    ],
+    "directory": "/home/nbellila/projects/CPP/cpp05/ex00",
+    "file": "/home/nbellila/projects/CPP/cpp05/ex00/srcs/Bureaucrat.cpp",
+    "output": "/home/nbellila/projects/CPP/cpp05/ex00/objs/Bureaucrat.o"
+  }
+]
