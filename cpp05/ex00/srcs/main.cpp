@@ -29,12 +29,11 @@ void exception_test() {
     std::cout << "Initializing a bureaucrat with a wrong grade" << std::endl;
     Bureaucrat toolow("blabla", 400);
   } catch (std::exception &e) {
-  std:
     std::cerr << e.what() << std::endl;
   }
 }
 
-int main(int argc, char *argv[]) {
+int main(void) {
 
   base_test();
   exception_test();
