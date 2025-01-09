@@ -57,6 +57,10 @@ void sign_test()
 
 int main(void)
 {
+	AForm form;
+
+	return (0);
+
 	callTest("Initialize", tests::initialize_test);
 	callTest("Sign", tests::sign_test);
 	return 0;
