@@ -1,4 +1,5 @@
 #include "ShrubberyCreationForm.hpp"
+#include <fstream>
 #include <iostream>
 #include <string>
 
@@ -24,7 +25,11 @@ ShrubberyCreationForm::~ShrubberyCreationForm()
 	std::cout << "Shrubbery destructor" << std::endl;
 }
 
-void ShrubberyCreationForm::execute(Bureaucrat const &executor) const
+void ShrubberyCreationForm::execute() const
 {
-	std::cout << "Executing shrubbery " << executor << std::endl;
+	std::ofstream outfile((target + "_shrubbery").c_str());
+	if (!outfile)
+		return;
+	outfile << "↟↟ASCII↟↟TREES↟↟";
+	outfile.close();
 }

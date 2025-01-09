@@ -80,7 +80,7 @@ void AForm::tryAndExecute(Bureaucrat const &executor) const
 		throw(NotSignedException());
 	if (executor.getGrade() > this->exec_grade)
 		throw(GradeTooLowException());
-	this->execute(executor);
+	this->execute();
 }
 
 const char *AForm::GradeTooHighException::what() const throw()
