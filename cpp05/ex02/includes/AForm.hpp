@@ -18,7 +18,7 @@ class AForm
   public: // canonical form
 	AForm();
 	AForm(const AForm &other);
-	~AForm();
+	virtual ~AForm();
 
 	AForm &operator=(const AForm &other);
 
@@ -54,6 +54,8 @@ class AForm
 	  public:
 		virtual const char *what() const throw();
 	};
+
+	void testForm();
 };
 
 std::ostream &operator<<(std::ostream &out, const AForm &other);
