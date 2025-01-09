@@ -1,0 +1,142 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++98",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wshadow",
+      "-pedantic",
+      "-I",
+      "includes",
+      "-c",
+      "-o",
+      "objs/main.o",
+      "srcs/main.cpp"
+    ],
+    "directory": "/home/nbellila/projects/CPP/cpp05/ex03",
+    "file": "/home/nbellila/projects/CPP/cpp05/ex03/srcs/main.cpp",
+    "output": "/home/nbellila/projects/CPP/cpp05/ex03/objs/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++98",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wshadow",
+      "-pedantic",
+      "-I",
+      "includes",
+      "-c",
+      "-o",
+      "objs/Bureaucrat.o",
+      "srcs/Bureaucrat.cpp"
+    ],
+    "directory": "/home/nbellila/projects/CPP/cpp05/ex03",
+    "file": "/home/nbellila/projects/CPP/cpp05/ex03/srcs/Bureaucrat.cpp",
+    "output": "/home/nbellila/projects/CPP/cpp05/ex03/objs/Bureaucrat.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++98",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wshadow",
+      "-pedantic",
+      "-I",
+      "includes",
+      "-c",
+      "-o",
+      "objs/ShrubberyCreationForm.o",
+      "srcs/ShrubberyCreationForm.cpp"
+    ],
+    "directory": "/home/nbellila/projects/CPP/cpp05/ex03",
+    "file": "/home/nbellila/projects/CPP/cpp05/ex03/srcs/ShrubberyCreationForm.cpp",
+    "output": "/home/nbellila/projects/CPP/cpp05/ex03/objs/ShrubberyCreationForm.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++98",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wshadow",
+      "-pedantic",
+      "-I",
+      "includes",
+      "-c",
+      "-o",
+      "objs/RobotomyRequestForm.o",
+      "srcs/RobotomyRequestForm.cpp"
+    ],
+    "directory": "/home/nbellila/projects/CPP/cpp05/ex03",
+    "file": "/home/nbellila/projects/CPP/cpp05/ex03/srcs/RobotomyRequestForm.cpp",
+    "output": "/home/nbellila/projects/CPP/cpp05/ex03/objs/RobotomyRequestForm.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++98",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wshadow",
+      "-pedantic",
+      "-I",
+      "includes",
+      "-c",
+      "-o",
+      "objs/PresidentialPardonForm.o",
+      "srcs/PresidentialPardonForm.cpp"
+    ],
+    "directory": "/home/nbellila/projects/CPP/cpp05/ex03",
+    "file": "/home/nbellila/projects/CPP/cpp05/ex03/srcs/PresidentialPardonForm.cpp",
+    "output": "/home/nbellila/projects/CPP/cpp05/ex03/objs/PresidentialPardonForm.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++98",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wshadow",
+      "-pedantic",
+      "-I",
+      "includes",
+      "-c",
+      "-o",
+      "objs/Intern.o",
+      "srcs/Intern.cpp"
+    ],
+    "directory": "/home/nbellila/projects/CPP/cpp05/ex03",
+    "file": "/home/nbellila/projects/CPP/cpp05/ex03/srcs/Intern.cpp",
+    "output": "/home/nbellila/projects/CPP/cpp05/ex03/objs/Intern.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++98",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wshadow",
+      "-pedantic",
+      "-I",
+      "includes",
+      "-c",
+      "-o",
+      "objs/AForm.o",
+      "srcs/AForm.cpp"
+    ],
+    "directory": "/home/nbellila/projects/CPP/cpp05/ex03",
+    "file": "/home/nbellila/projects/CPP/cpp05/ex03/srcs/AForm.cpp",
+    "output": "/home/nbellila/projects/CPP/cpp05/ex03/objs/AForm.o"
+  }
+]
