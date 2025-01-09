@@ -52,6 +52,7 @@ void shrubberyCreationTest()
 
 int main(void)
 {
+	// AForm *form = new ShrubberyCreationForm("target");
 	callTest("ShrubberyCreation ", tests::shrubberyCreationTest);
 	return 0;
 }
