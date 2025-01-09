@@ -4,42 +4,48 @@
 #include "Bureaucrat.hpp"
 #include <ostream>
 #include <string>
-class Form {
-private:
-  const std::string name;
-  bool is_signed;
-  const int sign_grade;
-  const int exec_grade;
 
-public: // canonical form
-  Form();
-  Form(const Form &other);
-  ~Form();
+class Bureaucrat;
 
-  Form &operator=(const Form &other);
+class Form
+{
+  private:
+	const std::string name;
+	bool is_signed;
+	const int sign_grade;
+	const int exec_grade;
 
-public: // other constructors
-  Form(std::string name);
-  Form(std::string name, int sign_grade, int exec_grade);
+  public: // canonical form
+	Form();
+	Form(const Form &other);
+	~Form();
 
-public: // getters
-  const std::string getName() const;
-  bool isSigned() const;
-  int getSignGrade() const;
-  int getExecGrade() const;
+	Form &operator=(const Form &other);
 
-public: // methods
-  void beSigned(Bureaucrat &bureaucrat);
+  public: // other constructors
+	Form(std::string name);
+	Form(std::string name, int sign_grade, int exec_grade);
 
-  class GradeTooHighException : public std::exception {
-  public:
-    virtual const char *what() const throw();
-  };
+  public: // getters
+	const std::string getName() const;
+	bool isSigned() const;
+	int getSignGrade() const;
+	int getExecGrade() const;
 
-  class GradeTooLowException : public std::exception {
-  public:
-    virtual const char *what() const throw();
-  };
+  public: // methods
+	void beSigned(Bureaucrat &bureaucrat);
+
+	class GradeTooHighException : public std::exception
+	{
+	  public:
+		virtual const char *what() const throw();
+	};
+
+	class GradeTooLowException : public std::exception
+	{
+	  public:
+		virtual const char *what() const throw();
+	};
 };
 
 std::ostream &operator<<(std::ostream &out, const Form &other);
