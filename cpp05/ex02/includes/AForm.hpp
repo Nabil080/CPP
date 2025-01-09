@@ -18,7 +18,7 @@ class AForm
   public: // canonical form
 	AForm();
 	AForm(const AForm &other);
-	~AForm();
+	virtual ~AForm();
 
 	AForm &operator=(const AForm &other);
 
