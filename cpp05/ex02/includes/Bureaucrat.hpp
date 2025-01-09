@@ -31,6 +31,7 @@ class Bureaucrat
 	void upgrade();
 	void downgrade();
 	void tryAndSignForm(AForm &form);
+	void executeForm(AForm const &form) const;
 
   public:
 	std::string getName() const;
