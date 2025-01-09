@@ -67,7 +67,7 @@ int AForm::getExecGrade() const
 
 // methods
 
-void AForm::beSigned(Bureaucrat &bureaucrat)
+void AForm::beSigned(Bureaucrat const &bureaucrat)
 {
 	if (bureaucrat.getGrade() > this->sign_grade)
 		throw(GradeTooLowException());
@@ -100,7 +100,7 @@ const char *AForm::NotSignedException::what() const throw()
 
 std::ostream &operator<<(std::ostream &out, const AForm &other)
 {
-	out << other.getName() << ", form with sign_grade of " << other.getSignGrade() << " and exec_grade of "
-		<< other.getExecGrade();
+	out << other.getName() << ", " << (other.isSigned() ? "signed" : "unsigned") << " form with sign_grade of "
+		<< other.getSignGrade() << " and exec_grade of " << other.getExecGrade();
 	return (out);
 }

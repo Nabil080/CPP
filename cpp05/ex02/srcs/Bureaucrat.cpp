@@ -58,7 +58,7 @@ void Bureaucrat::downgrade()
 	this->grade++;
 }
 
-void Bureaucrat::tryAndSignForm(AForm &form)
+void Bureaucrat::tryAndSignForm(AForm &form) const
 {
 	try
 	{

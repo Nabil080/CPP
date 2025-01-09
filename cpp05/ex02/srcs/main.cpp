@@ -21,7 +21,31 @@ void shrubberyCreationTest()
 {
 	ShrubberyCreationForm form;
 
-	form.tryAndExecute(noob);
+	// unsigned test
+	std::cout << noob << " executing " << form << std::endl;
+	try
+	{
+		form.tryAndExecute(noob);
+		std::cout << "Success !" << std::endl;
+	}
+	catch (std::exception &e)
+	{
+		std::cout << e.what() << std::endl;
+	}
+	boss.tryAndSignForm(form);
+	// grade test
+	std::cout << noob << " executing " << form << std::endl;
+	try
+	{
+		form.tryAndExecute(noob);
+		std::cout << "Success !" << std::endl;
+	}
+	catch (std::exception &e)
+	{
+		std::cout << e.what() << std::endl;
+	}
+	// correct execution
+	boss.executeForm(form);
 }
 
 } // namespace tests
