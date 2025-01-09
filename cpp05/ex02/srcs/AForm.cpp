@@ -104,3 +104,41 @@ std::ostream &operator<<(std::ostream &out, const AForm &other)
 		<< other.getSignGrade() << " and exec_grade of " << other.getExecGrade();
 	return (out);
 }
+
+//  NOTE: tests
+
+void AForm::testForm()
+{
+	std::cout << "\n--- " << name << " test ---\n" << std::endl;
+	{
+		const Bureaucrat noob("noob", 150);
+		const Bureaucrat boss("boss", 1);
+
+		// unsigned test
+		std::cout << noob << " executing " << *this << std::endl;
+		try
+		{
+			this->tryAndExecute(noob);
+			std::cout << "Success !" << std::endl;
+		}
+		catch (std::exception &e)
+		{
+			std::cout << e.what() << std::endl;
+		}
+		boss.tryAndSignForm(*this);
+		// grade test
+		std::cout << noob << " executing " << *this << std::endl;
+		try
+		{
+			this->tryAndExecute(noob);
+			std::cout << "Success !" << std::endl;
+		}
+		catch (std::exception &e)
+		{
+			std::cout << e.what() << std::endl;
+		}
+		// correct execution
+		boss.executeForm(*this);
+	}
+	std::cout << "\n--- END ---\n" << std::endl;
+}
