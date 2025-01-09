@@ -18,7 +18,8 @@ class ShrubberyCreationForm : public AForm
 	ShrubberyCreationForm(std::string target);
 	~ShrubberyCreationForm();
 
-	void execute(Bureaucrat const &executor) const;
+  protected:
+	void execute() const;
 };
 
 #endif // !SHRUBBERYCREATIONFORM_HPP

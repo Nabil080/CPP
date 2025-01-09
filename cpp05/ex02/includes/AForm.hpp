@@ -32,10 +32,12 @@ class AForm
 	int getSignGrade() const;
 	int getExecGrade() const;
 
+  protected: // execution should only be done through tryAndExecute
+	virtual void execute() const = 0;
+
   public: // methods
 	void beSigned(Bureaucrat const &bureaucrat);
 	void tryAndExecute(Bureaucrat const &executor) const;
-	virtual void execute(Bureaucrat const &executor) const = 0;
 
 	class GradeTooHighException : public std::exception
 	{

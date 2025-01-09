@@ -1,4 +1,5 @@
 #include "RobotomyRequestForm.hpp"
+#include <cstdlib>
 #include <iostream>
 #include <string>
 
@@ -24,7 +25,12 @@ RobotomyRequestForm::~RobotomyRequestForm()
 	std::cout << "Robotomy destructor" << std::endl;
 }
 
-void RobotomyRequestForm::execute(Bureaucrat const &executor) const
+void RobotomyRequestForm::execute() const
 {
-	std::cout << "Executing RobotomyRequestFOrm " << executor << std::endl;
+	std::cout << "Drrrrrrll Drrrrrlll Drll Drl.." << std::endl;
+	std::srand(time(0));
+	if ((std::rand() % 100) < 50)
+		std::cout << target << " has been robotomized !" << std::endl;
+	else
+		std::cout << "Robotomy failed..." << std::endl;
 }
