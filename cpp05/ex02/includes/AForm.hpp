@@ -18,7 +18,7 @@ class AForm
   public: // canonical form
 	AForm();
 	AForm(const AForm &other);
-	virtual ~AForm();
+	~AForm();
 
 	AForm &operator=(const AForm &other);
 
@@ -33,7 +33,7 @@ class AForm
 	int getExecGrade() const;
 
   public: // methods
-	void beSigned(Bureaucrat &bureaucrat);
+	void beSigned(Bureaucrat const &bureaucrat);
 	void tryAndExecute(Bureaucrat const &executor) const;
 	virtual void execute(Bureaucrat const &executor) const = 0;
 

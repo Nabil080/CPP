@@ -30,7 +30,7 @@ class Bureaucrat
   public:
 	void upgrade();
 	void downgrade();
-	void tryAndSignForm(AForm &form);
+	void tryAndSignForm(AForm &form) const;
 	void executeForm(AForm const &form) const;
 
   public:

@@ -17,6 +17,7 @@ VALGRIND = valgrind --leak-check=full --show-leak-kinds=all
 
 SRCS_NAMES =	main.cpp \
 				Bureaucrat.cpp \
+				ShrubberyCreationForm.cpp \
 				AForm.cpp
 
 SRCS_DIR = srcs/
@@ -28,6 +29,7 @@ OBJS_DIR = objs/
 OBJS = ${addprefix ${OBJS_DIR}, ${SRCS_NAMES:.cpp=.o}}
 
 HEADERS =	includes/Bureaucrat.hpp \
+			includes/ShrubberyCreationForm.hpp \
 			includes/AForm.hpp
 
 ######################## BASIC RULES ########################
