@@ -25,10 +25,9 @@ Intern &Intern::operator=(Intern const &other)
 
 AForm *Intern::makeForm(std::string form_name, std::string target)
 {
-	const int count = 3;
 	int i = 0;
-	std::string form_names[count];
-	AForm *(Intern::*form_constructors[count])(std::string);
+	std::string form_names[3];
+	AForm *(Intern::*form_constructors[3])(std::string);
 
 	form_names[i] = "shrubbery creation";
 	form_constructors[i++] = &Intern::ShrubberyCreationForm;
