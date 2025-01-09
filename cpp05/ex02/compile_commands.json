@@ -15,9 +15,9 @@
       "objs/main.o",
       "srcs/main.cpp"
     ],
-    "directory": "/home/nbellila/projects/CPP/cpp05/ex01",
-    "file": "/home/nbellila/projects/CPP/cpp05/ex01/srcs/main.cpp",
-    "output": "/home/nbellila/projects/CPP/cpp05/ex01/objs/main.o"
+    "directory": "/home/nbellila/projects/CPP/cpp05/ex02",
+    "file": "/home/nbellila/projects/CPP/cpp05/ex02/srcs/main.cpp",
+    "output": "/home/nbellila/projects/CPP/cpp05/ex02/objs/main.o"
   },
   {
     "arguments": [
@@ -35,9 +35,9 @@
       "objs/Bureaucrat.o",
       "srcs/Bureaucrat.cpp"
     ],
-    "directory": "/home/nbellila/projects/CPP/cpp05/ex01",
-    "file": "/home/nbellila/projects/CPP/cpp05/ex01/srcs/Bureaucrat.cpp",
-    "output": "/home/nbellila/projects/CPP/cpp05/ex01/objs/Bureaucrat.o"
+    "directory": "/home/nbellila/projects/CPP/cpp05/ex02",
+    "file": "/home/nbellila/projects/CPP/cpp05/ex02/srcs/Bureaucrat.cpp",
+    "output": "/home/nbellila/projects/CPP/cpp05/ex02/objs/Bureaucrat.o"
   },
   {
     "arguments": [
@@ -52,11 +52,11 @@
       "includes",
       "-c",
       "-o",
-      "objs/Form.o",
-      "srcs/Form.cpp"
+      "objs/AForm.o",
+      "srcs/AForm.cpp"
     ],
-    "directory": "/home/nbellila/projects/CPP/cpp05/ex01",
-    "file": "/home/nbellila/projects/CPP/cpp05/ex01/srcs/Form.cpp",
-    "output": "/home/nbellila/projects/CPP/cpp05/ex01/objs/Form.o"
+    "directory": "/home/nbellila/projects/CPP/cpp05/ex02",
+    "file": "/home/nbellila/projects/CPP/cpp05/ex02/srcs/AForm.cpp",
+    "output": "/home/nbellila/projects/CPP/cpp05/ex02/objs/AForm.o"
   }
 ]
