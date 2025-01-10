@@ -19,7 +19,7 @@ class ScalarConverter
 	~ScalarConverter() {};
 
   public:
-	static void convert(std::string literal);
+	static int convert(std::string literal);
 };
 
 #endif // !SCALARCONVERTER_HPP
