@@ -1,0 +1,42 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++98",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wshadow",
+      "-pedantic",
+      "-I",
+      "includes",
+      "-c",
+      "-o",
+      "objs/main.o",
+      "srcs/main.cpp"
+    ],
+    "directory": "/home/nbellila/projects/CPP/cpp06/ex00",
+    "file": "/home/nbellila/projects/CPP/cpp06/ex00/srcs/main.cpp",
+    "output": "/home/nbellila/projects/CPP/cpp06/ex00/objs/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++98",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wshadow",
+      "-pedantic",
+      "-I",
+      "includes",
+      "-c",
+      "-o",
+      "objs/ScalarConverter.o",
+      "srcs/ScalarConverter.cpp"
+    ],
+    "directory": "/home/nbellila/projects/CPP/cpp06/ex00",
+    "file": "/home/nbellila/projects/CPP/cpp06/ex00/srcs/ScalarConverter.cpp",
+    "output": "/home/nbellila/projects/CPP/cpp06/ex00/objs/ScalarConverter.o"
+  }
+]
