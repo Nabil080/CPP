@@ -1,6 +1,6 @@
 ######################## SETTINGS ########################
 
-NAME =  ScalarConverter
+NAME =  Serializer
 
 CC = clang++
 

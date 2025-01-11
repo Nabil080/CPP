@@ -22,3 +22,9 @@ Data &Data::operator=(const Data &other)
 	this->boolean = other.boolean;
 	return (*this);
 }
+
+std::ostream &operator<<(std::ostream &out, const Data &obj)
+{
+	out << obj.name << "'s favorite number is " << (obj.boolean ? "" : "not ") << obj.number;
+	return (out);
+}
