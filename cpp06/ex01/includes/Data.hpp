@@ -1,6 +1,7 @@
 #ifndef DATA_HPP
 #define DATA_HPP
 
+#include <ostream>
 #include <string>
 
 class Data
@@ -16,5 +17,7 @@ class Data
 	int number;
 	bool boolean;
 };
+
+std::ostream &operator<<(std::ostream &out, const Data &obj);
 
 #endif // !DATA_HPP
