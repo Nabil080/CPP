@@ -1,0 +1,23 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++98",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wshadow",
+      "-pedantic",
+      "-g",
+      "-I",
+      "includes",
+      "-c",
+      "-o",
+      "objs/main.o",
+      "srcs/main.cpp"
+    ],
+    "directory": "/home/nbellila/projects/CPP/cpp06/ex01",
+    "file": "/home/nbellila/projects/CPP/cpp06/ex01/srcs/main.cpp",
+    "output": "/home/nbellila/projects/CPP/cpp06/ex01/objs/main.o"
+  }
+]
