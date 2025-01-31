@@ -1,13 +1,14 @@
 #ifndef FIXED_HPP
-# define FIXED_HPP
+#define FIXED_HPP
 
 #include <iostream>
 
-class	Fixed
+class Fixed
 {
 	private:
-		static const int	fractional_bits = 8;
-		int					fixed_point_value;
+		static const int fractional_bits = 8;
+		int				 fixed_point_value;
+
 	public:
 		/*default constructor*/
 		Fixed();
@@ -20,13 +21,13 @@ class	Fixed
 		/*copy operator*/
 		Fixed &operator=(const Fixed &other);
 		/*output operator*/
-		friend std::ostream &operator<<(std::ostream &out, const Fixed &other);
 		/*default destructor*/
 		~Fixed();
-		void	setRawBits(int const raw);
-		int		getRawBits(void) const;
-		int		toInt(void) const;
-		float	toFloat(void) const;
+		void  setRawBits(int const raw);
+		int	  getRawBits(void) const;
+		int	  toInt(void) const;
+		float toFloat(void) const;
 };
+std::ostream &operator<<(std::ostream &out, const Fixed &other);
 
 #endif
