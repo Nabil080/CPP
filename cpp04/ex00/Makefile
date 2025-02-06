@@ -2,7 +2,7 @@
 
 NAME = ex00
 
-CC = c++
+CCXX = c++
 
 FLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic -Wshadow
 

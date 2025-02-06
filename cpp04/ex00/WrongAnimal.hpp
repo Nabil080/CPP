@@ -1,22 +1,22 @@
 #ifndef WRONG_ANIMAL_HPP
-# define WRONG_ANIMAL_HPP
+#define WRONG_ANIMAL_HPP
 
-# include <string>
+#include <string>
 
-class	WrongAnimal
+class WrongAnimal
 {
 	protected:
-		std::string	type;
+		std::string type;
 
 	public:
 		WrongAnimal();
-		WrongAnimal(const WrongAnimal&);
+		WrongAnimal(const WrongAnimal &);
 		~WrongAnimal();
 
-		WrongAnimal	&operator=(const WrongAnimal&);
+		WrongAnimal &operator=(const WrongAnimal &);
 
-		std::string	getType() const;
-		void	makeSound() const;
+		std::string	 getType() const;
+		void		 makeSound() const;
 };
 
 #endif

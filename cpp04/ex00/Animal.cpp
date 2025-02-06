@@ -1,4 +1,5 @@
 #include "Animal.hpp"
+
 #include <iostream>
 
 // canon
@@ -20,7 +21,7 @@ Animal::~Animal()
 	std::cout << "[Animal destructor]" << std::endl;
 }
 
-Animal	&Animal::operator=(const Animal &other)
+Animal &Animal::operator=(const Animal &other)
 {
 	std::cout << "[Animal copy operator]" << std::endl;
 	this->type = other.type;
@@ -29,12 +30,12 @@ Animal	&Animal::operator=(const Animal &other)
 
 // methods
 
-std::string	Animal::getType(void) const
+std::string Animal::getType(void) const
 {
 	return (this->type);
 }
 
-void	Animal::makeSound(void) const
+void Animal::makeSound(void) const
 {
 	std::cout << "Random animal sound" << std::endl;
 }

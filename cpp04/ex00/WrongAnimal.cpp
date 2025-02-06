@@ -1,4 +1,5 @@
 #include "WrongAnimal.hpp"
+
 #include <iostream>
 
 // canon
@@ -20,7 +21,7 @@ WrongAnimal::~WrongAnimal()
 	std::cout << "[WrongAnimal destructor]" << std::endl;
 }
 
-WrongAnimal	&WrongAnimal::operator=(const WrongAnimal &other)
+WrongAnimal &WrongAnimal::operator=(const WrongAnimal &other)
 {
 	std::cout << "[WrongAnimal copy operator]" << std::endl;
 	this->type = other.type;
@@ -29,12 +30,12 @@ WrongAnimal	&WrongAnimal::operator=(const WrongAnimal &other)
 
 // methods
 
-std::string	WrongAnimal::getType(void) const
+std::string WrongAnimal::getType(void) const
 {
 	return (this->type);
 }
 
-void	WrongAnimal::makeSound(void) const
+void WrongAnimal::makeSound(void) const
 {
 	std::cout << "Random WrongAnimal sound" << std::endl;
 }

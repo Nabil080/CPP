@@ -1,4 +1,5 @@
 #include "Cat.hpp"
+
 #include <iostream>
 
 // canon
@@ -20,7 +21,7 @@ Cat::~Cat()
 	std::cout << "[Cat destructor]" << std::endl;
 }
 
-Cat	&Cat::operator=(const Cat &other)
+Cat &Cat::operator=(const Cat &other)
 {
 	std::cout << "[Cat copy operator]" << std::endl;
 	this->type = other.type;
@@ -29,7 +30,7 @@ Cat	&Cat::operator=(const Cat &other)
 
 // methods
 
-void	Cat::makeSound() const
+void Cat::makeSound() const
 {
 	std::cout << "Meow meow" << std::endl;
 }
