@@ -1,26 +1,40 @@
 #ifndef EASYFIND_HPP
 #define EASYFIND_HPP
 
-#include <cstddef>
+#include <algorithm>
 #include <iostream>
-#include <stdint.h>
 
-// @return SIZE_MAX if not found
-template <typename T> size_t easyfind(const T &container, int needle)
+// @return returns an iterator, last if not found
+template <typename T> typename T::iterator easyfind(T &container, int needle)
 {
-	for (size_t i = 0; i < container.size(); i++)
-		if (container[i] == needle)
-			return (container[i]);
-	return (SIZE_MAX);
+	return (std::find(container.begin(), container.end(), needle));
 }
 
-template <typename T> void test_easyfind(const T &array, int needle)
+// @brief tests easy_find and its return value
+template <typename T> void test_easyfind(T &array, int needle)
 {
-	size_t index = easyfind(array, needle);
-	if (index == SIZE_MAX)
+	typename T::iterator found = easyfind(array, needle);
+	if (found == array.end())
 		std::cout << "Couldn't find " << needle << std::endl;
 	else
-		std::cout << "Found " << needle << " on index " << index << std::endl;
+		std::cout << "Found " << *found << " on index " << std::distance(array.begin(), found) << std::endl;
+}
+
+// @brief tests easyfind with a specific container type
+template <typename T> void test_container_easyfind(T &array)
+{
+	for (size_t i = 0; i < 100; i++)
+		array.push_back(i);
+
+	std::cout << "Container content : ";
+	for (typename T::iterator it = array.begin(); it != array.end(); it++)
+		std::cout << *it << " ";
+	std::cout << std::endl << std::endl;
+
+	test_easyfind(array, -1234567);
+	test_easyfind(array, 5);
+	test_easyfind(array, 50);
+	test_easyfind(array, 1234567);
 }
 
 #endif

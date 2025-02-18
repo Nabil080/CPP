@@ -1,6 +1,6 @@
 ######################## SETTINGS ########################
 
-NAME =  EasyFind
+NAME =  EasyFind.out
 
 CC = clang++
 
