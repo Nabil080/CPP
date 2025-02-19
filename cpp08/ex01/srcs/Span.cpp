@@ -33,7 +33,50 @@ Span::~Span()
 Span &Span::operator=(const Span &other)
 {
 	_capacity = other._capacity;
+	_values.resize(other._capacity);
 	return (*this);
+}
+
+std::ostream &operator<<(std::ostream &out, const Span &obj)
+{
+	out << "[Span Infos]" << std::endl;
+	out << "Values :";
+	for (std::vector<int>::const_iterator it = obj.getValues().begin(); it != obj.getValues().end(); it++)
+		out << " " << *it;
+	out << std::endl;
+	out << "capacity : " << obj.getCapacity() << std::endl;
+	out << "Size : " << obj.getValues().size() << std::endl;
+	try
+	{
+		obj.shortestSpan();
+		out << "Shortest span : " << obj.shortestSpan() << std::endl;
+	}
+	catch (std::length_error &e)
+	{
+		out << "Shortest span : None " << std::endl;
+	}
+	try
+	{
+		obj.longestSpan();
+		out << "Longest span : " << obj.longestSpan() << std::endl;
+	}
+	catch (std::length_error &e)
+	{
+		out << "Longest span : None " << std::endl;
+	}
+	return (out);
+}
+
+// getters
+
+unsigned int Span::getCapacity() const
+{
+	return (_capacity);
+}
+
+const std::vector<int> &Span::getValues() const
+{
+	return (_values);
 }
 
 // methods
@@ -45,7 +88,7 @@ void Span::addNumber(int number)
 	_values.push_back(number);
 }
 
-unsigned int Span::shortestSpan()
+unsigned int Span::shortestSpan() const
 {
 	if (_values.size() < 2)
 		throw std::length_error("There are less than 2 values inside Span");
@@ -59,7 +102,7 @@ unsigned int Span::shortestSpan()
 	return (diff);
 }
 
-unsigned int Span::longestSpan()
+unsigned int Span::longestSpan() const
 {
 	if (_values.size() < 2)
 		throw std::length_error("There are less than 2 values inside Span");
