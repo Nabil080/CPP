@@ -1,5 +1,4 @@
-*
-!cpp
-!*.cpp
-!*.hpp
-!Makefile
+.*
+*.o
+*.out
+compile_commands.json
