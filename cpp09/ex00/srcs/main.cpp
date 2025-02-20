@@ -10,8 +10,9 @@ int main(int argc, char **argv)
 	{
 		if (argc != 2)
 			throw(std::runtime_error("Correct usage: ./btc <input_file>"));
-		BitcoinExchange data("data.csv");
 		BitcoinExchange input(argv[1]);
+
+		input.printHoldingsValues();
 	}
 	catch (std::runtime_error &e)
 	{

@@ -1,7 +1,6 @@
 #ifndef BITCOINEXCHANGE_HPP
 #define BITCOINEXCHANGE_HPP
 
-#include <fstream>
 #include <map>
 #include <string>
 
@@ -18,7 +17,6 @@ class BitcoinExchange
 		static const char   _data_separator;
 		static const char   _holdings_separator;
 		const char         *_filename;
-		std::fstream        _holdings_file;
 
 	private:
 		BitcoinExchange();
@@ -30,8 +28,7 @@ class BitcoinExchange
 
 		BitcoinExchange &operator=(const BitcoinExchange &other);
 
-		void             printNextHoldingValue();
-		void             printAllHoldingsValue();
+		void             printHoldingsValues() const;
 
 		static t_data    getData();
 		static t_pair    parseLine(std::string line, char sep);

@@ -1,6 +1,7 @@
 #include "BitcoinExchange.hpp"
 
 #include <cstdlib>
+#include <fstream>
 #include <iostream>
 
 const char                   *BitcoinExchange::_data_filename = "data.csv";
@@ -15,18 +16,14 @@ BitcoinExchange::BitcoinExchange()
 	std::cerr << "[BitcoinExchange default constructor] /!\\ This should never be called !!" << std::endl;
 }
 
-BitcoinExchange::BitcoinExchange(const char *filename) : _filename(filename), _holdings_file(filename)
+BitcoinExchange::BitcoinExchange(const char *filename) : _filename(filename)
 {
 	std::cerr << "[BitcoinExchange filename constructor]" << std::endl;
-	if (_holdings_file.is_open() == false)
-		throw std::runtime_error("Couldn't open " + std::string(filename));
 }
 
-BitcoinExchange::BitcoinExchange(const BitcoinExchange &other) : _filename(other._filename), _holdings_file(_filename)
+BitcoinExchange::BitcoinExchange(const BitcoinExchange &other) : _filename(other._filename)
 {
 	std::cerr << "[BitcoinExchange copy constructor]" << std::endl;
-	if (_holdings_file.is_open() == false)
-		throw std::runtime_error("Couldn't open " + std::string(_filename));
 }
 
 BitcoinExchange::~BitcoinExchange()
@@ -41,13 +38,32 @@ BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
 	if (this == &other)
 		return (*this);
 	_filename = other._filename;
-	_holdings_file.open(_filename);
-	if (_holdings_file.is_open() == false)
-		throw std::runtime_error("Couldn't open " + std::string(_filename));
 	return (*this);
 }
 
 // methods
+
+void BitcoinExchange::printHoldingsValues() const
+{
+	std::ifstream infile(_filename);
+	if (infile.is_open() == false)
+		throw std::runtime_error("Couldn't open " + std::string(_data_filename));
+
+	std::string buffer;
+	t_pair      holding;
+
+	while (std::getline(infile, buffer))
+	{
+		try
+		{
+			holding = parseLine(buffer, _holdings_separator);
+		}
+		catch (std::runtime_error)
+		{
+			;
+		}
+	}
+}
 
 // NOTE: parses the data file inside the static, this function is called only once
 BitcoinExchange::t_data BitcoinExchange::getData()
@@ -55,13 +71,15 @@ BitcoinExchange::t_data BitcoinExchange::getData()
 	if (_data.empty() == false)
 		return (_data);
 
-	std::fstream infile(_data_filename);
+	std::ifstream infile(_data_filename);
 	if (infile.is_open() == false)
 		throw std::runtime_error("Couldn't open " + std::string(_data_filename));
 
 	t_data      new_data;
 	t_pair      pair;
 	std::string buffer;
+
+	std::cout << std::endl << "----- RETRIEVING DATA FROM " << _data_filename << "-----" << std::endl << std::endl;
 	while (std::getline(infile, buffer))
 	{
 		try
@@ -71,13 +89,10 @@ BitcoinExchange::t_data BitcoinExchange::getData()
 		}
 		catch (std::exception &e)
 		{
-			// std::cout << "Invalid line inside " << _data_filename << ": " << buffer << std::endl;
-			std::cout << buffer << ": " << e.what() << std::endl;
+			std::cout << "Error: [" << buffer << "]: " << e.what() << std::endl;
 		}
 	}
-	t_data::iterator it;
-	for (it = new_data.begin(); it != new_data.end(); it++)
-		std::cout << "[" << it->first << "]:" << it->second << std::endl;
+	std::cout << std::endl << "---- DONE ----- " << std::endl << std::endl;
 
 	return (new_data);
 }
