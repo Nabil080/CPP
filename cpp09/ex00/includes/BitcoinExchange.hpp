@@ -1,34 +1,40 @@
 #ifndef BITCOINEXCHANGE_HPP
 #define BITCOINEXCHANGE_HPP
 
+#include <fstream>
 #include <map>
 #include <string>
 
+// TODO: store the fstream and process the input line by line by checking with the base
 class BitcoinExchange
 {
-		// TODO: store the fstream and process the input line by line by checking with the base
-		// TODO: static map for the holdings
+	public:
+		typedef std::map<std::string, float>  t_data;
+		typedef std::pair<std::string, float> t_pair;
+
 	private:
-		char                         _sep;
-		std::map<std::string, float> _map;
+		static const t_data _data;
+		static const char  *_data_filename;
+		static const char   _data_separator;
+		static const char   _holdings_separator;
+		const char         *_filename;
+		std::fstream        _holdings_file;
 
 	private:
 		BitcoinExchange();
 
 	public:
-		BitcoinExchange(std::string filename);
-		BitcoinExchange(std::string filename, char sep);
+		BitcoinExchange(const char *filename);
 		BitcoinExchange(const BitcoinExchange &other);
 		~BitcoinExchange();
 
-		BitcoinExchange              &operator=(const BitcoinExchange &other);
+		BitcoinExchange &operator=(const BitcoinExchange &other);
 
-		std::map<std::string, float> &getMap();
-		float                         byDate(std::string date) const;
+		void             printNextHoldingValue();
+		void             printAllHoldingsValue();
 
-	private:
-		void parse_file(std::string filename);
+		static t_data    getData();
+		static t_pair    parseLine(std::string line, char sep);
 };
-std::ostream &operator<<(std::ostream &out, BitcoinExchange &obj);
 
 #endif // !BITCOINEXCHANGE_HPP
