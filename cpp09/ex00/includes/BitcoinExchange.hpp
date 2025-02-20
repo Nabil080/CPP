@@ -32,6 +32,7 @@ class BitcoinExchange
 
 		static t_data    getData();
 		static t_pair    parseLine(std::string line, char sep);
+		static t_pair    findByDate(std::string date);
 };
 
 #endif // !BITCOINEXCHANGE_HPP

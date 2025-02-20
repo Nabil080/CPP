@@ -60,7 +60,7 @@ ${OBJS_DIR}%.o : ${SRCS_DIR}%.cpp ${HEADERS}
 test : base
 
 base : all
-	./${NAME} og.csv
+	./${NAME} input.csv
 
 leak : all
 	${VALGRIND} ./${NAME} input.csv
