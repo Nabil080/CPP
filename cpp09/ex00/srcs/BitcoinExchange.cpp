@@ -54,7 +54,7 @@ void BitcoinExchange::printHoldingsValues() const
 	t_pair      exchange_rate;
 	float       result;
 
-	std::cout << std::endl << "----- Calculating holdings value based on exchange rate -----" << std::endl << std::endl;
+	std::cerr << std::endl << "----- Calculating holdings value based on exchange rate -----" << std::endl << std::endl;
 	while (std::getline(infile, buffer))
 	{
 		try
@@ -66,10 +66,10 @@ void BitcoinExchange::printHoldingsValues() const
 		}
 		catch (std::runtime_error &e)
 		{
-			std::cout << "Error: " << e.what() << std::endl;
+			std::cerr << "Error: " << e.what() << std::endl;
 		}
 	}
-	std::cout << std::endl << "----- DONE -----" << std::endl << std::endl;
+	std::cerr << std::endl << "----- DONE -----" << std::endl << std::endl;
 }
 
 // NOTE: parses the data file inside the static, this function is called only once
@@ -86,7 +86,7 @@ BitcoinExchange::t_data BitcoinExchange::getData()
 	t_pair      pair;
 	std::string buffer;
 
-	std::cout << std::endl << "----- RETRIEVING DATA FROM " << _data_filename << "-----" << std::endl << std::endl;
+	std::cerr << std::endl << "----- RETRIEVING DATA FROM " << _data_filename << "-----" << std::endl << std::endl;
 	while (std::getline(infile, buffer))
 	{
 		try
@@ -96,12 +96,12 @@ BitcoinExchange::t_data BitcoinExchange::getData()
 		}
 		catch (std::exception &e)
 		{
-			std::cout << "Error: [" << buffer << "]: " << e.what() << std::endl;
+			std::cerr << "Error: [" << buffer << "]: " << e.what() << std::endl;
 		}
 	}
 	if (new_data.empty())
 		throw(std::runtime_error(std::string(_data_filename) + " is empty."));
-	std::cout << std::endl << "---- DONE ----- " << std::endl << std::endl;
+	std::cerr << std::endl << "---- DONE ----- " << std::endl << std::endl;
 
 	return (new_data);
 }
@@ -130,20 +130,19 @@ BitcoinExchange::t_pair BitcoinExchange::parseLine(std::string line, char sep = 
 	if (next_pos == std::string::npos || line[next_pos] != sep)
 		throw(std::runtime_error("Too many keys: " + line));
 	pos = next_pos + 1;
-	// skip space
+	// skip front space till value, if end error
 	next_pos = line.find_first_not_of(' ', pos);
 	if (next_pos == std::string::npos)
 		throw(std::runtime_error("No value provided: " + line));
 	pos = next_pos;
-	// store till next space, if size > 4 error
+	// store till end of number and check if valid
 	next_pos = line.find_first_not_of("0123456789.+-", pos);
 	if (next_pos == std::string::npos)
 		next_pos = line.size();
-	// TODO: check value format and max if holdings
 	pair.second = std::strtof(line.substr(pos, next_pos - pos).c_str(), NULL);
 	if (sep != _data_separator && (next_pos - pos > 4 || pair.second < 0 || 1000 < pair.second))
 		throw(std::runtime_error("Invalid value: " + line));
-	// skip spaces, if not end error
+	// skip back spaces, if not end error
 	if (line[pos] == ' ')
 		next_pos = line.find_first_not_of(' ', pos);
 	if (next_pos != line.size() && next_pos != std::string::npos)
@@ -152,6 +151,7 @@ BitcoinExchange::t_pair BitcoinExchange::parseLine(std::string line, char sep = 
 	return (pair);
 }
 
+// TODO: fix if data is empty or if there is never a date >= (return last)
 BitcoinExchange::t_pair BitcoinExchange::findByDate(std::string date)
 {
 	t_data           data = getData();
