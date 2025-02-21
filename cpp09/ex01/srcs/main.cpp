@@ -11,11 +11,13 @@ int main(int argc, char **argv)
 	}
 
 	RPN rpn;
+	int result;
 
 	try
 	{
-		rpn.setExpr(argv[1]);
-		// rpn.getResult();
+		rpn.setExpression(argv[1]);
+		result = rpn.getResult();
+		std::cout << result << std::endl;
 	}
 	catch (std::runtime_error &e)
 	{
