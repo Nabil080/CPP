@@ -27,7 +27,11 @@ static void defaultTests()
 	};
 
 	for (size_t i = 0; i < (sizeof(tests) / sizeof(std::string)); i++)
+	{
+		std::cout << "------" << std::endl << std::endl;
 		test(tests[i]);
+		std::cout << std::endl;
+	}
 }
 
 int main(int argc, char **argv)
@@ -37,7 +41,7 @@ int main(int argc, char **argv)
 		std::cerr << "Error :" << " usage => ./PmergeMe <positive integer sequence>" << std::endl;
 		if (argc == 1)
 		{
-			std::cout << "No argument given, running default tests" << std::endl;
+			std::cout << "No argument given, running default tests" << std::endl << std::endl;
 			defaultTests();
 			return (0);
 		}

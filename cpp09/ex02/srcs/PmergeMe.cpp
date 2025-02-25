@@ -65,11 +65,12 @@ PmergeMe &PmergeMe::operator=(const PmergeMe &other)
 
 // methods
 
-void PmergeMe::sort() const
+void PmergeMe::sortVector()
 {
-	std::cout << "Before:\t";
-	for (std::list<int>::const_iterator it = _list.begin(); it != _list.end(); it++)
-		std::cout << " " << *it;
-	std::cout << std::endl;
-	return;
+	;
+}
+
+void PmergeMe::sortList()
+{
+	;
 }

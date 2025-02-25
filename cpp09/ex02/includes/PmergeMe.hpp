@@ -7,11 +7,9 @@
 
 class PmergeMe
 {
-	private:
-		// vars
+	protected:
 		std::list<int>	 _list;
 		std::vector<int> _vector;
-
 		PmergeMe();
 
 	public:
@@ -21,7 +19,8 @@ class PmergeMe
 
 		PmergeMe &operator=(const PmergeMe &other);
 
-		void	  sort() const;
+		void	  sortVector();
+		void	  sortList();
 };
 
 #endif
