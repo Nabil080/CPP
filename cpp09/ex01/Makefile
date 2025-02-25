@@ -15,7 +15,7 @@ VALGRIND = valgrind --leak-check=full --show-leak-kinds=all
 
 ######################## SOURCES ########################
 
-SRCS_NAMES =	main.cpp RPN.cpp
+SRCS_NAMES =	main.cpp RPN.cpp RPN_TEST.cpp
 
 SRCS_DIR = srcs/
 
@@ -25,7 +25,7 @@ OBJS_DIR = objs/
 
 OBJS = ${addprefix ${OBJS_DIR}, ${SRCS_NAMES:.cpp=.o}}
 
-HEADERS = includes/RPN.hpp	
+HEADERS = includes/RPN.hpp includes/RPN_TEST.hpp	
 
 ######################## BASIC RULES ########################
 
@@ -60,10 +60,10 @@ ${OBJS_DIR}%.o : ${SRCS_DIR}%.cpp ${HEADERS}
 test : base
 
 base : all
-	./${NAME} $> "   1 2    * 2 /   2 * 2   4 -   +"
+	./${NAME}
 
 leak : all
-	${VALGRIND} ./${NAME} "   1 2    * 2 /   2 * 2   4 -   +"
+	${VALGRIND} ./${NAME}
 
 no-err :
 	${MAKE} test 2>/dev/null

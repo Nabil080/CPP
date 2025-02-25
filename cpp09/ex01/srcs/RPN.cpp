@@ -43,8 +43,8 @@ RPN &RPN::operator=(const RPN &other)
 std::string RPN::setExpression(std::string expression)
 {
 	std::string::iterator it = expression.begin();
-	bool                  parsing_tokens = false;
-	int                   tokens_needed = -1;
+	bool				  parsing_tokens = false;
+	int					  tokens_needed = -1;
 
 	while (it != expression.end())
 	{
@@ -54,7 +54,7 @@ std::string RPN::setExpression(std::string expression)
 		if (_tokens.find(*it) != std::string::npos)
 		{
 			if (tokens_needed < 1)
-				throw(std::runtime_error("Too much operators after a number"));
+				throw(std::runtime_error(ERR_TOOMANY_OPERATORS));
 			parsing_tokens = true;
 			_expression.push_back(*it);
 			tokens_needed--;
@@ -64,30 +64,30 @@ std::string RPN::setExpression(std::string expression)
 		else if (_base.find(*it) != std::string::npos)
 		{
 			if (parsing_tokens == true)
-				throw(std::runtime_error("Not enough operators after a number"));
+				throw(std::runtime_error(ERR_TOOLITTLE_OPERATORS));
 			_expression.push_back(*it);
 			tokens_needed++;
 		}
 		else if (it == expression.end())
 			break;
 		else
-			throw(std::runtime_error("Invalid character inside the expression"));
+			throw(std::runtime_error(ERR_EXPRESSION));
 		it++;
 		if (it != expression.end() && *it != ' ')
-			throw(std::runtime_error("Invalid character inside the expression"));
+			throw(std::runtime_error(ERR_EXPRESSION));
 	}
 	if (tokens_needed != 0)
-		throw(std::runtime_error("Not enough operators after a number"));
+		throw(std::runtime_error(ERR_TOOLITTLE_OPERATORS));
 
 	return (_expression);
 }
 
 int RPN::getResult()
 {
-	std::stack<int>       result;
+	std::stack<int>		  result;
 	std::string::iterator it;
-	int                   nb1;
-	int                   nb2;
+	int					  nb1;
+	int					  nb2;
 
 	for (it = _expression.begin(); it != _expression.end(); it++)
 	{
