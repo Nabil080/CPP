@@ -15,7 +15,7 @@ VALGRIND = valgrind --leak-check=full --show-leak-kinds=all
 
 ######################## SOURCES ########################
 
-SRCS_NAMES =	main.cpp PmergeMe.cpp
+SRCS_NAMES =	main.cpp PmergeMe.cpp PmergeMeTest.cpp
 
 SRCS_DIR = srcs/
 
@@ -25,7 +25,7 @@ OBJS_DIR = objs/
 
 OBJS = ${addprefix ${OBJS_DIR}, ${SRCS_NAMES:.cpp=.o}}
 
-HEADERS = includes/PmergeMe.hpp
+HEADERS = includes/PmergeMe.hpp includes/PmergeMeTest.hpp
 
 ######################## BASIC RULES ########################
 

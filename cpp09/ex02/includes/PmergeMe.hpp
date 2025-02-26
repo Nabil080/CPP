@@ -5,9 +5,13 @@
 #include <string>
 #include <vector>
 
+#define ERR_RANGE		 "Number outside the valid range (0 - 2147483647)"
+#define ERR_NOT_A_NUMBER "Not a valid number"
+
 class PmergeMe
 {
 	protected:
+		std::string		 _sequence;
 		std::list<int>	 _list;
 		std::vector<int> _vector;
 		PmergeMe();
@@ -17,10 +21,11 @@ class PmergeMe
 		PmergeMe(std::string sequence);
 		~PmergeMe();
 
-		PmergeMe &operator=(const PmergeMe &other);
+		PmergeMe		&operator=(const PmergeMe &other);
 
-		void	  sortVector();
-		void	  sortList();
+		void			 parseSequence();
+		std::vector<int> sortVector();
+		std::list<int>	 sortList();
 };
 
 #endif

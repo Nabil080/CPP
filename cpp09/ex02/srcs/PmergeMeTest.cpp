@@ -2,16 +2,108 @@
 
 #include <iostream>
 
-void PmergeMeTest::test()
+// constructors
+
+PmergeMeTest::PmergeMeTest()
 {
-	std::cout << "Before:\t";
-	for (std::list<int>::const_iterator it = _list.begin(); it != _list.end(); it++)
-		std::cout << " " << *it;
-	std::cout << std::endl;
+	std::cerr << "[PmergeMeTest default constructor]" << std::endl;
+}
 
-	::PmergeMe::sortList();
-	::PmergeMe::sortVector();
+PmergeMeTest::PmergeMeTest(std::string sequence, std::string expected) : PmergeMe(sequence)
+{
+	if (expected.empty() == false && std::isalpha(expected[0]))
+	{
+		std::cerr << "[PmergeMeTest expected_error constructor]" << std::endl;
+		_expected_error = expected;
+	}
+	else
+	{
+		std::cerr << "[PmergeMeTest expected_result constructor]" << std::endl;
+		_expected_result = expected;
+	}
+}
 
-	// compare
-	return;
+PmergeMeTest::PmergeMeTest(const PmergeMeTest &other)
+	: PmergeMe(other), _error(other._error), _result(other._result), _expected_error(other._expected_error),
+	  _expected_result(other._expected_result)
+{
+	std::cerr << "[PmergeMeTest copy constructor]" << std::endl;
+}
+
+PmergeMeTest::~PmergeMeTest()
+{
+	std::cerr << "[PmergeMeTest destructor]" << std::endl;
+}
+
+// operators
+
+PmergeMeTest &PmergeMeTest::operator=(const PmergeMeTest &other)
+{
+	if (this == &other)
+		return (*this);
+	_sequence = other._sequence;
+	_error = other._error;
+	_result = other._result;
+	_expected_result = other._expected_result;
+	_expected_error = other._expected_error;
+	_passed = other._passed;
+	return (*this);
+}
+
+// methods
+
+void PmergeMeTest::setPassed()
+{
+	try
+	{
+		PmergeMe::parseSequence();
+	}
+	catch (std::runtime_error &e)
+	{
+		_error = e.what();
+	}
+
+	if (_error.empty() == false) // parsing error
+	{
+		if (_error == _expected_error)
+			_passed = true;
+		else
+			_passed = false;
+	}
+	else
+	{
+		try
+		{
+			PmergeMe::sortVector();
+			PmergeMe::sortList();
+		}
+		catch (std::bad_alloc &e)
+		{
+			_error = e.what();
+			return;
+		}
+		_result = containerToString(PmergeMe::_vector);
+		if (_result != _expected_result || _result != containerToString(PmergeMe::_list))
+			_passed = false;
+		else
+			_passed = true;
+	}
+}
+
+void PmergeMeTest::printTest()
+{
+	setPassed();
+
+	std::cout << "--------------------------------" << std::endl << std::endl;
+	std::cout << "TESTING :" << ::PmergeMe::_sequence << std::endl;
+	if (_expected_error.empty() == false)
+		std::cout << "Expected error :" << _expected_error << std::endl;
+	else
+		std::cout << "Expected result :" << _expected_result << std::endl;
+	if (_error.empty() == false)
+		std::cout << "Got error :" << _error << std::endl;
+	else
+		std::cout << "Got result :" << _result << std::endl;
+	std::cout << (_passed ? "[PASSED]" : "[FAILED]");
+	std::cout << std::endl << std::endl;
 }
