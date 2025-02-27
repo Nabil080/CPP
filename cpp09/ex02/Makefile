@@ -57,13 +57,16 @@ ${OBJS_DIR}%.o : ${SRCS_DIR}%.cpp ${HEADERS}
 
 ######################## TEST ########################
 
-test : base
+test : exemple
 
 base : all
 	./${NAME}
 
 leak : all
 	${VALGRIND} ./${NAME}
+
+exemple: all
+	./${NAME} "11 2 17 0 16 8 6 15 10 3 21 1 18 9 14 19 12 5 4 20 13 7"
 
 no-err :
 	${MAKE} test 2>/dev/null

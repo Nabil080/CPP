@@ -42,8 +42,8 @@ int main(int argc, char **argv)
 		merger.parseSequence();
 		// TODO: sort list and vector and compare time
 		std::time(&start);
-		merger.sortList();
-		std::cout << "List :" << start << std::endl;
+		merger.sortVector();
+		std::cout << std::endl;
 	}
 	catch (std::runtime_error &e)
 	{

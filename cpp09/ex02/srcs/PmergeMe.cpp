@@ -1,6 +1,7 @@
 #include "PmergeMe.hpp"
 
 #include <climits>
+#include <cmath>
 #include <cstdlib>
 #include <iostream>
 
@@ -46,7 +47,6 @@ void PmergeMe::parseSequence()
 	std::string str;
 	long		converted;
 
-	// put inside a template;
 	while (_sequence[pos])
 	{
 		// go to start
@@ -67,15 +67,159 @@ void PmergeMe::parseSequence()
 		_list.push_back(converted);
 		_vector.push_back(converted);
 	}
+
+	std::cerr << _vector.size() << " numbers" << std::endl;
 }
 
-// 9 8 7 6 5 4 3 2 1 0
 std::vector<int> PmergeMe::sortVector()
 {
-	// [98][76][54][32][10]
-	// [89][67][45][23][01]
-	// 9 7 5 3 1
-	// 8 6 4 2 0
+	// starting list
+	// pair(merge) and sort max
+	// if possible, go deeper
+	// last recursive -> start sorting(insert) going back up
+	// sort the list -> go back a lvl, this lvl will sort the list -> up to base lvl with sorted list
+
+	// NOTE: variables and base value printing
+	static int level = 1;
+	size_t	   number_of_pairs = _vector.size() / std::pow(2, level);
+	size_t	   pair_size = std::pow(2, level);
+	size_t	   odd_size = _vector.size() - (number_of_pairs * pair_size);
+
+	std::cout << std::endl << "------------- Recursion level " << level << " -------------" << std::endl;
+	std::cout << "Number of elements : " << _vector.size() << std::endl;
+	std::cout << "Number of pairs : " << number_of_pairs << std::endl;
+	std::cout << "Pair size : " << pair_size << std::endl;
+	std::cout << "Odd size : " << odd_size << std::endl;
+	for (size_t i = 0; i < number_of_pairs; i++)
+	{
+		std::cout << "[" << i << "]: ";
+		for (size_t j = 0; j < pair_size; j++)
+			std::cout << _vector[(i * pair_size) + j] << " ";
+		std::cout << std::endl;
+	}
+	std::cout << "[Odd elements] : ";
+	for (size_t i = number_of_pairs * pair_size; i < _vector.size(); i++)
+		std::cout << _vector[i] << " ";
+	std::cout << std::endl << std::endl;
+
+	// NOTE: merge sorting start
+	std::cout << "Sorting" << std::endl;
+
+	// compare pair_size / 2 and pair_size, swap everything before middle
+	for (size_t i = 0; i < number_of_pairs; i++)
+	{
+		size_t offset = i * pair_size;
+		size_t middle = (pair_size / 2);
+		size_t end = pair_size - 1;
+		if (_vector[offset + middle - 1] > _vector[offset + end])
+		{
+			for (size_t j = 0; j < middle; j++)
+				std::swap(_vector[offset + j], _vector[offset + middle + j]);
+		}
+		std::cout << "[" << i << "]: ";
+		for (size_t j = 0; j < pair_size; j++)
+			std::cout << _vector[(i * pair_size) + j] << " ";
+		std::cout << std::endl;
+	}
+	std::cout << "[Odd elements] : ";
+	for (size_t i = number_of_pairs * pair_size; i < _vector.size(); i++)
+		std::cout << _vector[i] << " ";
+	std::cout << std::endl << std::endl;
+
+	// NOTE: recursion stops when no more pair can be formed
+	if (number_of_pairs > 1)
+	{
+		level++;
+		sortVector();
+	}
+	// NOTE : insert starting from deepest recursion
+
+	std::cout << std::endl << "------------- Level " << level << " going back up -------------" << std::endl;
+	std::cout << "Current sequence : ";
+	for (size_t i = 0; i < _vector.size(); i++)
+	{
+		std::cout << _vector[i] << " ";
+	}
+	std::cout << std::endl;
+	level--;
+
+	// Order 1 : [1] [5] [10] [16] [8] [20] [18] [4] [3] [2] [13] [9] [7] [14] [6] [12] [0] [19] [11] [15]
+	//           b1-a1  b2-a2  b3-a3  b4-a4 b5-a5 b6-a6  b7-a7  b8-a8  b9-a9  b10-a10
+	// Order 2 : [1-5] [10-16] [8-20] [1-4] [2-3] [9-13] [7-14] [6-12] [0-19] [11-15]
+	//                   b-1       a-1         b-2         a-2          b-3
+	// Order 4 : [1-5-10-16] [1-4-8-20] [2-3-9-13] [6-12-7-14] [11-15-0-19]
+	//                            b-1                  a-1              b-2
+	// Order 8 : [2-3-9-13-6-12-7-14] [1-5-10-16-1-4-8-20] || [11-15-0-19]
+
+	// recursion 3 (8elem/pair) n = 0
+	// jacob num = (2^(n+1) + (-1)^n) / 3 = 1
+	//                          b-1                  a-1
+	//
+	// main : [2-3-9-13-6-12-7-14] [1-5-10-16-1-4-8-20]
+	// pend :
+	// odd elem :
+
+	// recursion 2 (4elem/pair) n = 1
+	// jacob num = (2^(n+1) + (-1)^n) / 3 = 1
+	//                b-1       a-1      a-2
+	// main : [1-5-10-16][1-4-8-20][2-3-9-13]
+	//                b-2
+	// pend : [6-12-7-14] b2 -> look until a2
+	//                     b-3
+	// odd elem : [11-15-0-19] b-3 -> look whole main
+	//
+	//                       b-1         a-1      b-2       a-2
+	// pend + main : [6-12-7-14][1-5-10-16][1-4-8-20][2-3-9-13]
+	//                       b-1         a-1      b-2       a-2         b-3
+	// odd + main : [6-12-7-14][1-5-10-16][11-15-0-19][1-4-8-20][2-3-9-13]
+
+	// recursion 1 (2elem/pair) n = 2
+	// jacob num = (2^(n+1) + (-1)^n) / 3 = 3
+	//           b-1   a-1    a-2   a-3   a-4   a-5
+	// main : [6-12][7-14][10-16][0-19][8-20][9-13]
+	//          b-2    b-3  b-4  b-5
+	// pend : [1-5][11-15][1-4][2-3]
+	//
+	// odd elem :
+	//
+	// Jacob num is at 3, we inster 3-1 starting from b3, search up to a-2
+	//                b-1   a-1    b-3    a-2   a-3   a-4   a-5
+	// b3 + main : [6-12][7-14][11-15][10-16][0-19][8-20][9-13]
+	//               b-2   b-1   a-1    b-3    a-2   a-3   a-4   a-5
+	// b2 + main : [1-5][6-12][7-14][11-15][10-16][0-19][8-20][9-13]
+	//
+	// Jacob done
+	// recursion 1 (2elem/pair) n = 3
+	// jacob num = (2^(n+1) + (-1)^n) / 3 = 5
+	//          b-2   b-1   a-1    b-3    a-2   a-3   a-4   a-5
+	// main : [1-5][6-12][7-14][11-15][10-16][0-19][8-20][9-13]
+	//          b-4  b-5
+	// pend : [1-4][2-3]
+	//
+	// odd elem :
+	//
+	// Jacob num is at 5, we inster 5-3 starting from b5, search up to a-4
+	//                b-5  b-1   a-1    b-3    a-2   a-3   a-4   a-5
+	// b5 + main : [2-3][6-12][7-14][11-15][10-16][0-19][8-20][9-13]
+	//                b-5 b-4   b-1   a-1    b-3    a-2   a-3   a-4   a-5
+	// b4 + main : [2-3][1-4][6-12][7-14][11-15][10-16][0-19][8-20][9-13]
+	//
+	// Jacob done
+
+	// recursion 0 (1elem/pair) n = 2 (skip 0/1)
+	// jacob num = (2^(n+1) + (-1)^n) / 3 = 3
+	//       b1a1a2-a3-a4-a5-a6-a7-a9-a8
+	// main : 2-3-4-12-14-15-16-19-20
+	//      b2-b3-b4-b5-b6-b7-b8
+	// pend : 1-6-7-11-10-0-8
+	// Jacob num is at 3, we insert 3-1 starting from b3, search up to a-2
+	//       b1a1a2-b3-a3-a4-a5-a6-a7-a9-a8
+	// b3 + main : 2-3-4-6-12-14-15-16-19-20
+	//       b1a1a2-b3-a3-a4-a5-a6-a7-a9-a8
+	// b3 + main : 1-2-3-4-6-12-14-15-16-19-20
+	//
+	// Jacob done
+
 	return (_vector);
 }
 
