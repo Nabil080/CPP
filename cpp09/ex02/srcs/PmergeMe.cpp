@@ -83,13 +83,13 @@ std::vector<int> PmergeMe::sortVector()
 	static int level = 1;
 	size_t	   number_of_pairs = _vector.size() / std::pow(2, level);
 	size_t	   pair_size = std::pow(2, level);
-	size_t	   odd_size = _vector.size() - (number_of_pairs * pair_size);
+	size_t	   remainder_size = _vector.size() - (number_of_pairs * pair_size);
 
-	std::cout << std::endl << "------------- Recursion level " << level << " -------------" << std::endl;
+	std::cout << std::endl << "vvvvvvvvvvvvv Recursion level " << level << " vvvvvvvvvvvvv" << std::endl;
 	std::cout << "Number of elements : " << _vector.size() << std::endl;
 	std::cout << "Number of pairs : " << number_of_pairs << std::endl;
 	std::cout << "Pair size : " << pair_size << std::endl;
-	std::cout << "Odd size : " << odd_size << std::endl;
+	std::cout << "Remainder size : " << remainder_size << std::endl;
 	for (size_t i = 0; i < number_of_pairs; i++)
 	{
 		std::cout << "[" << i << "]: ";
@@ -97,7 +97,7 @@ std::vector<int> PmergeMe::sortVector()
 			std::cout << _vector[(i * pair_size) + j] << " ";
 		std::cout << std::endl;
 	}
-	std::cout << "[Odd elements] : ";
+	std::cout << "[Remaining elements] : ";
 	for (size_t i = number_of_pairs * pair_size; i < _vector.size(); i++)
 		std::cout << _vector[i] << " ";
 	std::cout << std::endl << std::endl;
@@ -121,7 +121,7 @@ std::vector<int> PmergeMe::sortVector()
 			std::cout << _vector[(i * pair_size) + j] << " ";
 		std::cout << std::endl;
 	}
-	std::cout << "[Odd elements] : ";
+	std::cout << "[Remaining elements] : ";
 	for (size_t i = number_of_pairs * pair_size; i < _vector.size(); i++)
 		std::cout << _vector[i] << " ";
 	std::cout << std::endl << std::endl;
@@ -134,22 +134,52 @@ std::vector<int> PmergeMe::sortVector()
 	}
 	// NOTE : insert starting from deepest recursion
 
+	std::vector<int> main;
+	std::vector<int> pend;
+	std::vector<int> odd;
+	int				 is_odd = number_of_pairs % 2;
 	std::cout << std::endl << "------------- Level " << level << " going back up -------------" << std::endl;
 	std::cout << "Current sequence : ";
 	for (size_t i = 0; i < _vector.size(); i++)
-	{
 		std::cout << _vector[i] << " ";
-	}
 	std::cout << std::endl;
+	std::cout << "Number of elements : " << _vector.size() << std::endl;
+	std::cout << "Number of pairs : " << number_of_pairs << std::endl;
+	std::cout << "Pair size : " << pair_size << std::endl;
+	std::cout << "Remain size : " << remainder_size << std::endl;
+	std::cout << "Is odd : " << is_odd << std::endl;
+	for (size_t i = 0; i < number_of_pairs - is_odd; i++)
+	{
+		size_t offset = i * pair_size;
+		// put b1, a1, a2 a.. in main
+		if (i == 0 || i % 2 != 0)
+			for (size_t j = 0; j < pair_size; j++)
+				main.push_back(_vector[offset + j]);
+		// put b2, b3, b4... in pend
+		else
+			for (size_t j = 0; j < pair_size; j++)
+				pend.push_back(_vector[offset + j]);
+		// put odd in odd
+	}
+	for (size_t i = pair_size * (number_of_pairs - is_odd); i < pair_size * number_of_pairs; i++)
+		odd.push_back(_vector[i]);
+	std::cout << "Main : ";
+	for (size_t i = 0; i < main.size(); i++)
+		std::cout << main[i] << " ";
+	std::cout << std::endl;
+	std::cout << "Pend : ";
+	for (size_t i = 0; i < pend.size(); i++)
+		std::cout << pend[i] << " ";
+	std::cout << std::endl;
+	std::cout << "Odd : ";
+	for (size_t i = 0; i < odd.size(); i++)
+		std::cout << odd[i] << " ";
+	std::cout << std::endl;
+	std::cout << "[Remaining elements] : ";
+	for (size_t i = number_of_pairs * pair_size; i < _vector.size(); i++)
+		std::cout << _vector[i] << " ";
+	std::cout << std::endl << std::endl;
 	level--;
-
-	// Order 1 : [1] [5] [10] [16] [8] [20] [18] [4] [3] [2] [13] [9] [7] [14] [6] [12] [0] [19] [11] [15]
-	//           b1-a1  b2-a2  b3-a3  b4-a4 b5-a5 b6-a6  b7-a7  b8-a8  b9-a9  b10-a10
-	// Order 2 : [1-5] [10-16] [8-20] [1-4] [2-3] [9-13] [7-14] [6-12] [0-19] [11-15]
-	//                   b-1       a-1         b-2         a-2          b-3
-	// Order 4 : [1-5-10-16] [1-4-8-20] [2-3-9-13] [6-12-7-14] [11-15-0-19]
-	//                            b-1                  a-1              b-2
-	// Order 8 : [2-3-9-13-6-12-7-14] [1-5-10-16-1-4-8-20] || [11-15-0-19]
 
 	// recursion 3 (8elem/pair) n = 0
 	// jacob num = (2^(n+1) + (-1)^n) / 3 = 1
