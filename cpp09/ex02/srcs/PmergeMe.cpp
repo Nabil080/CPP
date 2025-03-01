@@ -12,7 +12,8 @@ PmergeMe::PmergeMe()
 	std::cerr << "[PmergeMe default constructor] ! This should never be called !" << std::endl;
 }
 
-PmergeMe::PmergeMe(const PmergeMe &other) : _sequence(other._sequence), _list(other._list), _vector(other._vector)
+PmergeMe::PmergeMe(const PmergeMe &other)
+	: _sequence(other._sequence), _vector_data(other._vector_data), _list_data(other._list_data)
 {
 	std::cerr << "[PmergeMe copy constructor]" << std::endl;
 }
@@ -33,8 +34,8 @@ PmergeMe &PmergeMe::operator=(const PmergeMe &other)
 {
 	if (this == &other)
 		return (*this);
-	_vector = other._vector;
-	_list = other._list;
+	_vector_data = other._vector_data;
+	_list_data = other._list_data;
 	return (*this);
 }
 
@@ -64,11 +65,91 @@ void PmergeMe::parseSequence()
 		if (converted == 0 && str.empty() == false && str[0] != '0')
 			throw(std::runtime_error(ERR_NOT_A_NUMBER));
 		// store
-		_list.push_back(converted);
-		_vector.push_back(converted);
+		_list_data.sequence.push_back(converted);
+		_vector_data.sequence.push_back(converted);
 	}
 
-	std::cerr << _vector.size() << " numbers" << std::endl;
+	std::cerr << _vector_data.sequence.size() << " numbers" << std::endl;
+}
+
+void PmergeMe::initData(t_merge_insert_vector &data, int level)
+{
+	data.level = level;
+	data.number_of_pairs = data.sequence.size() / std::pow(2, data.level);
+	data.pair_size = std::pow(2, data.level);
+	data.remainder_size = data.sequence.size() - (data.number_of_pairs * data.pair_size);
+	data.is_odd = data.number_of_pairs % 2;
+}
+
+void PmergeMe::printData(t_merge_insert_vector &data) const
+{
+	(void)data;
+	std::cout << "Current sequence : ";
+	for (size_t i = 0; i < _vector_data.sequence.size(); i++)
+		std::cout << _vector_data.sequence[i] << " ";
+	std::cout << std::endl;
+	std::cout << "Number of elements : " << _vector_data.sequence.size() << std::endl;
+	std::cout << "Number of pairs : " << _vector_data.number_of_pairs << std::endl;
+	std::cout << "Pair size : " << _vector_data.pair_size << std::endl;
+	std::cout << "Remainder size : " << _vector_data.remainder_size << std::endl;
+	std::cout << "Is odd : " << _vector_data.is_odd << std::endl;
+	for (size_t i = 0; i < _vector_data.number_of_pairs; i++)
+	{
+		std::cout << "[" << i << "]: ";
+		for (size_t j = 0; j < _vector_data.pair_size; j++)
+			std::cout << _vector_data.sequence[(i * _vector_data.pair_size) + j] << " ";
+		std::cout << std::endl;
+	}
+	std::cout << "[Remaining elements] : ";
+	for (size_t i = _vector_data.number_of_pairs * _vector_data.pair_size; i < _vector_data.sequence.size(); i++)
+		std::cout << _vector_data.sequence[i] << " ";
+	std::cout << std::endl;
+}
+
+void PmergeMe::mergeSort(t_merge_insert_vector &data)
+{
+	std::cout << "Sorting" << std::endl;
+
+	// compare pair_size / 2 and pair_size, swap everything before middle
+	for (size_t i = 0; i < data.number_of_pairs; i++)
+	{
+		size_t offset = i * data.pair_size;
+		size_t middle = (data.pair_size / 2);
+		size_t end = data.pair_size - 1;
+		if (_vector_data.sequence[offset + middle - 1] > _vector_data.sequence[offset + end])
+		{
+			for (size_t j = 0; j < middle; j++)
+				std::swap(_vector_data.sequence[offset + j], _vector_data.sequence[offset + middle + j]);
+		}
+		std::cout << "[" << i << "]: ";
+		for (size_t j = 0; j < data.pair_size; j++)
+			std::cout << _vector_data.sequence[(i * data.pair_size) + j] << " ";
+		std::cout << std::endl;
+	}
+	std::cout << "[Remaining elements] : ";
+	for (size_t i = data.number_of_pairs * data.pair_size; i < _vector_data.sequence.size(); i++)
+		std::cout << _vector_data.sequence[i] << " ";
+	std::cout << std::endl << std::endl;
+}
+
+void PmergeMe::insertSort(t_merge_insert_vector &data)
+{
+	for (size_t i = 0; i < data.number_of_pairs - data.is_odd; i++)
+	{
+		size_t offset = i * data.pair_size;
+		// put b1, a1, a2 a.. in main
+		if (i == 0 || i % 2 != 0)
+			for (size_t j = 0; j < data.pair_size; j++)
+				data.main.push_back(_vector_data.sequence[offset + j]);
+		// put b2, b3, b4... in pend
+		else
+			for (size_t j = 0; j < data.pair_size; j++)
+				data.pend.push_back(_vector_data.sequence[offset + j]);
+		// put odd in odd
+	}
+	for (size_t i = data.pair_size * (data.number_of_pairs - data.is_odd); i < data.pair_size * data.number_of_pairs;
+		 i++)
+		data.odd.push_back(_vector_data.sequence[i]);
 }
 
 std::vector<int> PmergeMe::sortVector()
@@ -79,106 +160,39 @@ std::vector<int> PmergeMe::sortVector()
 	// last recursive -> start sorting(insert) going back up
 	// sort the list -> go back a lvl, this lvl will sort the list -> up to base lvl with sorted list
 
-	// NOTE: variables and base value printing
 	static int level = 1;
-	size_t	   number_of_pairs = _vector.size() / std::pow(2, level);
-	size_t	   pair_size = std::pow(2, level);
-	size_t	   remainder_size = _vector.size() - (number_of_pairs * pair_size);
 
-	std::cout << std::endl << "vvvvvvvvvvvvv Recursion level " << level << " vvvvvvvvvvvvv" << std::endl;
-	std::cout << "Number of elements : " << _vector.size() << std::endl;
-	std::cout << "Number of pairs : " << number_of_pairs << std::endl;
-	std::cout << "Pair size : " << pair_size << std::endl;
-	std::cout << "Remainder size : " << remainder_size << std::endl;
-	for (size_t i = 0; i < number_of_pairs; i++)
-	{
-		std::cout << "[" << i << "]: ";
-		for (size_t j = 0; j < pair_size; j++)
-			std::cout << _vector[(i * pair_size) + j] << " ";
-		std::cout << std::endl;
-	}
-	std::cout << "[Remaining elements] : ";
-	for (size_t i = number_of_pairs * pair_size; i < _vector.size(); i++)
-		std::cout << _vector[i] << " ";
-	std::cout << std::endl << std::endl;
-
-	// NOTE: merge sorting start
-	std::cout << "Sorting" << std::endl;
-
-	// compare pair_size / 2 and pair_size, swap everything before middle
-	for (size_t i = 0; i < number_of_pairs; i++)
-	{
-		size_t offset = i * pair_size;
-		size_t middle = (pair_size / 2);
-		size_t end = pair_size - 1;
-		if (_vector[offset + middle - 1] > _vector[offset + end])
-		{
-			for (size_t j = 0; j < middle; j++)
-				std::swap(_vector[offset + j], _vector[offset + middle + j]);
-		}
-		std::cout << "[" << i << "]: ";
-		for (size_t j = 0; j < pair_size; j++)
-			std::cout << _vector[(i * pair_size) + j] << " ";
-		std::cout << std::endl;
-	}
-	std::cout << "[Remaining elements] : ";
-	for (size_t i = number_of_pairs * pair_size; i < _vector.size(); i++)
-		std::cout << _vector[i] << " ";
-	std::cout << std::endl << std::endl;
-
+	initData(_vector_data, level);
+	std::cout << std::endl << "vvvvvvvvvvvvv Recursion level " << _vector_data.level << " vvvvvvvvvvvvv" << std::endl;
+	printData(_vector_data);
+	mergeSort(_vector_data);
 	// NOTE: recursion stops when no more pair can be formed
-	if (number_of_pairs > 1)
+	if (_vector_data.number_of_pairs > 1)
 	{
 		level++;
 		sortVector();
 	}
 	// NOTE : insert starting from deepest recursion
-
-	std::vector<int> main;
-	std::vector<int> pend;
-	std::vector<int> odd;
-	int				 is_odd = number_of_pairs % 2;
 	std::cout << std::endl << "------------- Level " << level << " going back up -------------" << std::endl;
-	std::cout << "Current sequence : ";
-	for (size_t i = 0; i < _vector.size(); i++)
-		std::cout << _vector[i] << " ";
-	std::cout << std::endl;
-	std::cout << "Number of elements : " << _vector.size() << std::endl;
-	std::cout << "Number of pairs : " << number_of_pairs << std::endl;
-	std::cout << "Pair size : " << pair_size << std::endl;
-	std::cout << "Remain size : " << remainder_size << std::endl;
-	std::cout << "Is odd : " << is_odd << std::endl;
-	for (size_t i = 0; i < number_of_pairs - is_odd; i++)
-	{
-		size_t offset = i * pair_size;
-		// put b1, a1, a2 a.. in main
-		if (i == 0 || i % 2 != 0)
-			for (size_t j = 0; j < pair_size; j++)
-				main.push_back(_vector[offset + j]);
-		// put b2, b3, b4... in pend
-		else
-			for (size_t j = 0; j < pair_size; j++)
-				pend.push_back(_vector[offset + j]);
-		// put odd in odd
-	}
-	for (size_t i = pair_size * (number_of_pairs - is_odd); i < pair_size * number_of_pairs; i++)
-		odd.push_back(_vector[i]);
-	std::cout << "Main : ";
-	for (size_t i = 0; i < main.size(); i++)
-		std::cout << main[i] << " ";
-	std::cout << std::endl;
-	std::cout << "Pend : ";
-	for (size_t i = 0; i < pend.size(); i++)
-		std::cout << pend[i] << " ";
-	std::cout << std::endl;
-	std::cout << "Odd : ";
-	for (size_t i = 0; i < odd.size(); i++)
-		std::cout << odd[i] << " ";
-	std::cout << std::endl;
-	std::cout << "[Remaining elements] : ";
-	for (size_t i = number_of_pairs * pair_size; i < _vector.size(); i++)
-		std::cout << _vector[i] << " ";
-	std::cout << std::endl << std::endl;
+	printData(_vector_data);
+	insertSort(_vector_data);
+
+	// std::cout << "Main : ";
+	// for (size_t i = 0; i < data.main.size(); i++)
+	// 	std::cout << data.main[i] << " ";
+	// std::cout << std::endl;
+	// std::cout << "Pend : ";
+	// for (size_t i = 0; i < data.pend.size(); i++)
+	// 	std::cout << data.pend[i] << " ";
+	// std::cout << std::endl;
+	// std::cout << "Odd : ";
+	// for (size_t i = 0; i < data.odd.size(); i++)
+	// 	std::cout << data.odd[i] << " ";
+	// std::cout << std::endl;
+	// std::cout << "[Remaining elements] : ";
+	// for (size_t i = data.number_of_pairs * data.pair_size; i < _vector.size(); i++)
+	// 	std::cout << _vector[i] << " ";
+	// std::cout << std::endl << std::endl;
 	level--;
 
 	// recursion 3 (8elem/pair) n = 0
@@ -250,10 +264,10 @@ std::vector<int> PmergeMe::sortVector()
 	//
 	// Jacob done
 
-	return (_vector);
+	return (_vector_data.sequence);
 }
 
 std::list<int> PmergeMe::sortList()
 {
-	return (_list);
+	return (_list_data.sequence);
 }

@@ -82,8 +82,8 @@ void PmergeMeTest::setPassed()
 			_error = e.what();
 			return;
 		}
-		_result = containerToString(PmergeMe::_vector);
-		if (_result != _expected_result || _result != containerToString(PmergeMe::_list))
+		_result = containerToString(PmergeMe::_vector_data.sequence);
+		if (_result != _expected_result || _result != containerToString(PmergeMe::_list_data.sequence))
 			_passed = false;
 		else
 			_passed = true;
