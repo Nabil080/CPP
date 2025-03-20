@@ -28,6 +28,7 @@ PmergeMeTest::PmergeMeTest(std::vector<int> numbers) : PmergeMe(containerToStrin
 {
 	std::sort(numbers.begin(), numbers.end());
 	_expected_result = containerToString(numbers);
+	std::cout << "DEBUG : " << _expected_result << std::endl;
 }
 
 PmergeMeTest::PmergeMeTest(const PmergeMeTest &other)
@@ -88,8 +89,8 @@ void PmergeMeTest::setPassed()
 			_error = e.what();
 			return;
 		}
-		_result = containerToString(PmergeMe::_vector_data.sequence);
-		if (_result != _expected_result || _result != containerToString(PmergeMe::_list_data.sequence))
+		_result = containerToString(PmergeMe::_vector);
+		if (_result != _expected_result || _result != containerToString(PmergeMe::_list))
 			_passed = false;
 		else
 			_passed = true;

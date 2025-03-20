@@ -11,20 +11,19 @@ static std::vector<int> generateRandomNumbers(size_t size)
 
 	srand(time(0));
 	for (size_t i = 0; i < numbers.capacity(); i++)
-		numbers[i] = rand();
+		numbers.push_back(rand() % 1000);
 	return (numbers);
 }
 
 static void defaultTests()
 {
-	std::vector<int> random10 = generateRandomNumbers(10);
-
-	PmergeMeTest	 tests[] = {
+	PmergeMeTest tests[] = {
 		PmergeMeTest("-1 -10 0 10 1", ERR_RANGE),
 		PmergeMeTest("21474836470 0", ERR_RANGE),
 		PmergeMeTest("1 a 2 b 3", ERR_NOT_A_NUMBER),
 		PmergeMeTest("3   4   2   1   0", "0 1 2 3 4"),
-		PmergeMeTest(random10),
+		PmergeMeTest(generateRandomNumbers(10)),
+		PmergeMeTest(generateRandomNumbers(50)),
 	};
 
 	for (size_t i = 0; i < (sizeof(tests) / sizeof(PmergeMeTest)); i++)
