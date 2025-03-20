@@ -1,5 +1,6 @@
 #include "PmergeMeTest.hpp"
 
+#include <algorithm>
 #include <iostream>
 
 // constructors
@@ -23,9 +24,14 @@ PmergeMeTest::PmergeMeTest(std::string sequence, std::string expected) : PmergeM
 	}
 }
 
+PmergeMeTest::PmergeMeTest(std::vector<int> numbers) : PmergeMe(containerToString(numbers))
+{
+	std::sort(numbers.begin(), numbers.end());
+	_expected_result = containerToString(numbers);
+}
+
 PmergeMeTest::PmergeMeTest(const PmergeMeTest &other)
-	: PmergeMe(other), _error(other._error), _result(other._result), _expected_error(other._expected_error),
-	  _expected_result(other._expected_result)
+	: PmergeMe(other), _error(other._error), _result(other._result), _expected_error(other._expected_error), _expected_result(other._expected_result)
 {
 	std::cerr << "[PmergeMeTest copy constructor]" << std::endl;
 }

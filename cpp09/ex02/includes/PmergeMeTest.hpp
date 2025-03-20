@@ -18,6 +18,7 @@ class PmergeMeTest : private PmergeMe
 
 	public:
 		PmergeMeTest(const PmergeMeTest &other);
+		PmergeMeTest(std::vector<int> numbers);
 		PmergeMeTest(std::string sequence, std::string expected_result);
 		~PmergeMeTest();
 

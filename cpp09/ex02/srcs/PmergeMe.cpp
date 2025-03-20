@@ -12,8 +12,7 @@ PmergeMe::PmergeMe()
 	std::cerr << "[PmergeMe default constructor] ! This should never be called !" << std::endl;
 }
 
-PmergeMe::PmergeMe(const PmergeMe &other)
-	: _sequence(other._sequence), _vector_data(other._vector_data), _list_data(other._list_data)
+PmergeMe::PmergeMe(const PmergeMe &other) : _sequence(other._sequence), _vector_data(other._vector_data), _list_data(other._list_data)
 {
 	std::cerr << "[PmergeMe copy constructor]" << std::endl;
 }
@@ -75,10 +74,14 @@ void PmergeMe::parseSequence()
 void PmergeMe::initData(t_merge_insert_vector &data, int level)
 {
 	data.level = level;
+	data.jacob_level = 2;
 	data.number_of_pairs = data.sequence.size() / std::pow(2, data.level);
 	data.pair_size = std::pow(2, data.level);
 	data.remainder_size = data.sequence.size() - (data.number_of_pairs * data.pair_size);
 	data.is_odd = data.number_of_pairs % 2;
+	data.main.clear();
+	data.odd.clear();
+	data.pend.clear();
 }
 
 void PmergeMe::printData(t_merge_insert_vector &data) const
@@ -103,13 +106,31 @@ void PmergeMe::printData(t_merge_insert_vector &data) const
 	std::cout << "[Remaining elements] : ";
 	for (size_t i = _vector_data.number_of_pairs * _vector_data.pair_size; i < _vector_data.sequence.size(); i++)
 		std::cout << _vector_data.sequence[i] << " ";
+	std::cout << std::endl << std::endl;
+}
+
+void PmergeMe::printLists(t_merge_insert_vector &data) const
+{
+	std::cout << "Main : ";
+	for (size_t i = 0; i < data.main.size(); i++)
+		std::cout << data.main[i] << " ";
 	std::cout << std::endl;
+	std::cout << "Pend : ";
+	for (size_t i = 0; i < data.pend.size(); i++)
+		std::cout << data.pend[i] << " ";
+	std::cout << std::endl;
+	std::cout << "Odd : ";
+	for (size_t i = 0; i < data.odd.size(); i++)
+		std::cout << data.odd[i] << " ";
+	std::cout << std::endl;
+	std::cout << "[Remaining elements] : ";
+	for (size_t i = data.number_of_pairs * data.pair_size; i < data.sequence.size(); i++)
+		std::cout << data.sequence[i] << " ";
+	std::cout << std::endl << std::endl;
 }
 
 void PmergeMe::mergeSort(t_merge_insert_vector &data)
 {
-	std::cout << "Sorting" << std::endl;
-
 	// compare pair_size / 2 and pair_size, swap everything before middle
 	for (size_t i = 0; i < data.number_of_pairs; i++)
 	{
@@ -121,19 +142,13 @@ void PmergeMe::mergeSort(t_merge_insert_vector &data)
 			for (size_t j = 0; j < middle; j++)
 				std::swap(_vector_data.sequence[offset + j], _vector_data.sequence[offset + middle + j]);
 		}
-		std::cout << "[" << i << "]: ";
-		for (size_t j = 0; j < data.pair_size; j++)
-			std::cout << _vector_data.sequence[(i * data.pair_size) + j] << " ";
-		std::cout << std::endl;
 	}
-	std::cout << "[Remaining elements] : ";
-	for (size_t i = data.number_of_pairs * data.pair_size; i < _vector_data.sequence.size(); i++)
-		std::cout << _vector_data.sequence[i] << " ";
-	std::cout << std::endl << std::endl;
 }
 
 void PmergeMe::insertSort(t_merge_insert_vector &data)
 {
+	// NOTE: initializing starting lists following ford johnson
+	std::cout << "=== Starting lists ===" << std::endl;
 	for (size_t i = 0; i < data.number_of_pairs - data.is_odd; i++)
 	{
 		size_t offset = i * data.pair_size;
@@ -147,123 +162,74 @@ void PmergeMe::insertSort(t_merge_insert_vector &data)
 				data.pend.push_back(_vector_data.sequence[offset + j]);
 		// put odd in odd
 	}
-	for (size_t i = data.pair_size * (data.number_of_pairs - data.is_odd); i < data.pair_size * data.number_of_pairs;
-		 i++)
+	for (size_t i = data.pair_size * (data.number_of_pairs - data.is_odd); i < data.pair_size * data.number_of_pairs; i++)
 		data.odd.push_back(_vector_data.sequence[i]);
+	printLists(_vector_data);
+	// TODO: insert pend into main following jacob algo if possible
+	printData(_vector_data);
+	size_t jacob = JACOBSTHAL(data.jacob_level);
+	size_t to_insert = jacob - JACOBSTHAL(data.jacob_level - 1);
+
+	std::cout << "Jacob : " << jacob << ", level : " << data.jacob_level << std::endl;
+	std::cout << "To insert : " << to_insert << std::endl;
+
+	if (data.pend.size() / data.pair_size <= to_insert)
+	{
+		std::cout << "Not using jacobsthal" << std::endl;
+		jacob = 2;
+		to_insert = data.pend.size() / data.pair_size;
+		std::pair<int, int> range(0, jacob);
+
+		if (data.main.empty() == false)
+		{
+			std::cout << "Inserting [" << jacob << "] : " << " from " << range.first << " to " << range.second << std::endl;
+			size_t middle = (range.second - range.first) / 2;
+			int	   num = _vector_data.main[(middle + 1) * data.pair_size - 1];
+			std::cout << "Middle[" << middle << "] : " << num << std::endl;
+		}
+	}
+	else
+		std::cout << "Using jacobsthal" << std::endl;
+
+	// NOTE: Update sequence using the sorted main
+	if (_vector_data.main.empty())
+		return;
+	for (size_t i = 0; i < _vector_data.main.size(); i++)
+		_vector_data.sequence[i] = _vector_data.main[i];
+	for (size_t i = 0; i < _vector_data.odd.size(); i++)
+		_vector_data.sequence[_vector_data.main.size() + i] = _vector_data.main[i];
+	std::cout << "=== Ending list ===" << std::endl;
+	printLists(_vector_data);
 }
 
+// starting list
+// pair(merge) and sort max
+// if possible, go deeper
+// last recursive -> start sorting(insert) going back up
+// sort the list -> go back a lvl, this lvl will sort the list -> up to base lvl with sorted list
 std::vector<int> PmergeMe::sortVector()
 {
-	// starting list
-	// pair(merge) and sort max
-	// if possible, go deeper
-	// last recursive -> start sorting(insert) going back up
-	// sort the list -> go back a lvl, this lvl will sort the list -> up to base lvl with sorted list
-
 	static int level = 1;
 
 	initData(_vector_data, level);
 	std::cout << std::endl << "vvvvvvvvvvvvv Recursion level " << _vector_data.level << " vvvvvvvvvvvvv" << std::endl;
 	printData(_vector_data);
 	mergeSort(_vector_data);
-	// NOTE: recursion stops when no more pair can be formed
+	std::cout << "=== Sorted ===" << std::endl;
+	printData(_vector_data);
+
 	if (_vector_data.number_of_pairs > 1)
 	{
 		level++;
 		sortVector();
 	}
-	// NOTE : insert starting from deepest recursion
+
 	std::cout << std::endl << "------------- Level " << level << " going back up -------------" << std::endl;
 	printData(_vector_data);
 	insertSort(_vector_data);
 
-	// std::cout << "Main : ";
-	// for (size_t i = 0; i < data.main.size(); i++)
-	// 	std::cout << data.main[i] << " ";
-	// std::cout << std::endl;
-	// std::cout << "Pend : ";
-	// for (size_t i = 0; i < data.pend.size(); i++)
-	// 	std::cout << data.pend[i] << " ";
-	// std::cout << std::endl;
-	// std::cout << "Odd : ";
-	// for (size_t i = 0; i < data.odd.size(); i++)
-	// 	std::cout << data.odd[i] << " ";
-	// std::cout << std::endl;
-	// std::cout << "[Remaining elements] : ";
-	// for (size_t i = data.number_of_pairs * data.pair_size; i < _vector.size(); i++)
-	// 	std::cout << _vector[i] << " ";
-	// std::cout << std::endl << std::endl;
 	level--;
-
-	// recursion 3 (8elem/pair) n = 0
-	// jacob num = (2^(n+1) + (-1)^n) / 3 = 1
-	//                          b-1                  a-1
-	//
-	// main : [2-3-9-13-6-12-7-14] [1-5-10-16-1-4-8-20]
-	// pend :
-	// odd elem :
-
-	// recursion 2 (4elem/pair) n = 1
-	// jacob num = (2^(n+1) + (-1)^n) / 3 = 1
-	//                b-1       a-1      a-2
-	// main : [1-5-10-16][1-4-8-20][2-3-9-13]
-	//                b-2
-	// pend : [6-12-7-14] b2 -> look until a2
-	//                     b-3
-	// odd elem : [11-15-0-19] b-3 -> look whole main
-	//
-	//                       b-1         a-1      b-2       a-2
-	// pend + main : [6-12-7-14][1-5-10-16][1-4-8-20][2-3-9-13]
-	//                       b-1         a-1      b-2       a-2         b-3
-	// odd + main : [6-12-7-14][1-5-10-16][11-15-0-19][1-4-8-20][2-3-9-13]
-
-	// recursion 1 (2elem/pair) n = 2
-	// jacob num = (2^(n+1) + (-1)^n) / 3 = 3
-	//           b-1   a-1    a-2   a-3   a-4   a-5
-	// main : [6-12][7-14][10-16][0-19][8-20][9-13]
-	//          b-2    b-3  b-4  b-5
-	// pend : [1-5][11-15][1-4][2-3]
-	//
-	// odd elem :
-	//
-	// Jacob num is at 3, we inster 3-1 starting from b3, search up to a-2
-	//                b-1   a-1    b-3    a-2   a-3   a-4   a-5
-	// b3 + main : [6-12][7-14][11-15][10-16][0-19][8-20][9-13]
-	//               b-2   b-1   a-1    b-3    a-2   a-3   a-4   a-5
-	// b2 + main : [1-5][6-12][7-14][11-15][10-16][0-19][8-20][9-13]
-	//
-	// Jacob done
-	// recursion 1 (2elem/pair) n = 3
-	// jacob num = (2^(n+1) + (-1)^n) / 3 = 5
-	//          b-2   b-1   a-1    b-3    a-2   a-3   a-4   a-5
-	// main : [1-5][6-12][7-14][11-15][10-16][0-19][8-20][9-13]
-	//          b-4  b-5
-	// pend : [1-4][2-3]
-	//
-	// odd elem :
-	//
-	// Jacob num is at 5, we inster 5-3 starting from b5, search up to a-4
-	//                b-5  b-1   a-1    b-3    a-2   a-3   a-4   a-5
-	// b5 + main : [2-3][6-12][7-14][11-15][10-16][0-19][8-20][9-13]
-	//                b-5 b-4   b-1   a-1    b-3    a-2   a-3   a-4   a-5
-	// b4 + main : [2-3][1-4][6-12][7-14][11-15][10-16][0-19][8-20][9-13]
-	//
-	// Jacob done
-
-	// recursion 0 (1elem/pair) n = 2 (skip 0/1)
-	// jacob num = (2^(n+1) + (-1)^n) / 3 = 3
-	//       b1a1a2-a3-a4-a5-a6-a7-a9-a8
-	// main : 2-3-4-12-14-15-16-19-20
-	//      b2-b3-b4-b5-b6-b7-b8
-	// pend : 1-6-7-11-10-0-8
-	// Jacob num is at 3, we insert 3-1 starting from b3, search up to a-2
-	//       b1a1a2-b3-a3-a4-a5-a6-a7-a9-a8
-	// b3 + main : 2-3-4-6-12-14-15-16-19-20
-	//       b1a1a2-b3-a3-a4-a5-a6-a7-a9-a8
-	// b3 + main : 1-2-3-4-6-12-14-15-16-19-20
-	//
-	// Jacob done
-
+	initData(_vector_data, level);
 	return (_vector_data.sequence);
 }
 

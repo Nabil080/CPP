@@ -1,19 +1,30 @@
 #include "PmergeMeTest.hpp"
 
+#include <cstdlib>
 #include <ctime>
 #include <iostream>
 
-// Possible errors :
-// ERR_RANGE ERR_NOT_A_NUMBER
+static std::vector<int> generateRandomNumbers(size_t size)
+{
+	std::vector<int> numbers;
+	numbers.reserve(size);
+
+	srand(time(0));
+	for (size_t i = 0; i < numbers.capacity(); i++)
+		numbers[i] = rand();
+	return (numbers);
+}
+
 static void defaultTests()
 {
-	PmergeMeTest tests[] = {
+	std::vector<int> random10 = generateRandomNumbers(10);
+
+	PmergeMeTest	 tests[] = {
 		PmergeMeTest("-1 -10 0 10 1", ERR_RANGE),
-		PmergeMeTest("1 a 2 b 3", ERR_NOT_A_NUMBER),
-		PmergeMeTest("9 8 7 6 5 4 3 2 1 0", "0 1 2 3 4 5 6 7 8 9"),
-		PmergeMeTest("0 1 2 3 4 5 6 7 8 9", "0 1 2 3 4 5 6 7 8 9"),
-		PmergeMeTest("0 9 1 8 2 7 3     6 4 5", "0 1 2 3 4 5 6 7 8 9"),
 		PmergeMeTest("21474836470 0", ERR_RANGE),
+		PmergeMeTest("1 a 2 b 3", ERR_NOT_A_NUMBER),
+		PmergeMeTest("3   4   2   1   0", "0 1 2 3 4"),
+		PmergeMeTest(random10),
 	};
 
 	for (size_t i = 0; i < (sizeof(tests) / sizeof(PmergeMeTest)); i++)

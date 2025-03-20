@@ -5,8 +5,9 @@
 #include <string>
 #include <vector>
 
-#define ERR_RANGE		 "Number outside the valid range (0 - 2147483647)"
-#define ERR_NOT_A_NUMBER "Not a valid number"
+#define ERR_RANGE		  "Number outside the valid range (0 - 2147483647)"
+#define ERR_NOT_A_NUMBER  "Not a valid number"
+#define JACOBSTHAL(level) (pow(2, (level + 1)) + pow(-1, level)) / 3;
 
 class PmergeMe
 {
@@ -14,6 +15,7 @@ class PmergeMe
 		typedef struct s_merge_insert_vector
 		{
 				std::vector<int> sequence;
+				int				 jacob_level;
 				int				 level;
 				size_t			 number_of_pairs;
 				size_t			 pair_size;
@@ -26,6 +28,7 @@ class PmergeMe
 		typedef struct s_merge_insert_list
 		{
 				std::list<int> sequence;
+				int			   jacob_level;
 				int			   level;
 				size_t		   number_of_pairs;
 				size_t		   pair_size;
@@ -57,6 +60,8 @@ class PmergeMe
 		void initData(t_merge_insert_list &data, int level);
 		void printData(t_merge_insert_vector &data) const;
 		void printData(t_merge_insert_list &data) const;
+		void printLists(t_merge_insert_vector &data) const;
+		void printLists(t_merge_insert_list &data) const;
 		void mergeSort(t_merge_insert_vector &data);
 		void insertSort(t_merge_insert_vector &data);
 };
