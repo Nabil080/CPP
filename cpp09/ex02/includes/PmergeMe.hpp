@@ -9,6 +9,8 @@
 #define ERR_NOT_A_NUMBER  "Not a valid number"
 #define JACOBSTHAL(level) (pow(2, (level + 1)) + pow(-1, level)) / 3;
 
+typedef std::vector<int>::iterator iterator;
+
 class PmergeMe
 {
 	protected:
