@@ -9,14 +9,15 @@
 #define ERR_NOT_A_NUMBER  "Not a valid number"
 #define JACOBSTHAL(level) (pow(2, (level + 1)) + pow(-1, level)) / 3;
 
-typedef std::vector<int>::iterator iterator;
+typedef std::vector<int> vector;
+typedef vector::iterator iterator;
 
 class PmergeMe
 {
 	protected:
-		std::string		 _sequence;
-		std::vector<int> _vector;
-		std::list<int>	 _list;
+		std::string	   _sequence;
+		vector		   _vector;
+		std::list<int> _list;
 		PmergeMe();
 
 	public:
@@ -24,11 +25,11 @@ class PmergeMe
 		PmergeMe(std::string sequence);
 		~PmergeMe();
 
-		PmergeMe		&operator=(const PmergeMe &other);
+		PmergeMe	  &operator=(const PmergeMe &other);
 
-		void			 parseSequence();
-		std::vector<int> sortVector();
-		std::list<int>	 sortList();
+		void		   parseSequence();
+		vector		   sortVector();
+		std::list<int> sortList();
 };
 
 #endif

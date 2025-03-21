@@ -71,16 +71,21 @@ void PmergeMe::parseSequence()
 	std::cerr << _vector.size() << " numbers" << std::endl;
 }
 
-static void printData(std::vector<int> vec, int level)
+static void printRange(iterator start, iterator end)
+{
+	for (iterator it = start; it != end; it++)
+		std::cout << *it << (it + 1 != end ? " " : "");
+}
+
+static void printData(vector &vec, int level)
 {
 	int		 element_size = std::pow(2, level);
 	int		 element_count = vec.size() / element_size;
 	int		 remainder_size = vec.size() - element_size * element_count;
 	iterator begin = vec.begin(), end = vec.end();
 
-	std::cout << "Sequence =";
-	for (iterator it = begin; it != end; it++)
-		std::cout << " " << *it;
+	std::cout << "Sequence = ";
+	printRange(begin, end);
 	std::cout << std::endl;
 	std::cout << "Size = " << vec.size() << std::endl;
 	std::cout << "Element_size = " << element_size << std::endl;
@@ -89,24 +94,7 @@ static void printData(std::vector<int> vec, int level)
 	std::cout << std::endl;
 }
 
-static void printElem(std::vector<int> vec, int level)
-{
-	int		 element_size = std::pow(2, level);
-	int		 element_count = vec.size() / element_size;
-	int		 remainder_size = vec.size() - element_size * element_count;
-	iterator begin = vec.begin(), end = vec.end();
-
-	for (iterator elem_start = begin; elem_start != end - remainder_size; std::advance(elem_start, element_size))
-	{
-		iterator elem_end = elem_start + element_size;
-		std::cout << "Elem[" << std::distance(begin, elem_start) / element_size << "]:";
-		for (iterator it = elem_start; it != elem_end; it++)
-			std::cout << " " << *it;
-		std::cout << std::endl;
-	}
-}
-
-void mergeSort(std::vector<int> vec, int level)
+static void printElem(vector &vec, int level)
 {
 	int		 elem_size = std::pow(2, level);
 	int		 elem_count = vec.size() / elem_size;
@@ -115,15 +103,48 @@ void mergeSort(std::vector<int> vec, int level)
 
 	for (iterator elem_start = begin; elem_start != end - remainder_size; std::advance(elem_start, elem_size))
 	{
+		std::cout << "Elem[" << std::distance(begin, elem_start) / elem_size << "]: [";
+		printRange(elem_start, elem_start + elem_size / 2);
+		std::cout << "] [";
+		printRange(elem_start + elem_size / 2, elem_start + elem_size);
+		std::cout << "]" << std::endl;
+	}
+
+	std::cout << "Remainder: [";
+	printRange(end - remainder_size, end);
+	std::cout << "]" << std::endl;
+}
+
+void mergeSort(vector &vec, int level)
+{
+	int		 elem_size = std::pow(2, level);
+	int		 elem_count = vec.size() / elem_size;
+	int		 remainder_size = vec.size() - elem_size * elem_count;
+	iterator begin = vec.begin(), end = vec.end();
+	int		 jump_to_last_of_elem = elem_size / 2 - 1;
+
+	for (iterator elem_start = begin; elem_start != end - remainder_size; std::advance(elem_start, elem_size))
+	{
 		iterator elem_half = elem_start + elem_size / 2;
 
-		if (*elem_start < *elem_half)
+		if (*(elem_start + jump_to_last_of_elem) > *(elem_half + jump_to_last_of_elem))
 			for (int i = 0; i < elem_size / 2; i++)
 				std::iter_swap(elem_start + i, elem_half + i);
 	}
 }
 
-void mergeInsertSort(std::vector<int> vec, int level)
+void insertSort(vector &vec, int level)
+{
+	int elem_size = std::pow(2, level);
+	int elem_count = vec.size() / elem_size;
+	// int		 remainder_size = vec.size() - elem_size * elem_count;
+	// iterator begin = vec.begin(), end = vec.end();
+
+	(void)elem_count;
+	// initialize main with a1 b1 a2 a3 a4 a5;
+}
+
+void mergeInsertSort(vector &vec, int level)
 {
 	std::cout << std::endl << "------------- Level " << level << "-------------" << std::endl;
 	printData(vec, level);
@@ -134,15 +155,14 @@ void mergeInsertSort(std::vector<int> vec, int level)
 	printElem(vec, level);
 
 	const int elem_count = vec.size() / pow(2, level);
-	if (elem_count > 2)
+	if (elem_count > 1)
 		mergeInsertSort(vec, level + 1);
 
 	std::cout << std::endl << "Level " << level << ": [Binary inserting]" << std::endl << std::endl;
+	insertSort(vec, level);
 }
 
-// last recursive -> start sorting(insert) going back up
-// sort the list -> go back a lvl, this lvl will sort the list -> up to base lvl with sorted list
-std::vector<int> PmergeMe::sortVector()
+vector PmergeMe::sortVector()
 {
 	mergeInsertSort(_vector, 1);
 	return (_vector);
