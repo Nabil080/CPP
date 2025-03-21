@@ -77,6 +77,12 @@ static void printRange(iterator start, iterator end)
 		std::cout << *it << (it + 1 != end ? " " : "");
 }
 
+static void printElem(vector &vec, std::string name, int jump)
+{
+	for (iterator it = vec.begin(); it != vec.end(); std::advance(it, jump))
+		std::cout << name << "[" << std::distance(vec.begin(), it) << "]: " << *it << std::endl;
+}
+
 static void printData(vector &vec, int level)
 {
 	int		 element_size = std::pow(2, level);
@@ -135,13 +141,26 @@ void mergeSort(vector &vec, int level)
 
 void insertSort(vector &vec, int level)
 {
-	int elem_size = std::pow(2, level);
-	int elem_count = vec.size() / elem_size;
-	// int		 remainder_size = vec.size() - elem_size * elem_count;
-	// iterator begin = vec.begin(), end = vec.end();
+	int		 elem_size = std::pow(2, level);
+	int		 elem_count = vec.size() / elem_size;
+	int		 remainder_size = vec.size() - elem_size * elem_count;
+	iterator begin = vec.begin(), end = vec.end();
 
-	(void)elem_count;
+	vector	 main;
+	vector	 pend;
+
 	// initialize main with a1 b1 a2 a3 a4 a5;
+	for (iterator elem_start = begin; elem_start != end - remainder_size; std::advance(elem_start, elem_size))
+	{
+		iterator elem_half = elem_start + elem_size / 2;
+		iterator elem_end = elem_start + elem_size;
+
+		main.insert(main.end(), elem_start, elem_half);
+		pend.insert(pend.end(), elem_half, elem_end);
+	}
+	// TODO: check main and pend correct insertion
+	// start from begin + 1
+	// maybe refactor so that elem_count is pair_count and an elemen is half of what it currently is
 }
 
 void mergeInsertSort(vector &vec, int level)
