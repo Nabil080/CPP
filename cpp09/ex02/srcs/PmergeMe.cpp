@@ -1,5 +1,6 @@
 #include "PmergeMe.hpp"
 
+#include <algorithm>
 #include <climits>
 #include <cmath>
 #include <cstdlib>
@@ -71,114 +72,125 @@ void PmergeMe::parseSequence()
 	std::cerr << _vector.size() << " numbers" << std::endl;
 }
 
-static void printRange(iterator start, iterator end)
+void PmergeMe::printRange(iterator start, iterator end)
 {
 	for (iterator it = start; it != end; it++)
 		std::cout << *it << (it + 1 != end ? " " : "");
 }
 
-static void printElem(vector &vec, std::string name, int jump)
+void PmergeMe::printElem(vector &vec, t_data &data)
 {
-	for (iterator it = vec.begin(); it != vec.end(); std::advance(it, jump))
-		std::cout << name << "[" << std::distance(vec.begin(), it) << "]: " << *it << std::endl;
-}
-
-static void printData(vector &vec, int level)
-{
-	int		 element_size = std::pow(2, level);
-	int		 element_count = vec.size() / element_size;
-	int		 remainder_size = vec.size() - element_size * element_count;
-	iterator begin = vec.begin(), end = vec.end();
-
-	std::cout << "Sequence = ";
-	printRange(begin, end);
-	std::cout << std::endl;
-	std::cout << "Size = " << vec.size() << std::endl;
-	std::cout << "Element_size = " << element_size << std::endl;
-	std::cout << "Element_count = " << element_count << std::endl;
-	std::cout << "Remainder_size = " << remainder_size << std::endl;
-	std::cout << std::endl;
-}
-
-static void printElem(vector &vec, int level)
-{
-	int		 elem_size = std::pow(2, level);
-	int		 elem_count = vec.size() / elem_size;
-	int		 remainder_size = vec.size() - elem_size * elem_count;
-	iterator begin = vec.begin(), end = vec.end();
-
-	for (iterator elem_start = begin; elem_start != end - remainder_size; std::advance(elem_start, elem_size))
+	for (iterator elem_start = vec.begin(); elem_start < vec.end(); std::advance(elem_start, data.elem_size))
 	{
-		std::cout << "Elem[" << std::distance(begin, elem_start) / elem_size << "]: [";
-		printRange(elem_start, elem_start + elem_size / 2);
+		std::cout << "Elem[" << std::distance(vec.begin(), elem_start) / data.elem_size << "]: [";
+		printRange(elem_start, elem_start + data.elem_size);
+		std::cout << "]" << std::endl;
+	}
+}
+
+void PmergeMe::printData(t_data &data)
+{
+	std::cout << "Sequence = ";
+	printRange(data.begin, data.end);
+	std::cout << std::endl;
+	std::cout << "Size = " << data.vec.size() << std::endl;
+	std::cout << "Element_size = " << data.elem_size << std::endl;
+	std::cout << "Pair_size = " << data.pair_size << std::endl;
+	std::cout << "Pair_count = " << data.pair_count << std::endl;
+	std::cout << "Remainder_size = " << data.remainder_size << std::endl;
+	std::cout << std::endl;
+}
+
+void PmergeMe::printPairs(t_data &data)
+{
+	for (iterator pair_start = data.begin; pair_start != data.end - data.remainder_size; std::advance(pair_start, data.pair_size))
+	{
+		std::cout << "Pair[" << std::distance(data.begin, pair_start) / data.pair_size << "]: [";
+		printRange(pair_start, pair_start + data.elem_size);
 		std::cout << "] [";
-		printRange(elem_start + elem_size / 2, elem_start + elem_size);
+		printRange(pair_start + data.elem_size, pair_start + data.pair_size);
 		std::cout << "]" << std::endl;
 	}
 
 	std::cout << "Remainder: [";
-	printRange(end - remainder_size, end);
+	printRange(data.end - data.remainder_size, data.end);
 	std::cout << "]" << std::endl;
 }
 
-void mergeSort(vector &vec, int level)
+void PmergeMe::mergeSort(t_data &data)
 {
-	int		 elem_size = std::pow(2, level);
-	int		 elem_count = vec.size() / elem_size;
-	int		 remainder_size = vec.size() - elem_size * elem_count;
-	iterator begin = vec.begin(), end = vec.end();
-	int		 jump_to_last_of_elem = elem_size / 2 - 1;
+	int jump_to_last_of_elem = data.elem_size - 1;
 
-	for (iterator elem_start = begin; elem_start != end - remainder_size; std::advance(elem_start, elem_size))
+	for (iterator pair_start = data.begin; pair_start != data.end - data.remainder_size; std::advance(pair_start, data.pair_size))
 	{
-		iterator elem_half = elem_start + elem_size / 2;
+		iterator next_elem = pair_start + data.elem_size;
 
-		if (*(elem_start + jump_to_last_of_elem) > *(elem_half + jump_to_last_of_elem))
-			for (int i = 0; i < elem_size / 2; i++)
-				std::iter_swap(elem_start + i, elem_half + i);
+		if (*(pair_start + jump_to_last_of_elem) > *(next_elem + jump_to_last_of_elem))
+			for (int i = 0; i < data.elem_size; i++)
+				std::iter_swap(pair_start + i, next_elem + i);
 	}
 }
 
-void insertSort(vector &vec, int level)
+void PmergeMe::insertSort(t_data &data)
 {
-	int		 elem_size = std::pow(2, level);
-	int		 elem_count = vec.size() / elem_size;
-	int		 remainder_size = vec.size() - elem_size * elem_count;
-	iterator begin = vec.begin(), end = vec.end();
+	vector main;
+	vector pend;
 
-	vector	 main;
-	vector	 pend;
-
-	// initialize main with a1 b1 a2 a3 a4 a5;
-	for (iterator elem_start = begin; elem_start != end - remainder_size; std::advance(elem_start, elem_size))
+	// initialize main with a1,b1,a2,a3,a4...;
+	// initializes pend with b2,b3,b4...
+	main.insert(main.end(), data.begin, data.begin + data.pair_size);
+	for (iterator pair_start = data.begin + data.pair_size; pair_start != data.end - data.remainder_size; std::advance(pair_start, data.pair_size))
 	{
-		iterator elem_half = elem_start + elem_size / 2;
-		iterator elem_end = elem_start + elem_size;
+		iterator next_elem = pair_start + data.elem_size;
+		iterator pair_end = pair_start + data.pair_size;
 
-		main.insert(main.end(), elem_start, elem_half);
-		pend.insert(pend.end(), elem_half, elem_end);
+		std::cout << "MAIN Inserting from " << *pair_start << " to " << *next_elem << std::endl;
+		std::cout << "PEND Inserting from " << *next_elem << " to " << *pair_end << std::endl << std::endl;
+		main.insert(main.end(), next_elem, pair_end);
+		pend.insert(pend.end(), pair_start, next_elem);
 	}
-	// TODO: check main and pend correct insertion
-	// start from begin + 1
-	// maybe refactor so that elem_count is pair_count and an elemen is half of what it currently is
+
+	std::cout << "-- MAIN --" << std::endl;
+	printElem(main, data);
+	std::cout << "-- PEND --" << std::endl;
+	printElem(pend, data);
+
+	// replace vector by main
+	std::cout << "-- VEC before main --" << std::endl;
+	printRange(data.vec.begin(), data.vec.end());
+	std::copy(main.begin(), main.end(), data.vec.begin());
+	std::cout << std::endl << "-- VEC after main --" << std::endl;
+	printRange(data.vec.begin(), data.vec.end());
 }
 
-void mergeInsertSort(vector &vec, int level)
+void PmergeMe::mergeInsertSort(vector &vec, int level)
 {
+	t_data data;
+
+	data.vec = vec;
+	data.level = level;
+	data.elem_size = std::pow(2, level) / 2;
+	data.pair_size = data.elem_size * 2;
+	data.pair_count = vec.size() / (data.pair_size);
+	data.remainder_size = vec.size() - data.pair_size * data.pair_count;
+	data.begin = vec.begin();
+	data.end = vec.end();
+
 	std::cout << std::endl << "------------- Level " << level << "-------------" << std::endl;
-	printData(vec, level);
-	printElem(vec, level);
+	printData(data);
+	printPairs(data);
 
 	std::cout << std::endl << "Level " << level << ": [Merge sorting]" << std::endl << std::endl;
-	mergeSort(vec, level);
-	printElem(vec, level);
+	mergeSort(data);
+	printPairs(data);
 
-	const int elem_count = vec.size() / pow(2, level);
-	if (elem_count > 1)
+	if (data.pair_count > 1)
 		mergeInsertSort(vec, level + 1);
 
 	std::cout << std::endl << "Level " << level << ": [Binary inserting]" << std::endl << std::endl;
-	insertSort(vec, level);
+	insertSort(data);
+	if (level == 3)
+		exit(0);
 }
 
 vector PmergeMe::sortVector()

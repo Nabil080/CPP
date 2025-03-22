@@ -5,7 +5,7 @@ NAME =  PmergeMe
 CC = clang++
 
 FLAGS = -std=c++98 -Wall -Wextra -Werror 
-FLAGS += -Wshadow -pedantic -g
+FLAGS += -Wshadow -pedantic
 
 INCLUDES =	includes	
 
