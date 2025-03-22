@@ -97,13 +97,14 @@ void PmergeMe::printData(t_data &data)
 	std::cout << "Element_size = " << data.elem_size << std::endl;
 	std::cout << "Pair_size = " << data.pair_size << std::endl;
 	std::cout << "Pair_count = " << data.pair_count << std::endl;
+	std::cout << "Odd_element = " << data.odd_element << std::endl;
 	std::cout << "Remainder_size = " << data.remainder_size << std::endl;
 	std::cout << std::endl;
 }
 
 void PmergeMe::printPairs(t_data &data)
 {
-	for (iterator pair_start = data.begin; pair_start != data.end - data.remainder_size; std::advance(pair_start, data.pair_size))
+	for (iterator pair_start = data.begin; pair_start != data.end; std::advance(pair_start, data.pair_size))
 	{
 		std::cout << "Pair[" << std::distance(data.begin, pair_start) / data.pair_size << "]: [";
 		printRange(pair_start, pair_start + data.elem_size);
@@ -111,9 +112,14 @@ void PmergeMe::printPairs(t_data &data)
 		printRange(pair_start + data.elem_size, pair_start + data.pair_size);
 		std::cout << "]" << std::endl;
 	}
+	std::cout << "Odd_element: [";
+	if (data.odd_element)
+		printRange(data.end - data.elem_size, data.end);
+	std::cout << "]" << std::endl;
 
 	std::cout << "Remainder: [";
-	printRange(data.end - data.remainder_size, data.end);
+	if (data.remainder_size)
+		printRange(data.end, data.vec.end());
 	std::cout << "]" << std::endl;
 }
 
@@ -121,9 +127,10 @@ void PmergeMe::mergeSort(t_data &data)
 {
 	int jump_to_last_of_elem = data.elem_size - 1;
 
-	for (iterator pair_start = data.begin; pair_start != data.end - data.remainder_size; std::advance(pair_start, data.pair_size))
+	for (iterator pair_start = data.begin; pair_start != data.end; std::advance(pair_start, data.pair_size))
 	{
 		iterator next_elem = pair_start + data.elem_size;
+		std::cout << "Start = " << *pair_start << ", next_elem = " << *next_elem << ", next_pair = " << *(pair_start + data.pair_size) << std::endl;
 
 		if (*(pair_start + jump_to_last_of_elem) > *(next_elem + jump_to_last_of_elem))
 			for (int i = 0; i < data.elem_size; i++)
@@ -136,16 +143,14 @@ void PmergeMe::insertSort(t_data &data)
 	vector main;
 	vector pend;
 
-	// initialize main with a1,b1,a2,a3,a4...;
-	// initializes pend with b2,b3,b4...
+	// NOTE: main and pend initialization
+	// mend : (a1, b1, b2, b3..), pend : (a2, a3, a4...)
 	main.insert(main.end(), data.begin, data.begin + data.pair_size);
 	for (iterator pair_start = data.begin + data.pair_size; pair_start != data.end - data.remainder_size; std::advance(pair_start, data.pair_size))
 	{
 		iterator next_elem = pair_start + data.elem_size;
 		iterator pair_end = pair_start + data.pair_size;
 
-		std::cout << "MAIN Inserting from " << *pair_start << " to " << *next_elem << std::endl;
-		std::cout << "PEND Inserting from " << *next_elem << " to " << *pair_end << std::endl << std::endl;
 		main.insert(main.end(), next_elem, pair_end);
 		pend.insert(pend.end(), pair_start, next_elem);
 	}
@@ -155,12 +160,16 @@ void PmergeMe::insertSort(t_data &data)
 	std::cout << "-- PEND --" << std::endl;
 	printElem(pend, data);
 
-	// replace vector by main
-	std::cout << "-- VEC before main --" << std::endl;
-	printRange(data.vec.begin(), data.vec.end());
+	// NOTE: binary insertion start
+	while (pend.empty() == false)
+	{
+		// calculate jacobsthal number
+		// binary insert based on jacobsthal and using range
+		// binary insert the rest
+	}
+
+	// NOTE: Update sequence with main
 	std::copy(main.begin(), main.end(), data.vec.begin());
-	std::cout << std::endl << "-- VEC after main --" << std::endl;
-	printRange(data.vec.begin(), data.vec.end());
 }
 
 void PmergeMe::mergeInsertSort(vector &vec, int level)
@@ -172,9 +181,10 @@ void PmergeMe::mergeInsertSort(vector &vec, int level)
 	data.elem_size = std::pow(2, level) / 2;
 	data.pair_size = data.elem_size * 2;
 	data.pair_count = vec.size() / (data.pair_size);
-	data.remainder_size = vec.size() - data.pair_size * data.pair_count;
+	data.odd_element = ((int)vec.size() - (data.pair_size * data.pair_count) >= data.elem_size);
+	data.remainder_size = vec.size() % data.elem_size;
 	data.begin = vec.begin();
-	data.end = vec.end();
+	data.end = vec.end() - data.remainder_size - data.elem_size * data.odd_element;
 
 	std::cout << std::endl << "------------- Level " << level << "-------------" << std::endl;
 	printData(data);

@@ -40,6 +40,7 @@ class PmergeMe
 				int		 pair_size;
 				int		 pair_count;
 				int		 remainder_size;
+				bool	 odd_element;
 				iterator begin;
 				iterator end;
 		} t_data;
