@@ -32,25 +32,7 @@ class PmergeMe
 		void		   parseSequence();
 
 	private:
-		typedef struct s_data
-		{
-				vector	 vec;
-				int		 level;
-				int		 elem_size;
-				int		 pair_size;
-				int		 pair_count;
-				int		 remainder_size;
-				bool	 odd_element;
-				iterator begin;
-				iterator end;
-		} t_data;
-
 		void mergeInsertSort(vector &vec, int level);
-		void insertSort(t_data &data);
-		void mergeSort(t_data &data);
-		void printPairs(t_data &data);
-		void printData(t_data &data);
-		void printElem(vector &vec, t_data &data);
 		void printRange(iterator start, iterator end);
 };
 
