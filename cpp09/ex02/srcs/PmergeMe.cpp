@@ -162,7 +162,6 @@ void PmergeMe::insertSort(t_data &data)
 	// NOTE: insert odd element in pend
 	if (data.odd_element)
 		pend.push_back(data.end + data.elem_size - 1);
-
 	std::cout << "Main :";
 	for (size_t i = 0; i < main.size(); i++)
 		std::cout << " " << *(main[i]);
@@ -179,53 +178,55 @@ void PmergeMe::insertSort(t_data &data)
 	{
 		int curr_jacobsthal = JACOBSTHAL(jacobsthal_index);
 		int jacobsthal_diff = curr_jacobsthal - prev_jacobsthal;
-		// int offset = 0;
 
-		if (jacobsthal_diff > static_cast<int>(pend.size()))
+		if (jacobsthal_diff > (int)pend.size())
 			break;
-		std::cout << "Current jacbosthal : " << curr_jacobsthal << std::endl;
-		std::cout << "Diff : " << jacobsthal_diff << std::endl;
 		std::vector<iterator>::iterator to_insert = (pend.begin() + jacobsthal_diff - 1);
 		std::vector<iterator>::iterator search_bound = (main.begin() + curr_jacobsthal + inserted_numbers);
 
 		for (int insertions_left = jacobsthal_diff; insertions_left > 0; insertions_left--)
 		{
-			std::cout << "To insert : " << **to_insert << std::endl;
-			std::cout << "Bound : " << **(search_bound - 1) << std::endl;
 
 			std::vector<iterator>::iterator pos_to_insert =
 				std::upper_bound(main.begin(), search_bound, *to_insert, iterator_comp);
-			std::cout << "Position for insertion : " << **pos_to_insert << std::endl;
 			std::vector<iterator>::iterator inserted = main.insert(pos_to_insert, *to_insert);
 			pend.erase(to_insert);
 			(void)inserted;
 			to_insert--;
-
-			// break; // temporary cuz trying first loop only
+			std::cout << "Main :";
+			for (size_t i = 0; i < main.size(); i++)
+				std::cout << " " << *(main[i]);
+			std::cout << std::endl;
+			std::cout << "Pend :";
+			for (size_t i = 0; i < pend.size(); i++)
+				std::cout << " " << *(pend[i]);
+			std::cout << std::endl << std::endl;
 		}
-
 		prev_jacobsthal = curr_jacobsthal;
-		// inserted_numbers += jacobsthal_diff;
-		// break; // temporary cuz trying first loop only
 	}
-	std::cout << "Main :";
-	for (size_t i = 0; i < main.size(); i++)
-		std::cout << " " << *(main[i]);
-	std::cout << std::endl;
-	std::cout << "Pend :";
-	for (size_t i = 0; i < pend.size(); i++)
-		std::cout << " " << *(pend[i]);
-	std::cout << std::endl << std::endl;
 
-	// NOTE: replace old sequence by main
-	data.vec.clear();
+	vector sorted;
+	sorted.reserve(data.vec.size());
+
+	// NOTE: it is last (and highest) number of an element
+	// We insert in reserve order to keep the correct order
 	for (std::vector<iterator>::iterator it = main.begin(); it != main.end(); it++)
 	{
-		// NOTE: insert in reversed order since it is the last element
 		iterator pair_start = ((*it) - data.elem_size + 1);
-		iterator pair_end = (*it) + 1;
-		data.vec.insert(data.vec.end(), pair_start, pair_end);
+		iterator pair_end = ((*it) + 1);
+		sorted.insert(sorted.end(), pair_start, pair_end);
 	}
+	// NOTE: add the remaining elements at the end (not sorted)
+	sorted.insert(sorted.end(), data.vec.end() - data.remainder_size, data.vec.end());
+
+	std::cout << "Sorted :";
+	for (iterator it = sorted.begin(); it != sorted.end(); it++)
+		std::cout << " " << *it;
+	std::cout << std::endl;
+
+	data.vec = sorted;
+	data.begin = data.vec.begin();
+	data.end = data.vec.end() - data.remainder_size - data.elem_size * data.odd_element;
 }
 
 void PmergeMe::mergeInsertSort(vector &vec, int level)
@@ -242,25 +243,26 @@ void PmergeMe::mergeInsertSort(vector &vec, int level)
 	data.begin = vec.begin();
 	data.end = vec.end() - data.remainder_size - data.elem_size * data.odd_element;
 
-	// std::cout << std::endl << "------------- Level " << level << "-------------" << std::endl;
-	// printData(data);
-	// printPairs(data);
+	std::cout << "Level " << level << " start :";
+	for (size_t i = 0; i < data.vec.size(); i++)
+		std::cout << " " << data.vec[i];
+	std::cout << std::endl;
 
-	// std::cout << std::endl << "Level " << level << ": [Merge sorting]" << std::endl << std::endl;
 	mergeSort(data);
-	// printPairs(data);
 
-	std::cout << "Level " << level << " sequence:";
+	std::cout << "Level " << level << " after merge sort:";
 	for (size_t i = 0; i < vec.size(); i++)
 		std::cout << " " << vec[i];
 	std::cout << std::endl;
+
 	if (data.pair_count > 1)
 		mergeInsertSort(vec, level + 1);
-	// std::cout << std::endl << "Level " << level << ": [Binary inserting]" << std::endl << std::endl;
-	if (level == 2)
+
+	if (level == 1)
 		exit(0);
 	insertSort(data);
-	std::cout << "Level " << level << " sequence after Insertion :";
+
+	std::cout << "Level " << level << " after insertion :";
 	for (size_t i = 0; i < data.vec.size(); i++)
 		std::cout << " " << data.vec[i];
 	std::cout << std::endl;
