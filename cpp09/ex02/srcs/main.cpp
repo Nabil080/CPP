@@ -45,15 +45,11 @@ int main(int argc, char **argv)
 	PmergeMe		 merger(argv[1]);
 	std::list<int>	 list;
 	std::vector<int> vector;
-	time_t			 start;
 
 	try
 	{
 		merger.parseSequence();
-		// TODO: sort list and vector and compare time
-		std::time(&start);
 		merger.sortVector();
-		std::cout << std::endl;
 	}
 	catch (std::runtime_error &e)
 	{

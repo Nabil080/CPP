@@ -130,7 +130,6 @@ void PmergeMe::mergeSort(t_data &data)
 	for (iterator pair_start = data.begin; pair_start != data.end; std::advance(pair_start, data.pair_size))
 	{
 		iterator next_elem = pair_start + data.elem_size;
-		std::cout << "Start = " << *pair_start << ", next_elem = " << *next_elem << ", next_pair = " << *(pair_start + data.pair_size) << std::endl;
 
 		if (*(pair_start + jump_to_last_of_elem) > *(next_elem + jump_to_last_of_elem))
 			for (int i = 0; i < data.elem_size; i++)
@@ -143,33 +142,30 @@ void PmergeMe::insertSort(t_data &data)
 	vector main;
 	vector pend;
 
-	// NOTE: main and pend initialization
-	// mend : (a1, b1, b2, b3..), pend : (a2, a3, a4...)
-	main.insert(main.end(), data.begin, data.begin + data.pair_size);
-	for (iterator pair_start = data.begin + data.pair_size; pair_start != data.end - data.remainder_size; std::advance(pair_start, data.pair_size))
+	std::cout << "Elem size : " << data.elem_size << std::endl;
+
+	// NOTE: insert a1, b1 into main
+	main.push_back(*(data.begin + data.elem_size - 1));
+	main.push_back(*(data.begin + data.pair_size - 1));
+	// NOTE: insert rest of a's into main
+	// insert rest of b's into pend
+	for (iterator pair = data.begin + data.pair_size; pair != data.end; std::advance(pair, data.pair_size))
 	{
-		iterator next_elem = pair_start + data.elem_size;
-		iterator pair_end = pair_start + data.pair_size;
-
-		main.insert(main.end(), next_elem, pair_end);
-		pend.insert(pend.end(), pair_start, next_elem);
+		pend.push_back(*(pair + data.elem_size - 1));
+		main.push_back(*(pair + data.pair_size - 1));
 	}
+	// NOTE: insert odd element in pend
+	if (data.odd_element)
+		pend.push_back(*(data.end + data.elem_size - 1));
 
-	std::cout << "-- MAIN --" << std::endl;
-	printElem(main, data);
-	std::cout << "-- PEND --" << std::endl;
-	printElem(pend, data);
-
-	// NOTE: binary insertion start
-	while (pend.empty() == false)
-	{
-		// calculate jacobsthal number
-		// binary insert based on jacobsthal and using range
-		// binary insert the rest
-	}
-
-	// NOTE: Update sequence with main
-	std::copy(main.begin(), main.end(), data.vec.begin());
+	std::cout << "Main :";
+	for (size_t i = 0; i < main.size(); i++)
+		std::cout << " " << (main[i]);
+	std::cout << std::endl;
+	std::cout << "Pend :";
+	for (size_t i = 0; i < pend.size(); i++)
+		std::cout << " " << (pend[i]);
+	std::cout << std::endl << std::endl;
 }
 
 void PmergeMe::mergeInsertSort(vector &vec, int level)
@@ -186,21 +182,22 @@ void PmergeMe::mergeInsertSort(vector &vec, int level)
 	data.begin = vec.begin();
 	data.end = vec.end() - data.remainder_size - data.elem_size * data.odd_element;
 
-	std::cout << std::endl << "------------- Level " << level << "-------------" << std::endl;
-	printData(data);
-	printPairs(data);
+	// std::cout << std::endl << "------------- Level " << level << "-------------" << std::endl;
+	// printData(data);
+	// printPairs(data);
 
-	std::cout << std::endl << "Level " << level << ": [Merge sorting]" << std::endl << std::endl;
+	// std::cout << std::endl << "Level " << level << ": [Merge sorting]" << std::endl << std::endl;
 	mergeSort(data);
-	printPairs(data);
+	// printPairs(data);
 
+	std::cout << "Sequence :";
+	for (size_t i = 0; i < vec.size(); i++)
+		std::cout << " " << vec[i];
+	std::cout << std::endl;
 	if (data.pair_count > 1)
 		mergeInsertSort(vec, level + 1);
-
-	std::cout << std::endl << "Level " << level << ": [Binary inserting]" << std::endl << std::endl;
+	// std::cout << std::endl << "Level " << level << ": [Binary inserting]" << std::endl << std::endl;
 	insertSort(data);
-	if (level == 3)
-		exit(0);
 }
 
 vector PmergeMe::sortVector()

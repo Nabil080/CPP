@@ -32,7 +32,8 @@ PmergeMeTest::PmergeMeTest(std::vector<int> numbers) : PmergeMe(containerToStrin
 }
 
 PmergeMeTest::PmergeMeTest(const PmergeMeTest &other)
-	: PmergeMe(other), _error(other._error), _result(other._result), _expected_error(other._expected_error), _expected_result(other._expected_result)
+	: PmergeMe(other), _error(other._error), _result(other._result), _expected_error(other._expected_error),
+	  _expected_result(other._expected_result)
 {
 	std::cerr << "[PmergeMeTest copy constructor]" << std::endl;
 }
