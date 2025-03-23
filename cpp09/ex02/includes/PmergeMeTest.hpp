@@ -4,10 +4,14 @@
 #include "PmergeMe.hpp"
 
 #include <sstream>
+#define WHITE "\033[00m"
+#define RED	  "\033[31m"
+#define GREEN "\033[32m"
 
 class PmergeMeTest : private PmergeMe
 {
 	private:
+		std::string _sequence;
 		std::string _error;
 		std::string _result;
 		std::string _expected_error;
@@ -19,13 +23,14 @@ class PmergeMeTest : private PmergeMe
 	public:
 		PmergeMeTest(const PmergeMeTest &other);
 		PmergeMeTest(std::vector<int> numbers);
+		PmergeMeTest(std::string sequence);
 		PmergeMeTest(std::string sequence, std::string expected_result);
 		~PmergeMeTest();
 
 		PmergeMeTest					 &operator=(const PmergeMeTest &other);
 
 		void							  printTest();
-		void							  setPassed();
+		void							  setError();
 		template <typename T> std::string containerToString(T container)
 		{
 			std::ostringstream	 result;

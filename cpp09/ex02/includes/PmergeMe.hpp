@@ -2,6 +2,7 @@
 #define PMERGEME_HPP
 
 #include <algorithm>
+#include <climits>
 #include <cmath>
 #include <deque>
 #include <iostream>
@@ -13,27 +14,50 @@
 #define JACOBSTHAL(level) (pow(2, (level + 1)) + pow(-1, level)) / 3;
 
 typedef std::vector<int> vector;
+typedef std::deque<int>	 deque;
 
 class PmergeMe
 {
-	protected:
-		std::string		_sequence;
-		vector			_vector;
-		std::deque<int> _deque;
-		PmergeMe();
-
 	public:
 		PmergeMe(const PmergeMe &other);
-		PmergeMe(std::string sequence);
+		PmergeMe();
 		~PmergeMe();
 
-		PmergeMe	   &operator=(const PmergeMe &other);
+		PmergeMe &operator=(const PmergeMe &other);
 
-		vector			sortVector();
-		std::deque<int> sortdeque();
-		void			parseSequence();
+		vector	  sortVector(std::string sequence);
+		deque	  sortDeque(std::string sequence);
 
-	private:
+	protected:
+		template <typename Container> Container parseSequence(std::string sequence)
+		{
+			Container	container;
+			size_t		pos = 0, start = 0;
+			std::string str;
+			long		converted;
+
+			while (sequence[pos])
+			{
+				// go to start
+				while (sequence[pos] && std::isspace(sequence[pos]))
+					pos++;
+				start = pos;
+				// go to end
+				while (sequence[pos] && std::isspace(sequence[pos]) == 0)
+					pos++;
+				// convert to int
+				str = sequence.substr(start, pos - start);
+				converted = std::strtol(str.c_str(), NULL, 10);
+				if (converted < 0 || converted > INT_MAX)
+					throw(std::runtime_error(ERR_RANGE));
+				if (converted == 0 && str.empty() == false && str[0] != '0')
+					throw(std::runtime_error(ERR_NOT_A_NUMBER));
+				// store
+				container.push_back(converted);
+			}
+			return (container);
+		}
+
 		template <typename Iterator> void printRange(Iterator start, Iterator end)
 		{
 			for (Iterator it = start; it != end; it++)
@@ -66,20 +90,10 @@ class PmergeMe
 			int		 remainder_size = container.size() % elem_size;
 			Iterator pairs_end = container.end() - remainder_size - (odd_element ? elem_size : 0);
 
-			std::cout << "--------------------- Merge Sort\n";
-			printRange(container.begin(), container.end());
-			std::cout << "\n";
 			sortPairs(container.begin(), pairs_end, elem_size);
-			printRange(container.begin(), container.end());
-			std::cout << "\n--------------------- Merge Sort\n";
 
 			if (pair_count > 1)
 				mergeInsertSort(container, level + 1);
-			std::cout << "--------------------- Insertion Sort\n\n";
-
-			std::cout << "Recursion Level " << level << ", starting sequence :\n";
-			printRange(container.begin(), container.end());
-			std::cout << "\nElement size : " << elem_size << std::endl << std::endl;
 
 			std::vector<Iterator> main;
 			std::vector<Iterator> pend;
@@ -114,28 +128,12 @@ class PmergeMe
 
 				for (int insertions_left = jacobsthal_diff; insertions_left > 0; insertions_left--)
 				{
-
-					std::cout << "Main :";
-					for (size_t i = 0; i < main.size(); i++)
-						std::cout << " " << *(main[i]);
-					std::cout << std::endl;
-					std::cout << "Pend :";
-					for (size_t i = 0; i < pend.size(); i++)
-						std::cout << " " << *(pend[i]);
-					std::cout << std::endl;
-
-					std::cout << "To insert : " << **to_insert << std::endl;
-					std::cout << "Search bound : " << (search_bound != main.end() ? **search_bound : 0) << std::endl;
 					typename std::vector<Iterator>::iterator pos_to_insert =
 						std::upper_bound(main.begin(), search_bound, *to_insert, iterator_comp<Iterator>);
-					std::cout << "Pos found : " << **pos_to_insert << std::endl;
-					typename std::vector<Iterator>::iterator inserted = main.insert(pos_to_insert, *to_insert);
 
-					pend.erase(to_insert);
-					(void)inserted;
-					to_insert--;
+					main.insert(pos_to_insert, *to_insert);
+					pend.erase(to_insert--);
 					search_bound = (main.begin() + curr_jacobsthal + inserted_numbers);
-					std::cout << std::endl;
 				}
 				prev_jacobsthal = curr_jacobsthal;
 				inserted_numbers += jacobsthal_diff;
@@ -148,18 +146,9 @@ class PmergeMe
 				typename std::vector<Iterator>::iterator pos_to_insert =
 					std::upper_bound(main.begin(), curr_bound, *curr_pend, iterator_comp<Iterator>);
 				main.insert(pos_to_insert, *curr_pend);
-				std::cout << "Main :";
-				for (size_t ij = 0; ij < main.size(); ij++)
-					std::cout << " " << *(main[ij]);
-				std::cout << std::endl;
-				std::cout << "Pend :";
-				for (size_t ij = 0; ij < pend.size(); ij++)
-					std::cout << " " << *(pend[ij]);
-				std::cout << std::endl << std::endl;
 			}
 
 			Container sorted;
-			sorted.reserve(container.size());
 
 			// NOTE: it is last (and highest) number of an element
 			// We insert in reserve order to keep the correct order
@@ -173,9 +162,6 @@ class PmergeMe
 			sorted.insert(sorted.end(), container.end() - remainder_size, container.end());
 
 			container = sorted;
-			std::cout << "Recursion Level " << level << ", ending sequence :\n";
-			printRange(container.begin(), container.end());
-			std::cout << "\n\n--------------------- Insertion Sort\n";
 		}
 };
 

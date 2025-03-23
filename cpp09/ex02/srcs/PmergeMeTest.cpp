@@ -1,8 +1,8 @@
 #include "PmergeMeTest.hpp"
 
 #include <algorithm>
+#include <iomanip>
 #include <iostream>
-
 // constructors
 
 PmergeMeTest::PmergeMeTest()
@@ -10,7 +10,7 @@ PmergeMeTest::PmergeMeTest()
 	std::cerr << "[PmergeMeTest default constructor]" << std::endl;
 }
 
-PmergeMeTest::PmergeMeTest(std::string sequence, std::string expected) : PmergeMe(sequence)
+PmergeMeTest::PmergeMeTest(std::string sequence, std::string expected) : _sequence(sequence)
 {
 	if (expected.empty() == false && std::isalpha(expected[0]))
 	{
@@ -24,11 +24,12 @@ PmergeMeTest::PmergeMeTest(std::string sequence, std::string expected) : PmergeM
 	}
 }
 
-PmergeMeTest::PmergeMeTest(std::vector<int> numbers) : PmergeMe(containerToString(numbers))
+PmergeMeTest::PmergeMeTest(std::string sequence) : _sequence(sequence) {}
+
+PmergeMeTest::PmergeMeTest(std::vector<int> numbers) : _sequence(containerToString(numbers))
 {
 	std::sort(numbers.begin(), numbers.end());
 	_expected_result = containerToString(numbers);
-	std::cout << "DEBUG : " << _expected_result << std::endl;
 }
 
 PmergeMeTest::PmergeMeTest(const PmergeMeTest &other)
@@ -60,58 +61,56 @@ PmergeMeTest &PmergeMeTest::operator=(const PmergeMeTest &other)
 
 // methods
 
-void PmergeMeTest::setPassed()
+void PmergeMeTest::setError()
 {
 	try
 	{
-		PmergeMe::parseSequence();
+		PmergeMe::parseSequence<vector>(_sequence);
 	}
 	catch (std::runtime_error &e)
 	{
 		_error = e.what();
 	}
 
-	if (_error.empty() == false) // parsing error
-	{
-		if (_error == _expected_error)
-			_passed = true;
-		else
-			_passed = false;
-	}
-	else
-	{
-		try
-		{
-			PmergeMe::sortVector();
-			PmergeMe::sortdeque();
-		}
-		catch (std::bad_alloc &e)
-		{
-			_error = e.what();
-			return;
-		}
-		_result = containerToString(PmergeMe::_vector);
-		if (_result != _expected_result || _result != containerToString(PmergeMe::_deque))
-			_passed = false;
-		else
-			_passed = true;
-	}
+	_passed = _error == _expected_error;
 }
 
 void PmergeMeTest::printTest()
 {
-	setPassed();
-
 	std::cout << "--------------------------------" << std::endl << std::endl;
-	std::cout << "TESTING :" << ::PmergeMe::_sequence << std::endl;
-	if (_expected_error.empty() == false)
-		std::cout << "Expected error :" << _expected_error << std::endl;
-	else
-		std::cout << "Expected result :" << _expected_result << std::endl;
-	if (_error.empty() == false)
-		std::cout << "Got error :" << _error << std::endl;
-	else
-		std::cout << "Got result :" << _result << std::endl;
-	std::cout << (_passed ? "[PASSED]" : "[FAILED]");
-	std::cout << std::endl << std::endl;
+	std::cout << "Before :" << _sequence << std::endl;
+	setError();
+	if (_expected_error != "") // check if error is matching expectations
+	{
+		std::cout << "After :" << _error << std::endl;
+		std::cout << "Expected :" << _expected_error << std::endl;
+	}
+	else // check if sorted
+	{
+		clock_t start_vector = clock();
+		vector	vec = PmergeMe::sortVector(_sequence);
+		clock_t end_vector = clock();
+		clock_t start_deque = clock();
+		deque	deq = PmergeMe::sortDeque(_sequence);
+		clock_t end_deque = clock();
+
+		_result = containerToString(vec);
+		std::sort(vec.begin(), vec.end());
+		if (_expected_result == "")
+			_expected_result = containerToString(vec);
+
+		std::cout << "After :" << _result << std::endl;
+		std::cout << "Expected :" << _expected_result << std::endl;
+		std::cout << std::fixed << std::setprecision(6);
+		std::cout << "Time to process a range of " << vec.size()
+				  << " elements with std::vector: " << (double)(end_vector - start_vector) / CLOCKS_PER_SEC << "s"
+				  << std::endl;
+		std::cout << "Time to process a range of " << deq.size()
+				  << " elements with std::deque: " << (double)(end_deque - start_deque) / CLOCKS_PER_SEC << "s"
+				  << std::endl;
+
+		_passed = _result == _expected_result && _result == containerToString(deq);
+	}
+	std::cout << (_passed ? GREEN + std::string("[PASSED]") : RED + std::string("[FAILED]"));
+	std::cout << WHITE << std::endl << std::endl;
 }

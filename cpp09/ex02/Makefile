@@ -57,7 +57,7 @@ ${OBJS_DIR}%.o : ${SRCS_DIR}%.cpp ${HEADERS}
 
 ######################## TEST ########################
 
-test : exemple
+test : base
 
 base : all
 	./${NAME}
