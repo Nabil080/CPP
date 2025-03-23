@@ -33,6 +33,7 @@ class PmergeMe
 
 	private:
 		void mergeInsertSort(vector &vec, int level);
+		void sortPairs(iterator begin, iterator end, int elem_size);
 		void printRange(iterator start, iterator end);
 };
 

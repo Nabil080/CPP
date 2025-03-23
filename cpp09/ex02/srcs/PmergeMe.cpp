@@ -83,28 +83,32 @@ bool iterator_comp(iterator left, iterator right)
 	return *left < *right;
 }
 
+void PmergeMe::sortPairs(iterator start, iterator end, int elem_size)
+{
+	for (iterator current_pair = start; current_pair != end; current_pair += 2 * elem_size)
+	{
+		iterator current_last = current_pair + elem_size - 1;
+		iterator next_last = current_last + elem_size;
+
+		if (*current_last > *next_last)
+			for (int i = 0; i < elem_size; i++)
+				std::iter_swap(current_last - i, next_last - i);
+	}
+}
+
 void PmergeMe::mergeInsertSort(vector &vec, int level)
 {
-	int	 elem_size = std::pow(2, level) / 2;
-	int	 pair_size = elem_size * 2;
-	int	 pair_count = vec.size() / (pair_size);
-	bool odd_element = ((int)vec.size() - (pair_size * pair_count) >= elem_size);
-	int	 remainder_size = vec.size() % elem_size;
-
-	int	 jump_to_last_of_elem = elem_size - 1;
+	int		 elem_size = std::pow(2, level) / 2;
+	int		 pair_size = elem_size * 2;
+	int		 pair_count = vec.size() / (pair_size);
+	bool	 odd_element = ((int)vec.size() - (pair_size * pair_count) >= elem_size);
+	int		 remainder_size = vec.size() % elem_size;
+	iterator pairs_end = vec.end() - remainder_size - (odd_element ? elem_size : 0);
 
 	std::cout << "--------------------- Merge Sort\n";
 	printRange(vec.begin(), vec.end());
 	std::cout << "\n";
-	iterator pairs_end = vec.end() - remainder_size - (odd_element ? elem_size : 0);
-	for (iterator pair_start = vec.begin(); pair_start != pairs_end; std::advance(pair_start, pair_size))
-	{
-		iterator next_elem = pair_start + elem_size;
-
-		if (*(pair_start + jump_to_last_of_elem) > *(next_elem + jump_to_last_of_elem))
-			for (int i = 0; i < elem_size; i++)
-				std::iter_swap(pair_start + i, next_elem + i);
-	}
+	sortPairs(vec.begin(), pairs_end, elem_size);
 	printRange(vec.begin(), vec.end());
 	std::cout << "\n--------------------- Merge Sort\n";
 
