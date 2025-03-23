@@ -83,7 +83,7 @@ void PmergeMeTest::setPassed()
 		try
 		{
 			PmergeMe::sortVector();
-			PmergeMe::sortList();
+			PmergeMe::sortdeque();
 		}
 		catch (std::bad_alloc &e)
 		{
@@ -91,7 +91,7 @@ void PmergeMeTest::setPassed()
 			return;
 		}
 		_result = containerToString(PmergeMe::_vector);
-		if (_result != _expected_result || _result != containerToString(PmergeMe::_list))
+		if (_result != _expected_result || _result != containerToString(PmergeMe::_deque))
 			_passed = false;
 		else
 			_passed = true;

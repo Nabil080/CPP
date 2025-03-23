@@ -42,10 +42,7 @@ int main(int argc, char **argv)
 		return (0);
 	}
 
-	PmergeMe		 merger(argv[1]);
-	std::list<int>	 list;
-	std::vector<int> vector;
-
+	PmergeMe merger(argv[1]);
 	try
 	{
 		merger.parseSequence();

@@ -66,153 +66,10 @@ void PmergeMe::parseSequence()
 			throw(std::runtime_error(ERR_NOT_A_NUMBER));
 		// store
 		_vector.push_back(converted);
-		_list.push_back(converted);
+		_deque.push_back(converted);
 	}
 
 	std::cerr << _vector.size() << " numbers" << std::endl;
-}
-
-void PmergeMe::printRange(iterator start, iterator end)
-{
-	for (iterator it = start; it != end; it++)
-		std::cout << *it << (it + 1 != end ? " " : "");
-}
-
-bool iterator_comp(iterator left, iterator right)
-{
-	return *left < *right;
-}
-
-void PmergeMe::sortPairs(iterator start, iterator end, int elem_size)
-{
-	for (iterator current_pair = start; current_pair != end; current_pair += 2 * elem_size)
-	{
-		iterator current_last = current_pair + elem_size - 1;
-		iterator next_last = current_last + elem_size;
-
-		if (*current_last > *next_last)
-			for (int i = 0; i < elem_size; i++)
-				std::iter_swap(current_last - i, next_last - i);
-	}
-}
-
-void PmergeMe::mergeInsertSort(vector &vec, int level)
-{
-	int		 elem_size = std::pow(2, level) / 2;
-	int		 pair_size = elem_size * 2;
-	int		 pair_count = vec.size() / (pair_size);
-	bool	 odd_element = ((int)vec.size() - (pair_size * pair_count) >= elem_size);
-	int		 remainder_size = vec.size() % elem_size;
-	iterator pairs_end = vec.end() - remainder_size - (odd_element ? elem_size : 0);
-
-	std::cout << "--------------------- Merge Sort\n";
-	printRange(vec.begin(), vec.end());
-	std::cout << "\n";
-	sortPairs(vec.begin(), pairs_end, elem_size);
-	printRange(vec.begin(), vec.end());
-	std::cout << "\n--------------------- Merge Sort\n";
-
-	if (pair_count > 1)
-		mergeInsertSort(vec, level + 1);
-	std::cout << "--------------------- Insertion Sort\n\n";
-
-	std::cout << "Recursion Level " << level << ", starting sequence :\n";
-	printRange(vec.begin(), vec.end());
-	std::cout << "\nElement size : " << elem_size << std::endl << std::endl;
-
-	std::vector<iterator> main;
-	std::vector<iterator> pend;
-
-	// NOTE: insert a1, b1 into main
-	main.push_back(vec.begin() + elem_size - 1);
-	main.push_back(vec.begin() + pair_size - 1);
-	// NOTE: insert rest of a's into main
-	// insert rest of b's into pend
-	for (iterator pair = vec.begin() + pair_size; pair != pairs_end; std::advance(pair, pair_size))
-	{
-		pend.push_back(pair + elem_size - 1);
-		main.push_back(pair + pair_size - 1);
-	}
-	// NOTE: insert odd element in pend
-	if (odd_element)
-		pend.push_back(vec.end() - remainder_size - 1);
-
-	// NOTE: Binary insertion following jacobsthal
-	int prev_jacobsthal = JACOBSTHAL(1);
-	int inserted_numbers = 0;
-	for (int jacobsthal_index = 2;; jacobsthal_index++)
-	{
-		int curr_jacobsthal = JACOBSTHAL(jacobsthal_index);
-		int jacobsthal_diff = curr_jacobsthal - prev_jacobsthal;
-
-		if (jacobsthal_diff > (int)pend.size())
-			break;
-		std::vector<iterator>::iterator to_insert = (pend.begin() + jacobsthal_diff - 1);
-		std::vector<iterator>::iterator search_bound = (main.begin() + curr_jacobsthal + inserted_numbers);
-
-		for (int insertions_left = jacobsthal_diff; insertions_left > 0; insertions_left--)
-		{
-
-			std::cout << "Main :";
-			for (size_t i = 0; i < main.size(); i++)
-				std::cout << " " << *(main[i]);
-			std::cout << std::endl;
-			std::cout << "Pend :";
-			for (size_t i = 0; i < pend.size(); i++)
-				std::cout << " " << *(pend[i]);
-			std::cout << std::endl;
-
-			std::cout << "To insert : " << **to_insert << std::endl;
-			std::cout << "Search bound : " << (search_bound != main.end() ? **search_bound : 0) << std::endl;
-			std::vector<iterator>::iterator pos_to_insert =
-				std::upper_bound(main.begin(), search_bound, *to_insert, iterator_comp);
-			std::cout << "Pos found : " << **pos_to_insert << std::endl;
-			std::vector<iterator>::iterator inserted = main.insert(pos_to_insert, *to_insert);
-
-			pend.erase(to_insert);
-			(void)inserted;
-			to_insert--;
-			search_bound = (main.begin() + curr_jacobsthal + inserted_numbers);
-			std::cout << std::endl;
-		}
-		prev_jacobsthal = curr_jacobsthal;
-		inserted_numbers += jacobsthal_diff;
-	}
-	for (int i = pend.size() - 1; i >= 0; i--)
-	{
-		std::vector<iterator>::iterator curr_pend = (pend.begin() + i);
-		std::vector<iterator>::iterator curr_bound = (main.begin() + main.size() - pend.size() + i + odd_element);
-		std::vector<iterator>::iterator pos_to_insert =
-			std::upper_bound(main.begin(), curr_bound, *curr_pend, iterator_comp);
-		main.insert(pos_to_insert, *curr_pend);
-		std::cout << "Main :";
-		for (size_t ij = 0; ij < main.size(); ij++)
-			std::cout << " " << *(main[ij]);
-		std::cout << std::endl;
-		std::cout << "Pend :";
-		for (size_t ij = 0; ij < pend.size(); ij++)
-			std::cout << " " << *(pend[ij]);
-		std::cout << std::endl << std::endl;
-	}
-
-	vector sorted;
-	sorted.reserve(vec.size());
-
-	// NOTE: it is last (and highest) number of an element
-	// We insert in reserve order to keep the correct order
-	for (std::vector<iterator>::iterator it = main.begin(); it != main.end(); it++)
-	{
-		iterator pair_start = ((*it) - elem_size + 1);
-		iterator pair_end = ((*it) + 1);
-		sorted.insert(sorted.end(), pair_start, pair_end);
-	}
-	// NOTE: add the remaining elements at the end (not sorted)
-	sorted.insert(sorted.end(), vec.end() - remainder_size, vec.end());
-
-	vec = sorted;
-	std::cout << "Recursion Level " << level << ", ending sequence :\n";
-	printRange(vec.begin(), vec.end());
-	std::cout << "\n\n--------------------- Insertion Sort\n";
 }
 
 vector PmergeMe::sortVector()
@@ -221,7 +78,8 @@ vector PmergeMe::sortVector()
 	return (_vector);
 }
 
-std::list<int> PmergeMe::sortList()
+std::deque<int> PmergeMe::sortdeque()
 {
-	return (_list);
+	// mergeInsertSort(_deque, 1);
+	return (_deque);
 }
