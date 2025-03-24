@@ -11,6 +11,7 @@
 
 #define ERR_RANGE		  "Number outside the valid range (0 - 2147483647)"
 #define ERR_NOT_A_NUMBER  "Not a valid number"
+#define ERR_DUPLICATE	  "Duplicates aren't allowed"
 #define JACOBSTHAL(level) (pow(2, (level + 1)) + pow(-1, level)) / 3;
 
 typedef std::vector<int> vector;
@@ -53,6 +54,8 @@ class PmergeMe
 				if (converted == 0 && str.empty() == false && str[0] != '0')
 					throw(std::runtime_error(ERR_NOT_A_NUMBER));
 				// store
+				if (std::find(container.begin(), container.end(), converted) != container.end())
+					throw(std::runtime_error(ERR_DUPLICATE));
 				container.push_back(converted);
 			}
 			return (container);
