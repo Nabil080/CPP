@@ -80,7 +80,7 @@ void PmergeMeTest::printTest()
 	std::cout << "--------------------------------" << std::endl << std::endl;
 	std::cout << "Before :" << _sequence << std::endl;
 	setError();
-	if (_expected_error != "") // check if error is matching expectations
+	if (_expected_error != "" || _error != "") // check if error is matching expectations
 	{
 		std::cout << "After :" << _error << std::endl;
 		std::cout << "Expected :" << _expected_error << std::endl;

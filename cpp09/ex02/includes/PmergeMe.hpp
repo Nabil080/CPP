@@ -46,6 +46,8 @@ class PmergeMe
 				// go to end
 				while (sequence[pos] && std::isspace(sequence[pos]) == 0)
 					pos++;
+				if (pos == start)
+					break;
 				// convert to int
 				str = sequence.substr(start, pos - start);
 				converted = std::strtol(str.c_str(), NULL, 10);
